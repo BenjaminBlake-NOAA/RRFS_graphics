@@ -351,7 +351,7 @@ def create_figure():
   ax8 = fig.add_subplot(gs[10:,4:8])
   ax9 = fig.add_subplot(gs[10:,8:])
   axes = [ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8, ax9]
-  im = image.imread('/scratch2/NCEPDEV/fv3-cam/Benjamin.Blake/python.rrfs/noaa.png')
+  im = image.imread('noaa.png')
   par = 1
 
   # Map corners for each domain
