@@ -5,7 +5,12 @@ import io
 import matplotlib.pyplot as plt
 import matplotlib.image as image
 from matplotlib.gridspec import GridSpec
-from mpl_toolkits.basemap import Basemap, maskoceans
+try:
+    from mpl_toolkits.basemap import Basemap, maskoceans
+except:
+    import mpl_toolkits
+    mpl_toolkits.__path__.append('/gpfs/dell2/emc/modeling/noscrub/gwv/py/lib/python/basemap-1.2.1-py3.6-linux-x86_64.egg/mpl_toolkits/')
+    from mpl_toolkits.basemap import Basemap, maskoceans
 import numpy as np
 import time,os,sys,multiprocessing
 import multiprocessing.pool
@@ -97,16 +102,16 @@ fhour24 = str(fhrm24).zfill(2)
 print('fhour '+fhour)
 
 # Define the input files
-
-data1 = pygrib.open('/scratch2/NCEPDEV/fv3-cam/James.A.Abeles/hwt/run/CONUS/member1/PRSLEV.GrbF'+fhour)
-data2 = pygrib.open('/scratch2/NCEPDEV/fv3-cam/James.A.Abeles/hwt/run/CONUS/member2/PRSLEV.GrbF'+fhour)
-data3 = pygrib.open('/scratch2/NCEPDEV/fv3-cam/James.A.Abeles/hwt/run/CONUS/member3/PRSLEV.GrbF'+fhour)
-data4 = pygrib.open('/scratch2/NCEPDEV/fv3-cam/James.A.Abeles/hwt/run/CONUS/member4/PRSLEV.GrbF'+fhour)
-data5 = pygrib.open('/scratch2/NCEPDEV/fv3-cam/James.A.Abeles/hwt/run/CONUS/member5/PRSLEV.GrbF'+fhour)
-data6 = pygrib.open('/scratch2/NCEPDEV/fv3-cam/James.A.Abeles/hwt/run/CONUS/member6/PRSLEV.GrbF'+fhour)
-data7 = pygrib.open('/scratch2/NCEPDEV/fv3-cam/James.A.Abeles/hwt/run/CONUS/member7/PRSLEV.GrbF'+fhour)
-data8 = pygrib.open('/scratch2/NCEPDEV/fv3-cam/James.A.Abeles/hwt/run/CONUS/member8/PRSLEV.GrbF'+fhour)
-data9 = pygrib.open('/scratch2/NCEPDEV/fv3-cam/James.A.Abeles/hwt/run/CONUS/member9/PRSLEV.GrbF'+fhour)
+DATA_DIR = str(sys.argv[3])
+data1 = pygrib.open(DATA_DIR+'/member1/PRSLEV.GrbF'+fhour)
+data2 = pygrib.open(DATA_DIR+'/member2/PRSLEV.GrbF'+fhour)
+data3 = pygrib.open(DATA_DIR+'/member3/PRSLEV.GrbF'+fhour)
+data4 = pygrib.open(DATA_DIR+'/member4/PRSLEV.GrbF'+fhour)
+data5 = pygrib.open(DATA_DIR+'/member5/PRSLEV.GrbF'+fhour)
+data6 = pygrib.open(DATA_DIR+'/member6/PRSLEV.GrbF'+fhour)
+data7 = pygrib.open(DATA_DIR+'/member7/PRSLEV.GrbF'+fhour)
+data8 = pygrib.open(DATA_DIR+'/member8/PRSLEV.GrbF'+fhour)
+data9 = pygrib.open(DATA_DIR+'/member9/PRSLEV.GrbF'+fhour)
 
 
 # Get the lats and lons

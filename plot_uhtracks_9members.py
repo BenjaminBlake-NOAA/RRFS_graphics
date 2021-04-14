@@ -5,7 +5,12 @@ import io
 import matplotlib.pyplot as plt
 import matplotlib.image as image
 from matplotlib.gridspec import GridSpec
-from mpl_toolkits.basemap import Basemap
+try:
+    from mpl_toolkits.basemap import Basemap
+except:
+    import mpl_toolkits
+    mpl_toolkits.__path__.append('/gpfs/dell2/emc/modeling/noscrub/gwv/py/lib/python/basemap-1.2.1-py3.6-linux-x86_64.egg/mpl_toolkits/')
+    from mpl_toolkits.basemap import Basemap, maskoceans
 import numpy as np
 import time,os,sys,multiprocessing,itertools
 import ncepy
@@ -47,7 +52,7 @@ cyc = str(hour).zfill(2)
 print(year, month, day, hour)
 
 # Define the paths to the input files
-DATA_DIR = '/scratch2/NCEPDEV/fv3-cam/Rajendra.Panda/'+str(ymd)
+DATA_DIR = str(sys.argv[2])
 
 # Specify runlength for plots
 runlength = 36
@@ -56,6 +61,9 @@ runlength = 36
 itime = cycle
 fhrs = np.arange(0,runlength+1,1)
 vtime_list = [ncepy.ndate(itime,int(x)) for x in fhrs]
+
+# Specify plotting domain
+domain = str(sys.argv[3])
 
 
 ###################################################
@@ -195,10 +203,6 @@ data1.close()
 t2a = time.clock()
 t3a = round(t2a-t1a, 3)
 print(("%.3f seconds to read all messages") % t3a)
-
-
-# Specify plotting domains
-domain = str(sys.argv[2])
 
 
 ########################################

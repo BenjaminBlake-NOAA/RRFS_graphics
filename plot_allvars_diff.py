@@ -5,9 +5,12 @@ import io
 import matplotlib.pyplot as plt
 import matplotlib.image as image
 from matplotlib.gridspec import GridSpec
-import mpl_toolkits
-mpl_toolkits.__path__.append('/gpfs/dell2/emc/modeling/noscrub/gwv/py/lib/python/basemap-1.2.1-py3.6-linux-x86_64.egg/mpl_toolkits/')
-from mpl_toolkits.basemap import Basemap, maskoceans
+try:
+    from mpl_toolkits.basemap import Basemap, maskoceans
+except:
+    import mpl_toolkits
+    mpl_toolkits.__path__.append('/gpfs/dell2/emc/modeling/noscrub/gwv/py/lib/python/basemap-1.2.1-py3.6-linux-x86_64.egg/mpl_toolkits/')
+    from mpl_toolkits.basemap import Basemap, maskoceans
 import numpy as np
 import time,os,sys,multiprocessing
 import multiprocessing.pool
@@ -151,20 +154,22 @@ fhour24 = str(fhrm24).zfill(2)
 print('fhour '+fhour)
 
 # Define the input files
-data1 = pygrib.open('/gpfs/dell4/ptmp/emc.campara/fv3lam/fv3lam.'+str(ymd)+'/'+cyc+'/fv3lam.t'+cyc+'z.conus.f'+fhour+'.grib2')
-data2 = pygrib.open('/gpfs/dell6/ptmp/emc.campara/fv3lamx/fv3lamx.'+str(ymd)+'/'+cyc+'/fv3lam.t'+cyc+'z.conus.f'+fhour+'.grib2')
+DATA_DIR_1 = str(sys.argv[3])
+DATA_DIR_2 = str(sys.argv[4])
+data1 = pygrib.open(DATA_DIR_1+'/fv3lam.t'+cyc+'z.conus.f'+fhour+'.grib2')
+data2 = pygrib.open(DATA_DIR_2+'/fv3lam.t'+cyc+'z.conus.f'+fhour+'.grib2')
 
 if (fhr > 2):
-  data1_m1 = pygrib.open('/gpfs/dell4/ptmp/emc.campara/fv3lam/fv3lam.'+str(ymd)+'/'+cyc+'/fv3lam.t'+cyc+'z.conus.f'+fhour1+'.grib2')
-  data2_m1 = pygrib.open('/gpfs/dell6/ptmp/emc.campara/fv3lamx/fv3lamx.'+str(ymd)+'/'+cyc+'/fv3lam.t'+cyc+'z.conus.f'+fhour1+'.grib2')
-  data1_m2 = pygrib.open('/gpfs/dell4/ptmp/emc.campara/fv3lam/fv3lam.'+str(ymd)+'/'+cyc+'/fv3lam.t'+cyc+'z.conus.f'+fhour2+'.grib2')
-  data2_m2 = pygrib.open('/gpfs/dell6/ptmp/emc.campara/fv3lamx/fv3lamx.'+str(ymd)+'/'+cyc+'/fv3lam.t'+cyc+'z.conus.f'+fhour2+'.grib2')
+  data1_m1 = pygrib.open(DATA_DIR_1+'/fv3lam.t'+cyc+'z.conus.f'+fhour1+'.grib2')
+  data2_m1 = pygrib.open(DATA_DIR_2+'/fv3lam.t'+cyc+'z.conus.f'+fhour1+'.grib2')
+  data1_m2 = pygrib.open(DATA_DIR_1+'/fv3lam.t'+cyc+'z.conus.f'+fhour2+'.grib2')
+  data2_m2 = pygrib.open(DATA_DIR_2+'/fv3lam.t'+cyc+'z.conus.f'+fhour2+'.grib2')
 if (fhr >= 6):
-  data1_m6 = pygrib.open('/gpfs/dell4/ptmp/emc.campara/fv3lam/fv3lam.'+str(ymd)+'/'+cyc+'/fv3lam.t'+cyc+'z.conus.f'+fhour6+'.grib2')
-  data2_m6 = pygrib.open('/gpfs/dell6/ptmp/emc.campara/fv3lamx/fv3lamx.'+str(ymd)+'/'+cyc+'/fv3lam.t'+cyc+'z.conus.f'+fhour6+'.grib2')
+  data1_m6 = pygrib.open(DATA_DIR_1+'/fv3lam.t'+cyc+'z.conus.f'+fhour6+'.grib2')
+  data2_m6 = pygrib.open(DATA_DIR_2+'/fv3lam.t'+cyc+'z.conus.f'+fhour6+'.grib2')
 if (fhr >= 24):
-  data1_m24 = pygrib.open('/gpfs/dell4/ptmp/emc.campara/fv3lam/fv3lam.'+str(ymd)+'/'+cyc+'/fv3lam.t'+cyc+'z.conus.f'+fhour24+'.grib2')
-  data2_m24 = pygrib.open('/gpfs/dell6/ptmp/emc.campara/fv3lamx/fv3lamx.'+str(ymd)+'/'+cyc+'/fv3lam.t'+cyc+'z.conus.f'+fhour24+'.grib2')
+  data1_m24 = pygrib.open(DATA_DIR_1+'/fv3lam.t'+cyc+'z.conus.f'+fhour24+'.grib2')
+  data2_m24 = pygrib.open(DATA_DIR_2+'/fv3lam.t'+cyc+'z.conus.f'+fhour24+'.grib2')
 
 # Get the lats and lons
 grids = [data1, data2]
