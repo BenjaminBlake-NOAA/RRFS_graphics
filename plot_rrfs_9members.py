@@ -103,15 +103,15 @@ print('fhour '+fhour)
 
 # Define the input files
 DATA_DIR = str(sys.argv[3])
-data1 = pygrib.open(DATA_DIR+'/member1/PRSLEV.GrbF'+fhour)
-data2 = pygrib.open(DATA_DIR+'/member2/PRSLEV.GrbF'+fhour)
-data3 = pygrib.open(DATA_DIR+'/member3/PRSLEV.GrbF'+fhour)
-data4 = pygrib.open(DATA_DIR+'/member4/PRSLEV.GrbF'+fhour)
-data5 = pygrib.open(DATA_DIR+'/member5/PRSLEV.GrbF'+fhour)
-data6 = pygrib.open(DATA_DIR+'/member6/PRSLEV.GrbF'+fhour)
-data7 = pygrib.open(DATA_DIR+'/member7/PRSLEV.GrbF'+fhour)
-data8 = pygrib.open(DATA_DIR+'/member8/PRSLEV.GrbF'+fhour)
-data9 = pygrib.open(DATA_DIR+'/member9/PRSLEV.GrbF'+fhour)
+data1 = pygrib.open(DATA_DIR+'/1/PRSLEV.GrbF'+fhour)
+data2 = pygrib.open(DATA_DIR+'/2/PRSLEV.GrbF'+fhour)
+data3 = pygrib.open(DATA_DIR+'/3/PRSLEV.GrbF'+fhour)
+data4 = pygrib.open(DATA_DIR+'/4/PRSLEV.GrbF'+fhour)
+data5 = pygrib.open(DATA_DIR+'/5/PRSLEV.GrbF'+fhour)
+data6 = pygrib.open(DATA_DIR+'/6/PRSLEV.GrbF'+fhour)
+data7 = pygrib.open(DATA_DIR+'/7/PRSLEV.GrbF'+fhour)
+data8 = pygrib.open(DATA_DIR+'/8/PRSLEV.GrbF'+fhour)
+data9 = pygrib.open(DATA_DIR+'/9/PRSLEV.GrbF'+fhour)
 
 
 # Get the lats and lons
@@ -312,6 +312,17 @@ maxuvv_7 = data7.select(stepType='max',parameterName="220",typeOfLevel="isobaric
 maxuvv_8 = data8.select(stepType='max',parameterName="220",typeOfLevel="isobaricLayer",topLevel=100,bottomLevel=1000)[0].values
 maxuvv_9 = data9.select(stepType='max',parameterName="220",typeOfLevel="isobaricLayer",topLevel=100,bottomLevel=1000)[0].values
 
+# Total precipitation
+qpf_1 = data1.select(name='Total Precipitation',lengthOfTimeRange=fhr)[0].values * 0.0393701
+qpf_2 = data2.select(name='Total Precipitation',lengthOfTimeRange=fhr)[0].values * 0.0393701
+qpf_3 = data3.select(name='Total Precipitation',lengthOfTimeRange=fhr)[0].values * 0.0393701
+qpf_4 = data4.select(name='Total Precipitation',lengthOfTimeRange=fhr)[0].values * 0.0393701
+qpf_5 = data5.select(name='Total Precipitation',lengthOfTimeRange=fhr)[0].values * 0.0393701
+qpf_6 = data6.select(name='Total Precipitation',lengthOfTimeRange=fhr)[0].values * 0.0393701
+qpf_7 = data7.select(name='Total Precipitation',lengthOfTimeRange=fhr)[0].values * 0.0393701
+qpf_8 = data8.select(name='Total Precipitation',lengthOfTimeRange=fhr)[0].values * 0.0393701
+qpf_9 = data9.select(name='Total Precipitation',lengthOfTimeRange=fhr)[0].values * 0.0393701
+
 
 t2a = time.clock()
 t3a = round(t2a-t1a, 3)
@@ -469,12 +480,12 @@ def create_figure():
     xscale=0.17
     yscale=0.18
   elif dom == 'storm':
-    llcrnrlon = -82.0
-    llcrnrlat = 36.5
-    urcrnrlon = -73.5
-    urcrnrlat = 42.0
-    lat_0 = 37.5
-    lon_0 = -80.0
+    llcrnrlon = -93.0
+    llcrnrlat = 27.0
+    urcrnrlon = -79.0
+    urcrnrlat = 37.0
+    lat_0 = 33.0
+    lon_0 = -86.0
     xscale=0.18
     yscale=0.18
   elif dom == 'SF':
@@ -885,7 +896,7 @@ def plot_allvars():
       cbar = m.colorbar(cs,ax=ax,location='bottom',pad=0.05,extend='both')
       cbar.ax.tick_params(labelsize=4)
       cbar.set_label(units,fontsize=4)
-      cbars.append(cbars)
+      cbars.append(cbar)
     
     ax.text(.5,1.03,'Member '+str(par)+' 1-h Max 100-1000 mb UVV ('+units+') \n init: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=4,transform=ax.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(0,int(round(xmax*xscale)),0,int(round(ymax*yscale))),zorder=4)
@@ -898,6 +909,63 @@ def plot_allvars():
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot maxuvv for: '+dom) % t3)
 
+#################################
+  # Plot Total QPF
+#################################
+  t1 = time.clock()
+  print(('Working on total QPF for '+dom))
+
+  # Clear off old plottables but keep all the map info
+  cbars[0].remove()
+  cbars[1].remove()
+  cbars[2].remove()
+  clear_plotables(ax1,keep_ax_lst_1,fig)
+  clear_plotables(ax2,keep_ax_lst_2,fig)
+  clear_plotables(ax3,keep_ax_lst_3,fig)
+  clear_plotables(ax4,keep_ax_lst_4,fig)
+  clear_plotables(ax5,keep_ax_lst_5,fig)
+  clear_plotables(ax6,keep_ax_lst_6,fig)
+  clear_plotables(ax7,keep_ax_lst_7,fig)
+  clear_plotables(ax8,keep_ax_lst_8,fig)
+  clear_plotables(ax9,keep_ax_lst_9,fig)
+
+  units = 'in'
+  clevs = [0.01,0.1,0.25,0.5,0.75,1,1.25,1.5,1.75,2,2.5,3,4,5,7,10,15,20]
+  colorlist = ['chartreuse','limegreen','green','blue','dodgerblue','deepskyblue','cyan','mediumpurple','mediumorchid','darkmagenta','darkred','crimson','orangered','darkorange','goldenrod','gold','yellow']
+  cm = matplotlib.colors.ListedColormap(colorlist)
+  norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
+
+  cbars = []
+  var = [qpf_1,qpf_2,qpf_3,qpf_4,qpf_5,qpf_6,qpf_7,qpf_8,qpf_9]
+
+  for ax in axes:
+    xmin, xmax = ax.get_xlim()
+    ymin, ymax = ax.get_ylim()
+    xmax = int(round(xmax))
+    ymax = int(round(ymax))
+
+    cs = m.pcolormesh(x_shift,y_shift,var[par-1],cmap=cm,norm=norm,ax=ax)
+    cs.cmap.set_under('white',alpha=0.)
+    cs.cmap.set_over('pink')
+    cbar.ax.tick_params(labelsize=4)
+
+    if par == 7 or par == 8 or par == 9:
+      cbar = m.colorbar(cs,ax=ax,location='bottom',pad=0.05,ticks=[0.1,0.5,1,1.5,2,3,5,10,20],extend='max')
+      cbar.ax.tick_params(labelsize=4)
+      cbar.ax.set_xticklabels([0.1,0.5,1,1.5,2,3,5,10,20])
+      cbar.set_label(units,fontsize=4)
+      cbars.append(cbar)
+
+    ax.text(.5,1.03,'Member '+str(par)+' '+fhour+'-hr Total Precipitation ('+units+') \n init: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=4,transform=ax.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(0,int(round(xmax*xscale)),0,int(round(ymax*yscale))),zorder=4)
+
+    par += 1
+  par = 1
+
+  compress_and_save('qpf_members_'+dom+'_f'+fhour+'.png')
+  t2 = time.clock()
+  t3 = round(t2-t1, 3)
+  print(('%.3f seconds to plot total qpf for: '+dom) % t3)
 
 
   plt.clf()
