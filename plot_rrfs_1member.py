@@ -101,17 +101,10 @@ fhour6 = str(fhrm6).zfill(2)
 fhour24 = str(fhrm24).zfill(2)
 print('fhour '+fhour)
 
-# Define the input files
-DATA_DIR = str(sys.argv[3])
-data1 = pygrib.open(DATA_DIR+'/1/PRSLEV.GrbF'+fhour)
-data2 = pygrib.open(DATA_DIR+'/2/PRSLEV.GrbF'+fhour)
-data3 = pygrib.open(DATA_DIR+'/3/PRSLEV.GrbF'+fhour)
-data4 = pygrib.open(DATA_DIR+'/4/PRSLEV.GrbF'+fhour)
-data5 = pygrib.open(DATA_DIR+'/5/PRSLEV.GrbF'+fhour)
-data6 = pygrib.open(DATA_DIR+'/6/PRSLEV.GrbF'+fhour)
-data7 = pygrib.open(DATA_DIR+'/7/PRSLEV.GrbF'+fhour)
-data8 = pygrib.open(DATA_DIR+'/8/PRSLEV.GrbF'+fhour)
-data9 = pygrib.open(DATA_DIR+'/9/PRSLEV.GrbF'+fhour)
+# Define the member and input file and member
+member = str(sys.argv[3])
+DATA_DIR = str(sys.argv[4])
+data1 = pygrib.open(DATA_DIR+'/'+member+'/PRSLEV.GrbF'+fhour)
 
 
 # Get the lats and lons
@@ -182,146 +175,32 @@ t1a = time.clock()
 # 2-m temperature
 tmp2m_1 = data1.select(name='2 metre temperature')[0].values
 tmp2m_1 = (tmp2m_1 - 273.15)*1.8 + 32.0
-tmp2m_2 = data2.select(name='2 metre temperature')[0].values
-tmp2m_2 = (tmp2m_2 - 273.15)*1.8 + 32.0
-tmp2m_3 = data3.select(name='2 metre temperature')[0].values
-tmp2m_3 = (tmp2m_3 - 273.15)*1.8 + 32.0
-tmp2m_4 = data4.select(name='2 metre temperature')[0].values
-tmp2m_4 = (tmp2m_4 - 273.15)*1.8 + 32.0
-tmp2m_5 = data5.select(name='2 metre temperature')[0].values
-tmp2m_5 = (tmp2m_5 - 273.15)*1.8 + 32.0
-tmp2m_6 = data6.select(name='2 metre temperature')[0].values
-tmp2m_6 = (tmp2m_6 - 273.15)*1.8 + 32.0
-tmp2m_7 = data7.select(name='2 metre temperature')[0].values
-tmp2m_7 = (tmp2m_7 - 273.15)*1.8 + 32.0
-tmp2m_8 = data8.select(name='2 metre temperature')[0].values
-tmp2m_8 = (tmp2m_8 - 273.15)*1.8 + 32.0
-tmp2m_9 = data9.select(name='2 metre temperature')[0].values
-tmp2m_9 = (tmp2m_9 - 273.15)*1.8 + 32.0
 
 # 2-m dew point temperature
 dew2m_1 = data1.select(name='2 metre dewpoint temperature')[0].values
 dew2m_1 = (dew2m_1 - 273.15)*1.8 + 32.0
-dew2m_2 = data2.select(name='2 metre dewpoint temperature')[0].values
-dew2m_2 = (dew2m_2 - 273.15)*1.8 + 32.0
-dew2m_3 = data3.select(name='2 metre dewpoint temperature')[0].values
-dew2m_3 = (dew2m_3 - 273.15)*1.8 + 32.0
-dew2m_4 = data4.select(name='2 metre dewpoint temperature')[0].values
-dew2m_4 = (dew2m_4 - 273.15)*1.8 + 32.0
-dew2m_5 = data5.select(name='2 metre dewpoint temperature')[0].values
-dew2m_5 = (dew2m_5 - 273.15)*1.8 + 32.0
-dew2m_6 = data6.select(name='2 metre dewpoint temperature')[0].values
-dew2m_6 = (dew2m_6 - 273.15)*1.8 + 32.0
-dew2m_7 = data7.select(name='2 metre dewpoint temperature')[0].values
-dew2m_7 = (dew2m_7 - 273.15)*1.8 + 32.0
-dew2m_8 = data8.select(name='2 metre dewpoint temperature')[0].values
-dew2m_8 = (dew2m_8 - 273.15)*1.8 + 32.0
-dew2m_9 = data9.select(name='2 metre dewpoint temperature')[0].values
-dew2m_9 = (dew2m_9 - 273.15)*1.8 + 32.0
 
 # Composite reflectivity
 refc_1 = data1.select(name='Maximum/Composite radar reflectivity')[0].values
-refc_2 = data2.select(name='Maximum/Composite radar reflectivity')[0].values
-refc_3 = data3.select(name='Maximum/Composite radar reflectivity')[0].values
-refc_4 = data4.select(name='Maximum/Composite radar reflectivity')[0].values
-refc_5 = data5.select(name='Maximum/Composite radar reflectivity')[0].values
-refc_6 = data6.select(name='Maximum/Composite radar reflectivity')[0].values
-refc_7 = data7.select(name='Maximum/Composite radar reflectivity')[0].values
-refc_8 = data8.select(name='Maximum/Composite radar reflectivity')[0].values
-refc_9 = data9.select(name='Maximum/Composite radar reflectivity')[0].values
 
 # Max/Min Hourly 2-5 km Updraft Helicity
 maxuh25_1 = data1.select(stepType='max',parameterName="199",topLevel=5000,bottomLevel=2000)[0].values
-maxuh25_2 = data2.select(stepType='max',parameterName="199",topLevel=5000,bottomLevel=2000)[0].values
-maxuh25_3 = data3.select(stepType='max',parameterName="199",topLevel=5000,bottomLevel=2000)[0].values
-maxuh25_4 = data4.select(stepType='max',parameterName="199",topLevel=5000,bottomLevel=2000)[0].values
-maxuh25_5 = data5.select(stepType='max',parameterName="199",topLevel=5000,bottomLevel=2000)[0].values
-maxuh25_6 = data6.select(stepType='max',parameterName="199",topLevel=5000,bottomLevel=2000)[0].values
-maxuh25_7 = data7.select(stepType='max',parameterName="199",topLevel=5000,bottomLevel=2000)[0].values
-maxuh25_8 = data8.select(stepType='max',parameterName="199",topLevel=5000,bottomLevel=2000)[0].values
-maxuh25_9 = data9.select(stepType='max',parameterName="199",topLevel=5000,bottomLevel=2000)[0].values
 minuh25_1 = data1.select(stepType='min',parameterName="200",topLevel=5000,bottomLevel=2000)[0].values
-minuh25_2 = data2.select(stepType='min',parameterName="200",topLevel=5000,bottomLevel=2000)[0].values
-minuh25_3 = data3.select(stepType='min',parameterName="200",topLevel=5000,bottomLevel=2000)[0].values
-minuh25_4 = data4.select(stepType='min',parameterName="200",topLevel=5000,bottomLevel=2000)[0].values
-minuh25_5 = data5.select(stepType='min',parameterName="200",topLevel=5000,bottomLevel=2000)[0].values
-minuh25_6 = data6.select(stepType='min',parameterName="200",topLevel=5000,bottomLevel=2000)[0].values
-minuh25_7 = data7.select(stepType='min',parameterName="200",topLevel=5000,bottomLevel=2000)[0].values
-minuh25_8 = data8.select(stepType='min',parameterName="200",topLevel=5000,bottomLevel=2000)[0].values
-minuh25_9 = data9.select(stepType='min',parameterName="200",topLevel=5000,bottomLevel=2000)[0].values
-
 maxuh25_1[maxuh25_1 < 10] = 0
-maxuh25_2[maxuh25_2 < 10] = 0
-maxuh25_3[maxuh25_3 < 10] = 0
-maxuh25_4[maxuh25_4 < 10] = 0
-maxuh25_5[maxuh25_5 < 10] = 0
-maxuh25_6[maxuh25_6 < 10] = 0
-maxuh25_7[maxuh25_7 < 10] = 0
-maxuh25_8[maxuh25_8 < 10] = 0
-maxuh25_9[maxuh25_9 < 10] = 0
 minuh25_1[minuh25_1 > -10] = 0
-minuh25_2[minuh25_2 > -10] = 0
-minuh25_3[minuh25_3 > -10] = 0
-minuh25_4[minuh25_4 > -10] = 0
-minuh25_5[minuh25_5 > -10] = 0
-minuh25_6[minuh25_6 > -10] = 0
-minuh25_7[minuh25_7 > -10] = 0
-minuh25_8[minuh25_8 > -10] = 0
-minuh25_9[minuh25_9 > -10] = 0
-
 uh25_1 = maxuh25_1 + minuh25_1
-uh25_2 = maxuh25_2 + minuh25_2
-uh25_3 = maxuh25_3 + minuh25_3
-uh25_4 = maxuh25_4 + minuh25_4
-uh25_5 = maxuh25_5 + minuh25_5
-uh25_6 = maxuh25_6 + minuh25_6
-uh25_7 = maxuh25_7 + minuh25_7
-uh25_8 = maxuh25_8 + minuh25_8
-uh25_9 = maxuh25_9 + minuh25_9
 
 # Most Unstable CAPE
 mucape_1 = data1.select(name='Convective available potential energy',topLevel=18000)[0].values
-mucape_2 = data2.select(name='Convective available potential energy',topLevel=18000)[0].values
-mucape_3 = data3.select(name='Convective available potential energy',topLevel=18000)[0].values
-mucape_4 = data4.select(name='Convective available potential energy',topLevel=18000)[0].values
-mucape_5 = data5.select(name='Convective available potential energy',topLevel=18000)[0].values
-mucape_6 = data6.select(name='Convective available potential energy',topLevel=18000)[0].values
-mucape_7 = data7.select(name='Convective available potential energy',topLevel=18000)[0].values
-mucape_8 = data8.select(name='Convective available potential energy',topLevel=18000)[0].values
-mucape_9 = data9.select(name='Convective available potential energy',topLevel=18000)[0].values
 
 # Most Unstable CIN
 mucin_1 = data1.select(name='Convective inhibition',topLevel=18000)[0].values
-mucin_2 = data2.select(name='Convective inhibition',topLevel=18000)[0].values
-mucin_3 = data3.select(name='Convective inhibition',topLevel=18000)[0].values
-mucin_4 = data4.select(name='Convective inhibition',topLevel=18000)[0].values
-mucin_5 = data5.select(name='Convective inhibition',topLevel=18000)[0].values
-mucin_6 = data6.select(name='Convective inhibition',topLevel=18000)[0].values
-mucin_7 = data7.select(name='Convective inhibition',topLevel=18000)[0].values
-mucin_8 = data8.select(name='Convective inhibition',topLevel=18000)[0].values
-mucin_9 = data9.select(name='Convective inhibition',topLevel=18000)[0].values
 
 # Max Hourly Upward Vertical Velocity
 maxuvv_1 = data1.select(stepType='max',parameterName="220",typeOfLevel="isobaricLayer",topLevel=100,bottomLevel=1000)[0].values
-maxuvv_2 = data2.select(stepType='max',parameterName="220",typeOfLevel="isobaricLayer",topLevel=100,bottomLevel=1000)[0].values
-maxuvv_3 = data3.select(stepType='max',parameterName="220",typeOfLevel="isobaricLayer",topLevel=100,bottomLevel=1000)[0].values
-maxuvv_4 = data4.select(stepType='max',parameterName="220",typeOfLevel="isobaricLayer",topLevel=100,bottomLevel=1000)[0].values
-maxuvv_5 = data5.select(stepType='max',parameterName="220",typeOfLevel="isobaricLayer",topLevel=100,bottomLevel=1000)[0].values
-maxuvv_6 = data6.select(stepType='max',parameterName="220",typeOfLevel="isobaricLayer",topLevel=100,bottomLevel=1000)[0].values
-maxuvv_7 = data7.select(stepType='max',parameterName="220",typeOfLevel="isobaricLayer",topLevel=100,bottomLevel=1000)[0].values
-maxuvv_8 = data8.select(stepType='max',parameterName="220",typeOfLevel="isobaricLayer",topLevel=100,bottomLevel=1000)[0].values
-maxuvv_9 = data9.select(stepType='max',parameterName="220",typeOfLevel="isobaricLayer",topLevel=100,bottomLevel=1000)[0].values
 
 # Total precipitation
 qpf_1 = data1.select(name='Total Precipitation',lengthOfTimeRange=fhr)[0].values * 0.0393701
-qpf_2 = data2.select(name='Total Precipitation',lengthOfTimeRange=fhr)[0].values * 0.0393701
-qpf_3 = data3.select(name='Total Precipitation',lengthOfTimeRange=fhr)[0].values * 0.0393701
-qpf_4 = data4.select(name='Total Precipitation',lengthOfTimeRange=fhr)[0].values * 0.0393701
-qpf_5 = data5.select(name='Total Precipitation',lengthOfTimeRange=fhr)[0].values * 0.0393701
-qpf_6 = data6.select(name='Total Precipitation',lengthOfTimeRange=fhr)[0].values * 0.0393701
-qpf_7 = data7.select(name='Total Precipitation',lengthOfTimeRange=fhr)[0].values * 0.0393701
-qpf_8 = data8.select(name='Total Precipitation',lengthOfTimeRange=fhr)[0].values * 0.0393701
-qpf_9 = data9.select(name='Total Precipitation',lengthOfTimeRange=fhr)[0].values * 0.0393701
 
 
 t2a = time.clock()
@@ -345,8 +224,8 @@ def plot_all(domain):
   print(('Working on '+dom))
 
   # Call function to create figure and axes instances
-  global fig,axes,ax1,ax2,ax3,ax4,ax5,ax6,ax7,ax8,ax9,keep_ax_lst_1,keep_ax_lst_2,keep_ax_lst_3,keep_ax_lst_4,keep_ax_lst_5,keep_ax_lst_6,keep_ax_lst_7,keep_ax_lst_8,keep_ax_lst_9,m,x,y,x_shift,y_shift,xscale,yscale,im,par
-  fig,axes,ax1,ax2,ax3,ax4,ax5,ax6,ax7,ax8,ax9,keep_ax_lst_1,keep_ax_lst_2,keep_ax_lst_3,keep_ax_lst_4,keep_ax_lst_5,keep_ax_lst_6,keep_ax_lst_7,keep_ax_lst_8,keep_ax_lst_9,m,x,y,x_shift,y_shift,xscale,yscale,im,par = create_figure()
+  global fig,axes,ax1,keep_ax_lst_1,m,x,y,x_shift,y_shift,xscale,yscale,im,par
+  fig,axes,ax1,keep_ax_lst_1,m,x,y,x_shift,y_shift,xscale,yscale,im,par = create_figure()
  
   # Call function to plot all variables
   plot_allvars()
@@ -356,17 +235,9 @@ def create_figure():
 
   # create figure and axes instances
   fig = plt.figure()
-  gs = GridSpec(14,12,wspace=0.0,hspace=0.0)
-  ax1 = fig.add_subplot(gs[0:4,0:4])
-  ax2 = fig.add_subplot(gs[0:4,4:8])
-  ax3 = fig.add_subplot(gs[0:4,8:])
-  ax4 = fig.add_subplot(gs[5:9,0:4])
-  ax5 = fig.add_subplot(gs[5:9,4:8])
-  ax6 = fig.add_subplot(gs[5:9,8:])
-  ax7 = fig.add_subplot(gs[10:,0:4])
-  ax8 = fig.add_subplot(gs[10:,4:8])
-  ax9 = fig.add_subplot(gs[10:,8:])
-  axes = [ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8, ax9]
+  gs = GridSpec(4,4,wspace=0.0,hspace=0.0)
+  ax1 = fig.add_subplot(gs[:,:])
+  axes = [ax1]
   im = image.imread('noaa.png')
   par = 1
 
@@ -556,34 +427,18 @@ def create_figure():
   # Map/figure has been set up here, save axes instances for use again later
     if par == 1:
       keep_ax_lst_1 = ax.get_children()[:]
-    elif par == 2:
-      keep_ax_lst_2 = ax.get_children()[:]
-    elif par == 3:
-      keep_ax_lst_3 = ax.get_children()[:]
-    elif par == 4:
-      keep_ax_lst_4 = ax.get_children()[:]
-    elif par == 5:
-      keep_ax_lst_5 = ax.get_children()[:]
-    elif par == 6:
-      keep_ax_lst_6 = ax.get_children()[:]
-    elif par == 7:
-      keep_ax_lst_7 = ax.get_children()[:]
-    elif par == 8:
-      keep_ax_lst_8 = ax.get_children()[:]
-    elif par == 9:
-      keep_ax_lst_9 = ax.get_children()[:]
 
     par += 1
   par = 1
 
-  return fig,axes,ax1,ax2,ax3,ax4,ax5,ax6,ax7,ax8,ax9,keep_ax_lst_1,keep_ax_lst_2,keep_ax_lst_3,keep_ax_lst_4,keep_ax_lst_5,keep_ax_lst_6,keep_ax_lst_7,keep_ax_lst_8,keep_ax_lst_9,m,x,y,x_shift,y_shift,xscale,yscale,im,par
+  return fig,axes,ax1,keep_ax_lst_1,m,x,y,x_shift,y_shift,xscale,yscale,im,par
 
 
 def plot_allvars():
 # Add print to see if dom is being passed in correctly
   print(('Running plot_allvars over domain: '+dom))
 
-  global fig,axes,ax1,ax2,ax3,ax4,ax5,ax6,ax7,ax8,ax9,keep_ax_lst_1,keep_ax_lst_2,keep_ax_lst_3,keep_ax_lst_4,keep_ax_lst_5,keep_ax_lst_6,keep_ax_lst_7,keep_ax_lst_8,keep_ax_lst_9,m,x,y,x_shift,y_shift,xscale,yscale,im,par
+  global fig,axes,ax1,keep_ax_lst_1,m,x,y,x_shift,y_shift,xscale,yscale,im,par
 
 
 #################################
@@ -597,8 +452,7 @@ def plot_allvars():
   cm = cmap_t2m()
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cbars = []
-  var = [tmp2m_1,tmp2m_2,tmp2m_3,tmp2m_4,tmp2m_5,tmp2m_6,tmp2m_7,tmp2m_8,tmp2m_9]
+  var = tmp2m_1
 
   for ax in axes:
     xmin, xmax = ax.get_xlim()
@@ -606,23 +460,20 @@ def plot_allvars():
     xmax = int(round(xmax))
     ymax = int(round(ymax))
 
-    cs = m.pcolormesh(x_shift,y_shift,var[par-1],cmap=cm,norm=norm,ax=ax)
+    cs = m.pcolormesh(x_shift,y_shift,var,cmap=cm,norm=norm,ax=ax)
     cs.cmap.set_under('white')
     cs.cmap.set_over('white')
+    cbar = m.colorbar(cs,ax=ax,location='bottom',pad=0.05,ticks=[-16,-4,8,20,32,44,56,68,80,92,104,116,128],extend='both')
+    cbar.ax.tick_params(labelsize=8)
+#    cbar.set_label(units,fontsize=4)
 
-    if par == 7 or par == 8 or par == 9:
-      cbar = m.colorbar(cs,ax=ax,location='bottom',pad=0.05,ticks=[-16,-4,8,20,32,44,56,68,80,92,104,116,128],extend='both')
-      cbar.ax.tick_params(labelsize=4)
-      cbar.set_label(units,fontsize=4)
-      cbars.append(cbar)
-
-    ax.text(.5,1.03,'Member '+str(par)+' 2-m Temperature ('+units+') \n init: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=4,transform=ax.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax.text(.5,1.03,'Member '+member+' 2-m Temperature ('+units+') \n init: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=10,transform=ax.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(0,int(round(xmax*xscale)),0,int(round(ymax*yscale))),zorder=4)
 
     par += 1
   par = 1
 
-  compress_and_save('2mt_members_'+dom+'_f'+fhour+'.png')
+  compress_and_save('2mt_member'+member+'_'+dom+'_f'+fhour+'.png')
   t2 = time.clock()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot 2-m temperature for: '+dom) % t3)
@@ -634,26 +485,15 @@ def plot_allvars():
   print(('Working on 2-m Dew Point for '+dom))
 
   # Clear off old plottables but keep all the map info
-  cbars[0].remove()
-  cbars[1].remove()
-  cbars[2].remove()
+  cbar.remove()
   clear_plotables(ax1,keep_ax_lst_1,fig)
-  clear_plotables(ax2,keep_ax_lst_2,fig)
-  clear_plotables(ax3,keep_ax_lst_3,fig)
-  clear_plotables(ax4,keep_ax_lst_4,fig)
-  clear_plotables(ax5,keep_ax_lst_5,fig)
-  clear_plotables(ax6,keep_ax_lst_6,fig)
-  clear_plotables(ax7,keep_ax_lst_7,fig)
-  clear_plotables(ax8,keep_ax_lst_8,fig)
-  clear_plotables(ax9,keep_ax_lst_9,fig)
 
   units = '\xb0''F'
   clevs = np.linspace(-5,80,35)
   cm = ncepy.cmap_q2m()
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cbars = []
-  var = [dew2m_1,dew2m_2,dew2m_3,dew2m_4,dew2m_5,dew2m_6,dew2m_7,dew2m_8,dew2m_9]
+  var = dew2m_1
 
   for ax in axes:
     xmin, xmax = ax.get_xlim()
@@ -661,21 +501,18 @@ def plot_allvars():
     xmax = int(round(xmax))
     ymax = int(round(ymax))
 
-    cs = m.pcolormesh(x_shift,y_shift,var[par-1],cmap=cm,norm=norm,ax=ax)
+    cs = m.pcolormesh(x_shift,y_shift,var,cmap=cm,norm=norm,ax=ax)
+    cbar = m.colorbar(cs,ax=ax,location='bottom',pad=0.05,extend='both')
+    cbar.ax.tick_params(labelsize=8)
+#    cbar.set_label(units,fontsize=4)
 
-    if par == 7 or par == 8 or par == 9:
-      cbar = m.colorbar(cs,ax=ax,location='bottom',pad=0.05,extend='both')
-      cbar.ax.tick_params(labelsize=4)
-      cbar.set_label(units,fontsize=4)
-      cbars.append(cbar)
-
-    ax.text(.5,1.03,'Member '+str(par)+' 2-m Dew Point ('+units+') \n init: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=4,transform=ax.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax.text(.5,1.03,'Member '+member+' 2-m Dew Point ('+units+') \n init: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=10,transform=ax.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(0,int(round(xmax*xscale)),0,int(round(ymax*yscale))),zorder=4)
 
     par += 1
   par = 1
 
-  compress_and_save('2mdew_members_'+dom+'_f'+fhour+'.png')
+  compress_and_save('2mdew_member'+member+'_'+dom+'_f'+fhour+'.png')
   t2 = time.clock()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot 2-m Dew Point for: '+dom) % t3)
@@ -687,18 +524,8 @@ def plot_allvars():
   print(('Working on composite reflectivity for '+dom))
 
   # Clear off old plottables but keep all the map info
-  cbars[0].remove()
-  cbars[1].remove()
-  cbars[2].remove()
+  cbar.remove()
   clear_plotables(ax1,keep_ax_lst_1,fig)
-  clear_plotables(ax2,keep_ax_lst_2,fig)
-  clear_plotables(ax3,keep_ax_lst_3,fig)
-  clear_plotables(ax4,keep_ax_lst_4,fig)
-  clear_plotables(ax5,keep_ax_lst_5,fig)
-  clear_plotables(ax6,keep_ax_lst_6,fig)
-  clear_plotables(ax7,keep_ax_lst_7,fig)
-  clear_plotables(ax8,keep_ax_lst_8,fig)
-  clear_plotables(ax9,keep_ax_lst_9,fig)
 
   units = 'dBZ'
   clevs = np.linspace(5,70,14)
@@ -706,8 +533,7 @@ def plot_allvars():
   cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cbars = []
-  var = [refc_1,refc_2,refc_3,refc_4,refc_5,refc_6,refc_7,refc_8,refc_9]
+  var = refc_1
 
   for ax in axes:
     xmin, xmax = ax.get_xlim()
@@ -715,23 +541,20 @@ def plot_allvars():
     xmax = int(round(xmax))
     ymax = int(round(ymax))
 
-    cs = m.pcolormesh(x_shift,y_shift,var[par-1],cmap=cm,vmin=5,norm=norm,ax=ax)
+    cs = m.pcolormesh(x_shift,y_shift,var,cmap=cm,vmin=5,norm=norm,ax=ax)
     cs.cmap.set_under('white',alpha=0.)
     cs.cmap.set_over('black')
+    cbar = m.colorbar(cs,ax=ax,location='bottom',pad=0.05,ticks=clevs,extend='max')
+    cbar.ax.tick_params(labelsize=8)
+#    cbar.set_label(units,fontsize=4)
 
-    if par == 7 or par == 8 or par == 9:
-      cbar = m.colorbar(cs,ax=ax,location='bottom',pad=0.05,ticks=clevs,extend='max')
-      cbar.ax.tick_params(labelsize=4)
-      cbar.set_label(units,fontsize=4)
-      cbars.append(cbar)
-
-    ax.text(.5,1.03,'Member '+str(par)+' Composite Reflectivity ('+units+') \n init: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=4,transform=ax.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax.text(.5,1.03,'Member '+member+' Composite Reflectivity ('+units+') \n init: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=10,transform=ax.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(0,int(round(xmax*xscale)),0,int(round(ymax*yscale))),zorder=4)
 
     par += 1
   par = 1
 
-  compress_and_save('refc_members_'+dom+'_f'+fhour+'.png')
+  compress_and_save('refc_member'+member+'_'+dom+'_f'+fhour+'.png')
   t2 = time.clock()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot composite reflectivity for: '+dom) % t3)
@@ -743,18 +566,8 @@ def plot_allvars():
   print(('Working on Max/Min Hourly 2-5 km UH for '+dom))
 
   # Clear off old plottables but keep all the map info
-  cbars[0].remove()
-  cbars[1].remove()
-  cbars[2].remove()
+  cbar.remove()
   clear_plotables(ax1,keep_ax_lst_1,fig)
-  clear_plotables(ax2,keep_ax_lst_2,fig)
-  clear_plotables(ax3,keep_ax_lst_3,fig)
-  clear_plotables(ax4,keep_ax_lst_4,fig)
-  clear_plotables(ax5,keep_ax_lst_5,fig)
-  clear_plotables(ax6,keep_ax_lst_6,fig)
-  clear_plotables(ax7,keep_ax_lst_7,fig)
-  clear_plotables(ax8,keep_ax_lst_8,fig)
-  clear_plotables(ax9,keep_ax_lst_9,fig)
 
   units = 'm${^2}$ s$^{-2}$'
   clevs = [-150,-100,-75,-50,-25,-10,0,10,25,50,75,100,150,200,250,300]
@@ -763,8 +576,7 @@ def plot_allvars():
   cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cbars = []
-  var = [uh25_1,uh25_2,uh25_3,uh25_4,uh25_5,uh25_6,uh25_7,uh25_8,uh25_9]
+  var = uh25_1
 
   for ax in axes:
     xmin, xmax = ax.get_xlim()
@@ -772,23 +584,20 @@ def plot_allvars():
     xmax = int(round(xmax))
     ymax = int(round(ymax))
 
-    cs = m.pcolormesh(x_shift,y_shift,var[par-1],cmap=cm,norm=norm,ax=ax)
+    cs = m.pcolormesh(x_shift,y_shift,var,cmap=cm,norm=norm,ax=ax)
     cs.cmap.set_under('darkblue')
     cs.cmap.set_over('black')
+    cbar = m.colorbar(cs,ax=ax,location='bottom',pad=0.05,extend='both')
+    cbar.ax.tick_params(labelsize=8)
+#    cbar.set_label(units,fontsize=4)
 
-    if par == 7 or par == 8 or par == 9:
-      cbar = m.colorbar(cs,ax=ax,location='bottom',pad=0.05,extend='both')
-      cbar.ax.tick_params(labelsize=4)
-      cbar.set_label(units,fontsize=4)
-      cbars.append(cbar)
-
-    ax.text(.5,1.03,'Member '+str(par)+' 1-h Max/Min 2-5 km Updraft Helicity ('+units+') \n init: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=4,transform=ax.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax.text(.5,1.03,'Member '+member+' 1-h Max/Min 2-5 km Updraft Helicity ('+units+') \n init: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=10,transform=ax.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(0,int(round(xmax*xscale)),0,int(round(ymax*yscale))),zorder=4)
 
     par += 1
   par = 1
 
-  compress_and_save('uh25_members_'+dom+'_f'+fhour+'.png')
+  compress_and_save('uh25_member'+member+'_'+dom+'_f'+fhour+'.png')
   t2 = time.clock()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot Max/Min Hourly 2-5 km UH for: '+dom) % t3)
@@ -800,18 +609,8 @@ def plot_allvars():
   print(('Working on mucapecin for '+dom))
 
   # Clear off old plottables but keep all the map info
-  cbars[0].remove()
-  cbars[1].remove()
-  cbars[2].remove()
+  cbar.remove()
   clear_plotables(ax1,keep_ax_lst_1,fig)
-  clear_plotables(ax2,keep_ax_lst_2,fig)
-  clear_plotables(ax3,keep_ax_lst_3,fig)
-  clear_plotables(ax4,keep_ax_lst_4,fig)
-  clear_plotables(ax5,keep_ax_lst_5,fig)
-  clear_plotables(ax6,keep_ax_lst_6,fig)
-  clear_plotables(ax7,keep_ax_lst_7,fig)
-  clear_plotables(ax8,keep_ax_lst_8,fig)
-  clear_plotables(ax9,keep_ax_lst_9,fig)
 
   units = 'J/kg'
   clevs = [100,250,500,1000,1500,2000,2500,3000,3500,4000,4500,5000]
@@ -820,9 +619,8 @@ def plot_allvars():
   cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cbars = []
-  var1 = [mucape_1,mucape_2,mucape_3,mucape_4,mucape_5,mucape_6,mucape_7,mucape_8,mucape_9]
-  var2 = [mucin_1,mucin_2,mucin_3,mucin_4,mucin_5,mucin_6,mucin_7,mucin_8,mucin_9]
+  var1 = mucape_1
+  var2 = mucin_1
 
   for ax in axes:
     xmin, xmax = ax.get_xlim()
@@ -830,24 +628,21 @@ def plot_allvars():
     xmax = int(round(xmax))
     ymax = int(round(ymax))
 
-    cs = m.pcolormesh(x_shift,y_shift,var1[par-1],cmap=cm,vmin=100,norm=norm,ax=ax)
+    cs = m.pcolormesh(x_shift,y_shift,var1,cmap=cm,vmin=100,norm=norm,ax=ax)
     cs.cmap.set_under('white',alpha=0.)
     cs.cmap.set_over('black')
-    cs_b = m.contourf(x,y,var2[par-1],clevs2,colors='none',hatches=['**','++','////','..'],ax=ax)
+    cs_b = m.contourf(x,y,var2,clevs2,colors='none',hatches=['**','++','////','..'],ax=ax)
+    cbar = m.colorbar(cs,ax=ax,location='bottom',pad=0.05,extend='both')
+    cbar.ax.tick_params(labelsize=8)
+#    cbar.set_label(units,fontsize=4)
 
-    if par == 7 or par == 8 or par == 9:
-      cbar = m.colorbar(cs,ax=ax,location='bottom',pad=0.05,extend='both')
-      cbar.ax.tick_params(labelsize=4)
-      cbar.set_label(units,fontsize=4)
-      cbars.append(cbar)
-
-    ax.text(.5,1.03,'Member '+str(par)+' MUCAPE (shaded) and MUCIN (hatched) ('+units+') \n <-500 (*), -500<-250 (+), -250<-100 (/), -100<-25 (.) \n init: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=4,transform=ax.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax.text(.5,1.03,'Member '+member+' MUCAPE (shaded) and MUCIN (hatched) ('+units+') \n <-500 (*), -500<-250 (+), -250<-100 (/), -100<-25 (.) \n init: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=10,transform=ax.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(0,int(round(xmax*xscale)),0,int(round(ymax*yscale))),zorder=4)
 
     par += 1
   par = 1
 
-  compress_and_save('mucape_members_'+dom+'_f'+fhour+'.png')
+  compress_and_save('mucape_member'+member+'_'+dom+'_f'+fhour+'.png')
   t2 = time.clock()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot mucapecin for: '+dom) % t3)
@@ -859,18 +654,8 @@ def plot_allvars():
   print(('Working on maxuvv for '+dom))
 
   # Clear off old plottables but keep all the map info
-  cbars[0].remove()
-  cbars[1].remove()
-  cbars[2].remove()
+  cbar.remove()
   clear_plotables(ax1,keep_ax_lst_1,fig)
-  clear_plotables(ax2,keep_ax_lst_2,fig)
-  clear_plotables(ax3,keep_ax_lst_3,fig)
-  clear_plotables(ax4,keep_ax_lst_4,fig)
-  clear_plotables(ax5,keep_ax_lst_5,fig)
-  clear_plotables(ax6,keep_ax_lst_6,fig)
-  clear_plotables(ax7,keep_ax_lst_7,fig)
-  clear_plotables(ax8,keep_ax_lst_8,fig)
-  clear_plotables(ax9,keep_ax_lst_9,fig)
 
   units = 'm s$^{-1}$'
   clevs = [0.5,1,2.5,5,7.5,10,12.5,15,20,25,30,35,40,50,75]
@@ -878,8 +663,7 @@ def plot_allvars():
   cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cbars = []
-  var = [maxuvv_1,maxuvv_2,maxuvv_3,maxuvv_4,maxuvv_5,maxuvv_6,maxuvv_7,maxuvv_8,maxuvv_9]
+  var = maxuvv_1
 
   for ax in axes:
     xmin, xmax = ax.get_xlim()
@@ -887,23 +671,20 @@ def plot_allvars():
     xmax = int(round(xmax))
     ymax = int(round(ymax))
 
-    cs = m.pcolormesh(x_shift,y_shift,var[par-1],cmap=cm,norm=norm,ax=ax)
+    cs = m.pcolormesh(x_shift,y_shift,var,cmap=cm,norm=norm,ax=ax)
     cs.cmap.set_under('white')
     cs.cmap.set_over('black')
-
-    if par == 7 or par == 8 or par == 9:
-      cbar = m.colorbar(cs,ax=ax,location='bottom',pad=0.05,extend='both')
-      cbar.ax.tick_params(labelsize=4)
-      cbar.set_label(units,fontsize=4)
-      cbars.append(cbar)
+    cbar = m.colorbar(cs,ax=ax,location='bottom',pad=0.05,extend='both')
+    cbar.ax.tick_params(labelsize=8)
+#    cbar.set_label(units,fontsize=4)
     
-    ax.text(.5,1.03,'Member '+str(par)+' 1-h Max 100-1000 mb UVV ('+units+') \n init: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=4,transform=ax.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax.text(.5,1.03,'Member '+member+' 1-h Max 100-1000 mb UVV ('+units+') \n init: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=10,transform=ax.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(0,int(round(xmax*xscale)),0,int(round(ymax*yscale))),zorder=4)
 
     par += 1
   par = 1
 
-  compress_and_save('maxuvv_members_'+dom+'_f'+fhour+'.png')
+  compress_and_save('maxuvv_member'+member+'_'+dom+'_f'+fhour+'.png')
   t2 = time.clock()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot maxuvv for: '+dom) % t3)
@@ -915,18 +696,8 @@ def plot_allvars():
   print(('Working on total QPF for '+dom))
 
   # Clear off old plottables but keep all the map info
-  cbars[0].remove()
-  cbars[1].remove()
-  cbars[2].remove()
+  cbar.remove()
   clear_plotables(ax1,keep_ax_lst_1,fig)
-  clear_plotables(ax2,keep_ax_lst_2,fig)
-  clear_plotables(ax3,keep_ax_lst_3,fig)
-  clear_plotables(ax4,keep_ax_lst_4,fig)
-  clear_plotables(ax5,keep_ax_lst_5,fig)
-  clear_plotables(ax6,keep_ax_lst_6,fig)
-  clear_plotables(ax7,keep_ax_lst_7,fig)
-  clear_plotables(ax8,keep_ax_lst_8,fig)
-  clear_plotables(ax9,keep_ax_lst_9,fig)
 
   units = 'in'
   clevs = [0.01,0.1,0.25,0.5,0.75,1,1.25,1.5,1.75,2,2.5,3,4,5,7,10,15,20]
@@ -934,8 +705,7 @@ def plot_allvars():
   cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cbars = []
-  var = [qpf_1,qpf_2,qpf_3,qpf_4,qpf_5,qpf_6,qpf_7,qpf_8,qpf_9]
+  var = qpf_1
 
   for ax in axes:
     xmin, xmax = ax.get_xlim()
@@ -943,24 +713,21 @@ def plot_allvars():
     xmax = int(round(xmax))
     ymax = int(round(ymax))
 
-    cs = m.pcolormesh(x_shift,y_shift,var[par-1],cmap=cm,norm=norm,ax=ax)
+    cs = m.pcolormesh(x_shift,y_shift,var,cmap=cm,norm=norm,ax=ax)
     cs.cmap.set_under('white',alpha=0.)
     cs.cmap.set_over('pink')
+    cbar = m.colorbar(cs,ax=ax,location='bottom',pad=0.05,ticks=[0.1,0.5,1,1.5,2,3,5,10,20],extend='max')
+    cbar.ax.tick_params(labelsize=8)
+    cbar.ax.set_xticklabels([0.1,0.5,1,1.5,2,3,5,10,20])
+#    cbar.set_label(units,fontsize=4)
 
-    if par == 7 or par == 8 or par == 9:
-      cbar = m.colorbar(cs,ax=ax,location='bottom',pad=0.05,ticks=[0.1,0.5,1,1.5,2,3,5,10,20],extend='max')
-      cbar.ax.tick_params(labelsize=4)
-      cbar.ax.set_xticklabels([0.1,0.5,1,1.5,2,3,5,10,20])
-      cbar.set_label(units,fontsize=4)
-      cbars.append(cbar)
-
-    ax.text(.5,1.03,'Member '+str(par)+' '+fhour+'-hr Total Precipitation ('+units+') \n init: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=4,transform=ax.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax.text(.5,1.03,'Member '+member+' '+fhour+'-hr Total Precipitation ('+units+') \n init: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=10,transform=ax.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(0,int(round(xmax*xscale)),0,int(round(ymax*yscale))),zorder=4)
 
     par += 1
   par = 1
 
-  compress_and_save('qpf_members_'+dom+'_f'+fhour+'.png')
+  compress_and_save('qpf_member'+member+'_'+dom+'_f'+fhour+'.png')
   t2 = time.clock()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot total qpf for: '+dom) % t3)
