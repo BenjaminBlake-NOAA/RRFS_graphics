@@ -94,17 +94,21 @@ fhrm1 = fhr - 1
 fhrm2 = fhr - 2
 fhrm6 = fhr - 6
 fhrm24 = fhr - 24
-fhour = str(fhr).zfill(2)
-fhour1 = str(fhrm1).zfill(2)
-fhour2 = str(fhrm2).zfill(2)
-fhour6 = str(fhrm6).zfill(2)
-fhour24 = str(fhrm24).zfill(2)
+fhour = str(fhr).zfill(3)
+fhour1 = str(fhrm1).zfill(3)
+fhour2 = str(fhrm2).zfill(3)
+fhour6 = str(fhrm6).zfill(3)
+fhour24 = str(fhrm24).zfill(3)
 print('fhour '+fhour)
 
 # Define the member and input file and member
 member = str(sys.argv[3])
 DATA_DIR = str(sys.argv[4])
 data1 = pygrib.open(DATA_DIR+'/'+member+'/PRSLEV.GrbF'+fhour)
+if (fhr >= 1):
+  data1_m1 = pygrib.open(DATA_DIR+'/'+member+'/PRSLEV.GrbF'+fhour1)
+if (fhr >= 6):
+  data1_m6 = pygrib.open(DATA_DIR+'/'+member+'/PRSLEV.GrbF'+fhour6)
 
 
 # Get the lats and lons
@@ -165,7 +169,7 @@ vtime = ncepy.ndate(itime,int(fhr))
 
 # Specify plotting domains
 #domains = ['conus','BN','CE','CO','LA','MA','NC','NE','NW','OV','SC','SE','SF','SP','SW','UM']
-domains=['storm']
+domains=['conus']
 
 ###################################################
 # Read in all variables #
@@ -201,6 +205,27 @@ maxuvv_1 = data1.select(stepType='max',parameterName="220",typeOfLevel="isobaric
 
 # Total precipitation
 qpf_1 = data1.select(name='Total Precipitation',lengthOfTimeRange=fhr)[0].values * 0.0393701
+
+# Percent of frozen precipitation
+pofp_1 = data1.select(name='Percent frozen precipitation')[0].values
+
+# Snow depth
+snow_1 = data1.select(name='Snow depth')[0].values * 39.3701
+if (fhr >=6):   # Do not make 6-hr plots for forecast hours less than 6
+  snowm6_1 = data1_m6.select(name='Snow depth')[0].values * 39.3701
+  snow6_1 = snow_1 - snowm6_1
+
+# Precipitation rate
+prate_1 = data1.select(name='Precipitation rate')[0].values * 3600
+# Frozen precipitation rate
+iprate_1 = prate_1 * (pofp_1 / 100)
+
+# Water equivalent of accumulated snow depth
+weasd_1 = data1.select(name='Water equivalent of accumulated snow depth')[0].values / 2.54
+# 1-hr accumulated WEASD
+if (fhr > 0):
+  weasdm1_1 = data1_m1.select(name='Water equivalent of accumulated snow depth')[0].values / 2.54
+  weasd1_1 = weasd_1 - weasdm1_1
 
 
 t2a = time.clock()
@@ -731,6 +756,294 @@ def plot_allvars():
   t2 = time.clock()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot total qpf for: '+dom) % t3)
+
+#################################
+  # Plot % FROZEN PRECIP
+#################################
+  t1 = time.clock()
+  print(('Working on PERCENT FROZEN PRECIP for '+dom))
+
+  # Clear off old plottables but keep all the map info
+  cbar.remove()
+  clear_plotables(ax1,keep_ax_lst_1,fig)
+
+  units = '%'
+  clevs = [10,20,30,40,50,60,70,80,90,100]
+  colorlist = ['blue','dodgerblue','deepskyblue','mediumspringgreen','khaki','sandybrown','salmon','crimson','maroon']
+  cm = matplotlib.colors.ListedColormap(colorlist)
+  norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
+
+  var = pofp_1
+
+  for ax in axes:
+    xmin, xmax = ax.get_xlim()
+    ymin, ymax = ax.get_ylim()
+    xmax = int(round(xmax))
+    ymax = int(round(ymax))
+
+    cs = m.pcolormesh(x_shift,y_shift,var,cmap=cm,vmin=10,norm=norm,ax=ax)
+    cs.cmap.set_under('white',alpha=0.)
+    cbar = m.colorbar(cs,ax=ax,location='bottom',pad=0.05,ticks=clevs)
+    cbar.set_label(units,fontsize=6)
+    cbar.ax.tick_params(labelsize=6)
+    ax.text(.5,1.03,'Member '+member+' Percent of Frozen Precipitation ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(0,int(round(xmax*xscale)),0,int(round(ymax*yscale))),zorder=4)
+
+    par += 1
+  par = 1
+
+  compress_and_save('pofp_member'+member+'_'+dom+'_f'+fhour+'.png')
+  t2 = time.clock()
+  t3 = round(t2-t1, 3)
+  print(('%.3f seconds to plot PERCENT FROZEN PRECIP for: '+dom) % t3)
+
+#################################
+  # Plot snow depth
+#################################
+  t1 = time.clock()
+  print(('Working on snow depth for '+dom))
+
+  # Clear off old plottables but keep all the map info
+  cbar.remove()
+  clear_plotables(ax1,keep_ax_lst_1,fig)
+
+  units = 'in'
+  clevs = [0.1,1,2,3,6,9,12,18,24,36,48]
+  cm = ncepy.ncl_perc_11Lev()
+  norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
+
+  var = snow_1
+
+  for ax in axes:
+    xmin, xmax = ax.get_xlim()
+    ymin, ymax = ax.get_ylim()
+    xmax = int(round(xmax))
+    ymax = int(round(ymax))
+
+    if par == 1:
+      cs = m.pcolormesh(x_shift,y_shift,var,cmap=cm,norm=norm,ax=ax)
+      cs.cmap.set_under('white')
+      cbar = m.colorbar(cs,ax=ax,location='bottom',pad=0.05,ticks=clevs,extend='both')
+      cbar.set_label(units,fontsize=6)
+      cbar.ax.set_xticklabels(clevs)
+      cbar.ax.tick_params(labelsize=6)
+      ax.text(.5,1.03,'Member '+member+' Snow Depth ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+      ax.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(0,int(round(xmax*xscale)),0,int(round(ymax*yscale))),zorder=4)
+
+    par += 1
+  par = 1
+
+  compress_and_save('snow_member'+member+'_'+dom+'_f'+fhour+'.png')
+  t2 = time.clock()
+  t3 = round(t2-t1, 3)
+  print(('%.3f seconds to plot snow depth for: '+dom) % t3)
+
+#################################
+  # Plot 6-hr change in snow depth
+#################################
+  if (fhr % 3 == 0) and (fhr >= 6):
+    t1 = time.clock()
+    print(('Working on 6-hr change in snow depth for '+dom))
+
+    # Clear off old plottables but keep all the map info
+    cbar.remove()
+    clear_plotables(ax1,keep_ax_lst_1,fig)
+
+    units = 'in'
+    clevs = [-6,-4,-3,-2,-1,-0.5,0,0.5,1,2,3,4,6]
+    colorlist = ['blue','#1874CD','dodgerblue','deepskyblue','turquoise','white','white','#EEEE00','#EEC900','darkorange','orangered','red']
+    cm = matplotlib.colors.ListedColormap(colorlist)
+    norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
+
+    var = snow6_1
+
+    for ax in axes:
+      xmin, xmax = ax.get_xlim()
+      ymin, ymax = ax.get_ylim()
+      xmax = int(round(xmax))
+      ymax = int(round(ymax))
+
+      if par == 1:
+        cs = m.pcolormesh(x_shift,y_shift,var,cmap=cm,norm=norm,ax=ax)
+        cs.cmap.set_under('darkblue')
+        cs.cmap.set_over('darkred')
+        cbar = m.colorbar(cs,ax=ax,location='bottom',pad=0.05,ticks=clevs,extend='both')
+        cbar.set_label(units,fontsize=6)
+        cbar.ax.set_xticklabels(clevs)
+        cbar.ax.tick_params(labelsize=5)
+        ax.text(.5,1.03,'Member '+member+' 6-hr Change in Snow Depth ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+        ax.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(0,int(round(xmax*xscale)),0,int(round(ymax*yscale))),zorder=4)
+
+      par += 1
+    par = 1
+
+    compress_and_save('snow6_member'+member+'_'+dom+'_f'+fhour+'.png')
+    t2 = time.clock()
+    t3 = round(t2-t1, 3)
+    print(('%.3f seconds to plot 6-hr change in snow depth for: '+dom) % t3)
+
+#################################
+  # Plot Precipitation Rate
+#################################
+  t1 = time.clock()
+  print(('Working on Precipitation Rate for '+dom))
+
+  # Clear off old plottables but keep all the map info
+  cbar.remove()
+  clear_plotables(ax1,keep_ax_lst_1,fig)
+
+  units = 'mm/hr'
+  clevs = [0.001,0.005,0.01,0.05,0.1,0.5,1,2.5,5,10,20,30,50,75,100]
+  colorlist = ['chartreuse','limegreen','green','darkgreen','blue','dodgerblue','deepskyblue','cyan','darkred','crimson','orangered','darkorange','goldenrod','gold']
+  cm = matplotlib.colors.ListedColormap(colorlist)
+  norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
+
+  var = prate_1
+
+  for ax in axes:
+    xmin, xmax = ax.get_xlim()
+    ymin, ymax = ax.get_ylim()
+    xmax = int(round(xmax))
+    ymax = int(round(ymax))
+
+    if par == 1:
+      cs = m.pcolormesh(x_shift,y_shift,var,cmap=cm,vmin=0.001,norm=norm,ax=ax)
+      cs.cmap.set_under('white',alpha=0.)
+      cs.cmap.set_over('yellow')
+      cbar = m.colorbar(cs,ax=ax,ticks=clevs,location='bottom',pad=0.05,extend='max')
+      cbar.set_label(units,fontsize=6)
+      cbar.ax.set_xticklabels([0.001,'',0.01,'',0.05,0.1,0.5,1,2.5,5,10,20,30,50,75,100])
+      cbar.ax.tick_params(labelsize=5)
+      ax.text(.5,1.03,'Member '+member+' Precipitation Rate ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+      ax.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(0,int(round(xmax*xscale)),0,int(round(ymax*yscale))),zorder=4)
+
+    par += 1
+  par = 1
+
+  compress_and_save('prate_member'+member+'_'+dom+'_f'+fhour+'.png')
+  t2 = time.clock()
+  t3 = round(t2-t1, 3)
+  print(('%.3f seconds to plot Precipitation Rate for: '+dom) % t3)
+
+#################################
+  # Plot Frozen Precipitation Rate
+#################################
+  t1 = time.clock()
+  print(('Working on Frozen Precipitation Rate for '+dom))
+
+  # Clear off old plottables but keep all the map info
+  cbar.remove()
+  clear_plotables(ax1,keep_ax_lst_1,fig)
+
+  var = iprate_1
+
+  for ax in axes:
+    xmin, xmax = ax.get_xlim()
+    ymin, ymax = ax.get_ylim()
+    xmax = int(round(xmax))
+    ymax = int(round(ymax))
+
+    if par == 1:
+      cs = m.pcolormesh(x_shift,y_shift,var,cmap=cm,vmin=0.001,norm=norm,ax=ax)
+      cs.cmap.set_under('white',alpha=0.)
+      cs.cmap.set_over('yellow')
+      cbar = m.colorbar(cs,ax=ax,ticks=clevs,location='bottom',pad=0.05,extend='max')
+      cbar.set_label(units,fontsize=6)
+      cbar.ax.set_xticklabels([0.001,'',0.01,'',0.05,0.1,0.5,1,2.5,5,10,20,30,50,75,100])
+      cbar.ax.tick_params(labelsize=5)
+      ax.text(.5,1.03,'Member '+member+' Frozen Precipitation Rate ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+      ax.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(0,int(round(xmax*xscale)),0,int(round(ymax*yscale))),zorder=4)
+
+    par += 1
+  par = 1
+
+  compress_and_save('iprate_member'+member+'_'+dom+'_f'+fhour+'.png')
+  t2 = time.clock()
+  t3 = round(t2-t1, 3)
+  print(('%.3f seconds to plot Frozen Precipitation Rate for: '+dom) % t3)
+
+#################################
+  # Plot Snowfall
+#################################
+  t1 = time.clock()
+  print(('Working on WEASD for '+dom))
+
+  # Clear off old plottables but keep all the map info
+  cbar.remove()
+  clear_plotables(ax1,keep_ax_lst_1,fig)
+
+  units = 'in'
+  clevs = [0.1,1,2,3,6,9,12,18,24,36,48]
+  clevsdif = [-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6]
+  cm = ncepy.ncl_perc_11Lev()
+  norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
+
+  var = weasd_1
+
+  for ax in axes:
+    xmin, xmax = ax.get_xlim()
+    ymin, ymax = ax.get_ylim()
+    xmax = int(round(xmax))
+    ymax = int(round(ymax))
+
+    if par == 1:
+      cs = m.pcolormesh(x_shift,y_shift,var,cmap=cm,norm=norm,ax=ax)
+      cs.cmap.set_under('white')
+      cbar = m.colorbar(cs,ax=ax,ticks=clevs,location='bottom',pad=0.05,extend='both')
+      cbar.set_label(units,fontsize=6)
+      cbar.ax.set_xticklabels(clevs)
+      cbar.ax.tick_params(labelsize=5)
+      ax.text(.5,1.03,'Member '+member+' Snowfall ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+      ax.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(0,int(round(xmax*xscale)),0,int(round(ymax*yscale))),zorder=4)
+
+    par += 1
+  par = 1
+
+  compress_and_save('weasd_member'+member+'_'+dom+'_f'+fhour+'.png')
+  t2 = time.clock()
+  t3 = round(t2-t1, 3)
+  print(('%.3f seconds to plot WEASD for: '+dom) % t3)
+
+#################################
+  # Plot 1-h Snowfall
+#################################
+  if (fhr >= 1):
+    t1 = time.clock()
+    print(('Working on 1-h WEASD for '+dom))
+
+    # Clear off old plottables but keep all the map info
+    cbar.remove()
+    clear_plotables(ax1,keep_ax_lst_1,fig)
+
+    clevs = [0.1,0.25,0.5,0.75,1,1.5,2,3,4,5,6]
+    clevsdif = [-1.5,-1.25,-1,-0.75,-0.5,-0.25,0,0.25,0.5,0.75,1,1.25,1.5]
+    norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
+
+    var = weasd1_1
+
+    for ax in axes:
+      xmin, xmax = ax.get_xlim()
+      ymin, ymax = ax.get_ylim()
+      xmax = int(round(xmax))
+      ymax = int(round(ymax))
+
+      if par == 1:
+        cs = m.pcolormesh(x_shift,y_shift,var,cmap=cm,norm=norm,ax=ax)
+        cs.cmap.set_under('white')
+        cbar = m.colorbar(cs,ax=ax,ticks=clevs,location='bottom',pad=0.05,extend='both')
+        cbar.set_label(units,fontsize=6)
+        cbar.ax.set_xticklabels(clevs)
+        cbar.ax.tick_params(labelsize=5)
+        ax.text(.5,1.03,'Member '+member+' 1-h Snowfall ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+        ax.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(0,int(round(xmax*xscale)),0,int(round(ymax*yscale))),zorder=4)
+
+      par += 1
+    par = 1
+
+    compress_and_save('weasd1_member'+member+'_'+dom+'_f'+fhour+'.png')
+    t2 = time.clock()
+    t3 = round(t2-t1, 3)
+    print(('%.3f seconds to plot 1-h WEASD for: '+dom) % t3)
 
 
   plt.clf()
