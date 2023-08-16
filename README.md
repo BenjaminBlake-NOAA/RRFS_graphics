@@ -1,6 +1,6 @@
-# RRFS_plot_python
+# RRFS_graphics
 
-**This repository contains various Python scripts for producing graphics of Rapid Refresh Forecast System (RRFS) grib2 output at NOAA's Environmental Modeling Center (EMC).  A description of each script is provided below.**
+**This repository contains various Python scripts for producing graphics of Rapid Refresh Forecast System (RRFS) grib2 output at NOAA's Environmental Modeling Center (EMC).  The descriptions below will be updated accordingly soon.**
 
 <ins>plot_allvars_3panel.py</ins>: Generates 3-panel plots comparing output from two models and their differences for ~70 unique fields.
 
