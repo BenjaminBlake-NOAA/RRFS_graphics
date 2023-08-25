@@ -1,0 +1,34 @@
+#!/bin/bash
+
+set -x
+
+date
+
+#USER=Benjamin.Blake
+#CDATE=2023082400
+#PDY=20230824
+#cyc=00
+#fhr=24
+
+echo "into launch_allvars_firewx"
+module load python/3.8.6
+module use /lfs/h1/mdl/nbm/save/apps/modulefiles
+module load python-modules/3.8.6
+module load proj/7.1.0
+module load geos/3.8.1
+module load libjpeg-turbo/2.1.0
+export PYTHONPATH="${PYTHONPATH}:/lfs/h2/emc/lam/noscrub/Benjamin.Blake/python:/lfs/h2/emc/lam/noscrub/Benjamin.Blake/PyGSI"
+
+mkdir -p /lfs/h2/emc/stmp/${USER}
+mkdir -p /lfs/h2/emc/stmp/${USER}/firewx/${PDY}/${cyc}
+cd /lfs/h2/emc/stmp/${USER}/firewx/${PDY}/${cyc}
+
+latlon=/lfs/h2/emc/ptmp/emc.lam/para/com/rrfsfw/v1.0.0/rrfsfw.${PDY}/${cyc}/rrfsfw.t${cyc}z.firewxnest_center_latlon
+cen_lat=`cat $latlon | cut -c1-4`
+cen_lon=`cat $latlon | cut -c6-11`
+
+python /lfs/h2/emc/lam/noscrub/${USER}/rrfs_graphics/plot_allvars_firewx.py $CDATE $fhr $cen_lat $cen_lon
+
+date
+
+exit

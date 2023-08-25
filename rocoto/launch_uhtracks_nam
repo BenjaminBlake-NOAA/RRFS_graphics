@@ -1,0 +1,30 @@
+#!/bin/bash
+
+set -x
+
+date
+
+#USER=Benjamin.Blake
+#CDATE=2023082200
+#PDY=20230822
+#cyc=00
+#dom='conus'
+
+echo "into launch_uhtracks_nam"
+module load python/3.8.6
+module use /lfs/h1/mdl/nbm/save/apps/modulefiles
+module load python-modules/3.8.6
+module load proj/7.1.0
+module load geos/3.8.1
+module load libjpeg-turbo/2.1.0
+export PYTHONPATH="${PYTHONPATH}:/lfs/h2/emc/lam/noscrub/Benjamin.Blake/python:/lfs/h2/emc/lam/noscrub/Benjamin.Blake/PyGSI"
+
+mkdir -p /lfs/h2/emc/stmp/${USER}
+mkdir -p /lfs/h2/emc/stmp/${USER}/uhtracks_nam/${PDY}/${cyc}
+cd /lfs/h2/emc/stmp/${USER}/uhtracks_nam/${PDY}/${cyc}
+
+python /lfs/h2/emc/lam/noscrub/${USER}/rrfs_graphics/plot_uhtracks_nam.py $CDATE $dom
+
+date
+
+exit

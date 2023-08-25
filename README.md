@@ -1,17 +1,17 @@
 # RRFS_graphics
 
-**This repository contains various Python scripts for producing graphics of Rapid Refresh Forecast System (RRFS) grib2 output at NOAA's Environmental Modeling Center (EMC).  The descriptions below will be updated accordingly soon.**
+**This repository contains various Python scripts for producing graphics of Rapid Refresh Forecast System (RRFS) grib2 output at NOAA's Environmental Modeling Center (EMC).  Various descriptions of each plotting script are included below.**
 
-<ins>plot_allvars_3panel.py</ins>: Generates 3-panel plots comparing output from two models and their differences for ~70 unique fields.
+<ins>plot_allvars_firewx.py</ins>: Generates 3-panel plots comparing output from the NAM fire weather nest to the RRFS fire weather nest for ~35 unique fields.
 
-<ins>plot_allvars_4panel.py</ins>: Generates 4-panel plots comparing output from four models for ~70 unique fields.
+<ins>plot_allvars_hrrr.py</ins>: Generates 3-panel plots comparing output from the HRRR to the RRFS for ~75 unique fields over 17 domains (CONUS, sub-CONUS, Alaska).
 
-<ins>plot_cloudcover.py</ins>: Generates 2-panel plots comparing the low/mid/high cloud cover from two models.
+<ins>plot_allvars_namerica.py</ins>: Generates single-panel plots of RRFS output over the full North America domain for ~40 unique fields.
 
-<ins>plot_ptype.py</ins>: Generates 2-panel plots comparing the precipitation type from two models.
+<ins>plot_allvars_nam.py</ins>: Generates 3-panel plots comparing output from the NAM nest to the RRFS for ~55 unique fields over 19 domains (CONUS, sub-CONUS, Alaska, Hawaii, Puerto Rico).
 
-<ins>plot_rrfs_1member.py</ins>: Generates plots of a single RRFS ensemble member for 2-m temperature, 2-m dew point temperature, composite reflectivity, max/min hourly 2-5 km updraft helicity, most unstable CAPE/CIN, max hourly upward vertical velocity, total precipitation, percent of frozen precipitation, snow depth, 6-hr change in snow depth, precipitation rate, frozen precipitation rate, snowfall (10:1 SLR), and 1-hr accumulated snowfall (10:1 SLR).
+<ins>plot_qpfsnowfall_nam.py</ins>: Generates 3-panel plots comparing output from the NAM nest to the RRFS for accumulated precipitation and snowfall over 19 domains (CONUS, sub-CONUS, Alaska, Hawaii, Puerto Rico).
 
-<ins>plot_rrfs_9members.py</ins>: Generates postage stamp plots of an RRFS 9-member ensemble for 2-m temperature, 2-m dew point temperature, composite reflectivity, max/min hourly 2-5 km updraft helicity, most unstable CAPE/CIN, max hourly upward vertical velocity, and total precipitation.
+<ins>plot_uhtracks_hrrr.py</ins>: Generates 3-panel plots comparing output from the HRRR to the RRFS for run-total max hourly 2-5 km updraft helicity tracks over 16 domains (CONUS, sub-CONUS).
 
-<ins>plot_uhtracks_9members.py</ins>: Generates postage stamp plots of an RRFS 9-member ensemble for run-total max hourly 2-5 km updraft helicity tracks.
+<ins>plot_uhtracks_nam.py</ins>: Generates 3-panel plots comparing output from the NAM nest to the RRFS for run-total max hourly 2-5 km updraft helicity tracks over 16 domains (CONUS, sub-CONUS).

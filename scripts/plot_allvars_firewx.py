@@ -64,7 +64,10 @@ msg = data1.select(shortName='HGT', level='500 mb')[0]	# msg is a Grib2Message o
 lat,lon,lat_shift,lon_shift = rrfs_plot_utils.get_latlons_pcolormesh(msg)
 
 # Specify plotting domains
-domains=['firewx']
+domain='firewx'
+
+# Paths to image files
+im = image.imread('/lfs/h2/emc/lam/noscrub/Benjamin.Blake/rrfs_graphics/noaa.png')
 
 # colors for difference plots, only need to define once
 difcolors = ['blue','#1874CD','dodgerblue','deepskyblue','turquoise','white','white','#EEEE00','#EEC900','darkorange','orangered','red']
@@ -193,8 +196,8 @@ v850_1 = data1.select(shortName='VGRD',level='850 mb')[0].data * 1.94384
 v850_2 = data2.select(shortName='VGRD',level='850 mb')[0].data * 1.94384
 
 # 700-mb omega and relative humidity
-omg700_1 = data1.select(name='VVEL',level='700 mb')[0].data
-omg700_2 = data2.select(name='VVEL',level='700 mb')[0].data
+omg700_1 = data1.select(shortName='VVEL',level='700 mb')[0].data
+omg700_2 = data2.select(shortName='VVEL',level='700 mb')[0].data
 rh700_1 = data1.select(shortName='RH',level='700 mb')[0].data
 rh700_2 = data2.select(shortName='RH',level='700 mb')[0].data
 rh700_dif = rh700_2 - rh700_1
@@ -361,8 +364,8 @@ def main():
   dom = domain
   print(('Working on '+dom))
 
-  global fig,axes,ax1,ax2,ax3,keep_ax_lst_1,keep_ax_lst_2,keep_ax_lst_3,x,y,im,par,transform,cen_lat,cen_lon
-  fig,axes,ax1,ax2,ax3,keep_ax_lst_1,keep_ax_lst_2,keep_ax_lst_3,x,y,im,par,transform,cen_lat,cen_lon = create_figure()
+  global fig,axes,ax1,ax2,ax3,keep_ax_lst_1,keep_ax_lst_2,keep_ax_lst_3,transform,cen_lat,cen_lon
+  fig,axes,ax1,ax2,ax3,keep_ax_lst_1,keep_ax_lst_2,keep_ax_lst_3,transform,cen_lat,cen_lon = create_figure()
 
   # Split plots into 2 sets with multiprocessing
   sets = [1,2]
@@ -387,8 +390,6 @@ def create_figure():
   # Create figure and axes instances
   fig = plt.figure(figsize=(9,8))           
   gs = GridSpec(9,8,wspace=0.0,hspace=0.0)
-  im = image.imread('/lfs/h2/emc/lam/noscrub/Benjamin.Blake/python.rrfs/noaa.png')
-  par = 1
 
   # Define where Cartopy maps are located
   cartopy.config['data_dir'] = '/lfs/h2/emc/lam/noscrub/Benjamin.Blake/python/NaturalEarth'
@@ -459,12 +460,12 @@ def create_figure():
   keep_ax_lst_2 = ax2.get_children()[:]
   keep_ax_lst_3 = ax3.get_children()[:]
 
-  return fig,axes,ax1,ax2,ax3,keep_ax_lst_1,keep_ax_lst_2,keep_ax_lst_3,x,y,im,par,transform,cen_lat,cen_lon
+  return fig,axes,ax1,ax2,ax3,keep_ax_lst_1,keep_ax_lst_2,keep_ax_lst_3,transform,cen_lat,cen_lon
 
 ################################################################################
 
 def plot_sets(set):
-  global fig,axes,ax1,ax2,ax3,keep_ax_lst_1,keep_ax_lst_2,keep_ax_lst_3,x,y,im,par,transform,cen_lat,cen_lon
+  global fig,axes,ax1,ax2,ax3,keep_ax_lst_1,keep_ax_lst_2,keep_ax_lst_3,transform,cen_lat,cen_lon
 
 # Add print to see if dom is being passed in
   print(('plot_sets dom variable '+dom))
@@ -477,7 +478,7 @@ def plot_sets(set):
 ################################################################################
 
 def plot_set_1():
-  global fig,axes,ax1,ax2,ax3,keep_ax_lst_1,keep_ax_lst_2,keep_ax_lst_3,x,y,im,par,transform,cen_lat,cen_lon
+  global fig,axes,ax1,ax2,ax3,keep_ax_lst_1,keep_ax_lst_2,keep_ax_lst_3,transform,cen_lat,cen_lon
 
   t1dom = time.perf_counter()
   cenlat = str(cen_lat)
@@ -566,7 +567,7 @@ def plot_set_1():
   units = '\xb0''F'
   clevs = np.linspace(-16,134,26)
   clevsdif = [-12,-10,-8,-6,-4,-2,0,2,4,6,8,10,12]
-  cm = cmap_t2m()
+  cm = rrfs_plot_utils.cmap_t2m()
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
   normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N)
 
@@ -620,7 +621,7 @@ def plot_set_1():
   units = '\xb0''F'
   clevs = np.linspace(-16,134,26)
   clevsdif = [-12,-10,-8,-6,-4,-2,0,2,4,6,8,10,12]
-  cm = cmap_t2m()
+  cm = rrfs_plot_utils.cmap_t2m()
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
   normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N)
 
@@ -836,7 +837,7 @@ def plot_set_1():
   units = 'ft'
   clevs = [1,250,500,750,1000,1250,1500,1750,2000,2250,2500,2750,3000,3250,3500,3750,4000,4250,4500,4750,5000,5250,5500,5750,6000,6250,6500,6750,7000,7250,7500,7750,8000,8250,8500,8750,9000,9250,9500,9750,10000]
   clevsdif = [-300,-250,-200,-150,-100,-50,0,50,100,150,200,250,300]
-  cm = cmap_terra()
+  cm = rrfs_plot_utils.cmap_terra()
   cmdif = matplotlib.colors.ListedColormap(difcolors)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
   normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N)
@@ -1067,7 +1068,7 @@ def plot_set_1():
   units = 'K'
   clevs = np.linspace(270,360,31)
   clevsdif = [-12,-10,-8,-6,-4,-2,0,2,4,6,8,10,12]
-  cm = cmap_t850()
+  cm = rrfs_plot_utils.cmap_t850()
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
   normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N)
 
@@ -1735,7 +1736,7 @@ def plot_set_1():
 ################################################################################
 
 def plot_set_2():
-  global fig,axes,ax1,ax2,ax3,keep_ax_lst_1,keep_ax_lst_2,keep_ax_lst_3,x,y,im,par,transform,cen_lat,cen_lon
+  global fig,axes,ax1,ax2,ax3,keep_ax_lst_1,keep_ax_lst_2,keep_ax_lst_3,transform,cen_lat,cen_lon
 
   t1dom = time.perf_counter()
   cenlat = str(cen_lat)
@@ -2029,7 +2030,6 @@ def plot_set_2():
     clevs = [10,25,50,75,100,150,200,250,300]
     clevsdif = [-60,-50,-40,-30,-20,-10,0,10,20,30,40,50,60]
     colorlist = ['white','skyblue','mediumblue','green','orchid','firebrick','#EEC900','DarkViolet']
-#    colorlist = ['blue','#1874CD','dodgerblue','deepskyblue','turquoise','#E5E5E5','#E5E5E5','#EEEE00','#EEC900','darkorange','orangered','red','firebrick','mediumvioletred','darkviolet']
     cm = matplotlib.colors.ListedColormap(colorlist)
     norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
     normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N)

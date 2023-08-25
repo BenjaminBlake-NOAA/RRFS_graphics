@@ -36,13 +36,13 @@ hour = int(ymdh[8:10])
 cyc = str(hour).zfill(2)
 print(year, month, day, hour)
 
-# Forecast init and valid date/time
-itime = cycle
-fhrs = np.arange(0,runlength+1,1)
-vtime_list = [rrfs_plot_utils.ndate(itime,int(x)) for x in fhrs]
-
 # Runlength for NAM Nest and RRFS_A forecasts is 60 hours
 runlength = 60
+
+# Forecast init and valid date/time
+itime = ymdh
+fhrs = np.arange(0,runlength+1,1)
+vtime_list = [rrfs_plot_utils.ndate(itime,int(x)) for x in fhrs]
 
 # Define the directory paths to the output files
 NAM_DIR = '/lfs/h1/ops/prod/com/nam/v4.2/nam.'+ymd
@@ -51,6 +51,9 @@ RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.6.5/prod/rrfs.'+ymd+'/'+cyc
 # Define prod and para strings
 prod_str = 'NAM Nest'
 para_str = 'RRFS_A'
+
+# Paths to image files
+im = image.imread('/lfs/h2/emc/lam/noscrub/Benjamin.Blake/rrfs_graphics/noaa.png')
 
 ###################################################
 # Read in all variables and calculate differences #
@@ -69,18 +72,8 @@ for j in range(len(vtime_list)):
     vtime = vtime_list[j]
 
     # Define the input files
-    if dom == 'alaska':
-      data1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.alaskanest.hiresf'+fhour+'.tm00.grib2')
-      data2 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.ak.grib2')
-    elif dom == 'hawaii':
-      data1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.hawaiinest.hiresf'+fhour+'.tm00.grib2')
-      data2 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.hi.grib2')
-    elif dom == 'puerto_rico':
-      data1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.priconest.hiresf'+fhour+'.tm00.grib2')
-      data2 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.pr.grib2')
-    else:
-      data1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.conusnest.hiresf'+fhour+'.tm00.grib2')
-      data2 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.conus_3km.grib2')
+    data1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.conusnest.hiresf'+fhour+'.tm00.grib2')
+    data2 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.conus_3km.grib2')
 
     # Updraft helicity
     if (fhr > 0):
@@ -124,8 +117,6 @@ xextent,yextent,offset,extent,myproj = rrfs_plot_utils.domain_latlons_proj(dom)
 # Create figure and axes instances
 fig = plt.figure(figsize=(9,8))
 gs = GridSpec(9,8,wspace=0.0,hspace=0.0)
-im = image.imread('/lfs/h2/emc/lam/noscrub/Benjamin.Blake/python.rrfs/noaa.png')
-par = 1
 
 # Define where Cartopy maps are located
 cartopy.config['data_dir'] = '/lfs/h2/emc/lam/noscrub/Benjamin.Blake/python/NaturalEarth'

@@ -1,14 +1,11 @@
 <?xml version="1.0"?> 
 <!DOCTYPE workflow
 [
- <!ENTITY HOMEDIR "/lfs/h2/emc/lam/noscrub/Benjamin.Blake/python.rrfs">
- <!ENTITY LOG_DIR "/lfs/h2/emc/ptmp/Benjamin.Blake/logfiles2">
- <!ENTITY COMgfs "/lfs/h1/ops/prod/com/gfs/v16.3">
+ <!ENTITY HOMEDIR "/lfs/h2/emc/lam/noscrub/Benjamin.Blake/rrfs_graphics">
+ <!ENTITY LOG_DIR "/lfs/h2/emc/ptmp/Benjamin.Blake/logs_rrfs_graphics">
  <!ENTITY COMnam "/lfs/h1/ops/prod/com/nam/v4.2">
  <!ENTITY COMhrrr "/lfs/h1/ops/prod/com/hrrr/v4.1">
- <!ENTITY COMLAMDAx "/lfs/h2/emc/ptmp/emc.lam/com/fv3lamdax/v1.0">
- <!ENTITY COMRRFS_A "/lfs/h2/emc/ptmp/emc.lam/rrfs/conus/prod">
- <!ENTITY COMRRFS_A_NA "/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.6.5/prod">
+ <!ENTITY COMRRFS_A "/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.6.5/prod">
  <!ENTITY COMRRFS_FW "/lfs/h2/emc/ptmp/emc.lam/para/com/rrfsfw/v1.0.0">
 
  <!ENTITY USER "Benjamin.Blake">
@@ -17,10 +14,8 @@
  <!ENTITY RESERVATION '<queue>dev</queue><account>&ACCOUNT;</account>'>
  <!ENTITY RESERVATION_TRANSFER '<queue>dev_transfer</queue><account>&ACCOUNT;</account>'>
 
- <!ENTITY PLOT_RESOURCES '<walltime>00:30:00</walltime>'>
- <!ENTITY PLOT4_RESOURCES '<walltime>00:50:00</walltime>'>
- <!ENTITY PLOTQPF_RESOURCES '<walltime>02:30:00</walltime>'>
- <!ENTITY PLOTCLOUD_RESOURCES '<walltime>01:55:00</walltime>'>
+ <!ENTITY PLOT_RESOURCES '<walltime>00:45:00</walltime>'>
+ <!ENTITY PLOT2_RESOURCES '<walltime>01:30:00</walltime>'>
  <!ENTITY TRANSFER_RESOURCES '<walltime>01:30:00</walltime>'>
 
 ]>
@@ -29,10 +24,9 @@
 <!-- **************** STARTING THE WORKFLOW ****************** -->
 <!-- ********************************************************* -->
 
-<workflow realtime="T" scheduler="pbspro" cyclelifespan="00:15:00:00" cyclethrottle="8" taskthrottle="40">
+<workflow realtime="T" scheduler="pbspro" cyclelifespan="00:15:00:00" cyclethrottle="4" taskthrottle="40">
 
-  <cycledef group="conus">202308190000 202312311200 12:00:00</cycledef>
-<!--  <cycledef group="6hourly">202307111200 202312312200 06:00:00</cycledef> -->
+  <cycledef group="prod">202308260000 202312311200 12:00:00</cycledef>
  
   <log verbosity="10"><cyclestr>&LOG_DIR;/workflow_@Y@m@d@H.log</cyclestr></log> 
 
@@ -40,218 +34,18 @@
 <!-- ******************** Plotting Jobs ********************* -->
 <!-- ******************************************************** -->
 
-<!-- ****** Vertical Profiles ****** -->
-
-  <task name="monitor_profiles" maxtries="2" cycledefs="conus">
-    &RESERVATION;
-    &PLOT_RESOURCES;
-
-    <command>&HOMEDIR;/monitor/launch_PROFILES_RRFSA</command>
-    <nodes> 1:ppn=1 </nodes>
-    <join><cyclestr>&LOG_DIR;/monitor_profiles_@Y@m@d@H.log</cyclestr></join>
-    <jobname>monitor_profiles</jobname>
-
-    <envar><name>USER</name><value>&USER;</value></envar>
-    <envar><name>sdate</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
-    <envar><name>PDY</name><value><cyclestr>@Y@m@d</cyclestr></value></envar>
-    <envar><name>PDYm1</name><value><cyclestr offset="-12:00:00">@Y@m@d</cyclestr></value></envar>
-    <envar><name>cyc</name><value><cyclestr>@H</cyclestr></value></envar>
-    <envar><name>cycm1</name><value><cyclestr offset="-01:00:00">@H</cyclestr></value></envar>
-    <envar><name>cycm2</name><value><cyclestr offset="-02:00:00">@H</cyclestr></value></envar>
-    <envar><name>cycm3</name><value><cyclestr offset="-03:00:00">@H</cyclestr></value></envar>
-    <envar><name>cycm4</name><value><cyclestr offset="-04:00:00">@H</cyclestr></value></envar>
-    <envar><name>cycm5</name><value><cyclestr offset="-05:00:00">@H</cyclestr></value></envar>
-    <envar><name>cycm6</name><value><cyclestr offset="-06:00:00">@H</cyclestr></value></envar>
-
-    <dependency>
-      <and>
-        <datadep age="05:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs_a.t@Hz.fits.tm00</cyclestr></datadep>
-        <datadep age="05:00"><cyclestr offset="-01:00:00">&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs_a.t@Hz.fits.tm00</cyclestr></datadep>
-        <datadep age="05:00"><cyclestr offset="-02:00:00">&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs_a.t@Hz.fits.tm00</cyclestr></datadep>
-        <datadep age="05:00"><cyclestr offset="-03:00:00">&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs_a.t@Hz.fits.tm00</cyclestr></datadep>
-        <datadep age="05:00"><cyclestr offset="-04:00:00">&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs_a.t@Hz.fits.tm00</cyclestr></datadep>
-        <datadep age="05:00"><cyclestr offset="-05:00:00">&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs_a.t@Hz.fits.tm00</cyclestr></datadep>
-        <datadep age="05:00"><cyclestr offset="-06:00:00">&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs_a.t@Hz.fits.tm00</cyclestr></datadep>
-        <datadep age="05:00"><cyclestr>&COMRRFS_A_NA;/rrfs.@Y@m@d/@H/rrfs_a.t@Hz.fits.tm00</cyclestr></datadep>
-        <datadep age="05:00"><cyclestr offset="-01:00:00">&COMRRFS_A_NA;/rrfs.@Y@m@d/@H/rrfs_a.t@Hz.fits.tm00</cyclestr></datadep>
-        <datadep age="05:00"><cyclestr offset="-02:00:00">&COMRRFS_A_NA;/rrfs.@Y@m@d/@H/rrfs_a.t@Hz.fits.tm00</cyclestr></datadep>
-        <datadep age="05:00"><cyclestr offset="-03:00:00">&COMRRFS_A_NA;/rrfs.@Y@m@d/@H/rrfs_a.t@Hz.fits.tm00</cyclestr></datadep>
-        <datadep age="05:00"><cyclestr offset="-04:00:00">&COMRRFS_A_NA;/rrfs.@Y@m@d/@H/rrfs_a.t@Hz.fits.tm00</cyclestr></datadep>
-        <datadep age="05:00"><cyclestr offset="-05:00:00">&COMRRFS_A_NA;/rrfs.@Y@m@d/@H/rrfs_a.t@Hz.fits.tm00</cyclestr></datadep>
-        <datadep age="05:00"><cyclestr offset="-06:00:00">&COMRRFS_A_NA;/rrfs.@Y@m@d/@H/rrfs_a.t@Hz.fits.tm00</cyclestr></datadep>
-      </and>
-    </dependency>
-
-  </task>
-
-
-<!-- ****** Surface Histograms ****** -->
-
-  <task name="monitor_hist_rrfsa" maxtries="2" cycledefs="conus">
-    &RESERVATION;
-    &PLOT_RESOURCES;
-
-    <command>&HOMEDIR;/monitor/launch_RRFSA_HIST</command>
-    <nodes> 1:ppn=1 </nodes>
-    <join><cyclestr>&LOG_DIR;/monitor_hist_rrfsa_@Y@m@d@H.log</cyclestr></join>
-    <jobname>monitor_hist_rrfsa</jobname>
-
-    <envar><name>USER</name><value>&USER;</value></envar>
-    <envar><name>sdate</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
-    <envar><name>sdatem1</name><value><cyclestr offset="-01:00:00">@Y@m@d@H</cyclestr></value></envar>
-    <envar><name>sdatem2</name><value><cyclestr offset="-02:00:00">@Y@m@d@H</cyclestr></value></envar>
-    <envar><name>sdatem3</name><value><cyclestr offset="-03:00:00">@Y@m@d@H</cyclestr></value></envar>
-    <envar><name>sdatem4</name><value><cyclestr offset="-04:00:00">@Y@m@d@H</cyclestr></value></envar>
-    <envar><name>sdatem5</name><value><cyclestr offset="-05:00:00">@Y@m@d@H</cyclestr></value></envar>
-    <envar><name>sdatem6</name><value><cyclestr offset="-06:00:00">@Y@m@d@H</cyclestr></value></envar>
-
-    <dependency>
-      <and>
-        <datadep age="05:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/diag_conv_ps_anl.@Y@m@d@H.nc4</cyclestr></datadep>
-        <datadep age="05:00"><cyclestr offset="-01:00:00">&COMRRFS_A;/rrfs.@Y@m@d/@H/diag_conv_ps_anl.@Y@m@d@H.nc4</cyclestr></datadep>
-        <datadep age="05:00"><cyclestr offset="-02:00:00">&COMRRFS_A;/rrfs.@Y@m@d/@H/diag_conv_ps_anl.@Y@m@d@H.nc4</cyclestr></datadep>
-        <datadep age="05:00"><cyclestr offset="-03:00:00">&COMRRFS_A;/rrfs.@Y@m@d/@H/diag_conv_ps_anl.@Y@m@d@H.nc4</cyclestr></datadep>
-        <datadep age="05:00"><cyclestr offset="-04:00:00">&COMRRFS_A;/rrfs.@Y@m@d/@H/diag_conv_ps_anl.@Y@m@d@H.nc4</cyclestr></datadep>
-        <datadep age="05:00"><cyclestr offset="-05:00:00">&COMRRFS_A;/rrfs.@Y@m@d/@H/diag_conv_ps_anl.@Y@m@d@H.nc4</cyclestr></datadep>
-        <datadep age="05:00"><cyclestr offset="-06:00:00">&COMRRFS_A;/rrfs.@Y@m@d/@H/diag_conv_ps_anl.@Y@m@d@H.nc4</cyclestr></datadep>
-      </and>
-    </dependency>
-
-  </task>
-
-  <task name="monitor_hist_rrfsa_na" maxtries="2" cycledefs="conus">
-    &RESERVATION;
-    &PLOT_RESOURCES;
-
-    <command>&HOMEDIR;/monitor/launch_RRFSA_NA_HIST</command>
-    <nodes> 1:ppn=1 </nodes>
-    <join><cyclestr>&LOG_DIR;/monitor_hist_rrfsa_na_@Y@m@d@H.log</cyclestr></join>
-    <jobname>monitor_hist_rrfsa_na</jobname>
-
-    <envar><name>USER</name><value>&USER;</value></envar>
-    <envar><name>sdate</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
-    <envar><name>sdatem1</name><value><cyclestr offset="-01:00:00">@Y@m@d@H</cyclestr></value></envar>
-    <envar><name>sdatem2</name><value><cyclestr offset="-02:00:00">@Y@m@d@H</cyclestr></value></envar>
-    <envar><name>sdatem3</name><value><cyclestr offset="-03:00:00">@Y@m@d@H</cyclestr></value></envar>
-    <envar><name>sdatem4</name><value><cyclestr offset="-04:00:00">@Y@m@d@H</cyclestr></value></envar>
-    <envar><name>sdatem5</name><value><cyclestr offset="-05:00:00">@Y@m@d@H</cyclestr></value></envar>
-    <envar><name>sdatem6</name><value><cyclestr offset="-06:00:00">@Y@m@d@H</cyclestr></value></envar>
-
-    <dependency>
-      <and>
-        <datadep age="05:00"><cyclestr>&COMRRFS_A_NA;/rrfs.@Y@m@d/@H/diag_conv_ps_anl.@Y@m@d@H.nc4</cyclestr></datadep>
-        <datadep age="05:00"><cyclestr offset="-01:00:00">&COMRRFS_A_NA;/rrfs.@Y@m@d/@H/diag_conv_ps_anl.@Y@m@d@H.nc4</cyclestr></datadep>
-        <datadep age="05:00"><cyclestr offset="-02:00:00">&COMRRFS_A_NA;/rrfs.@Y@m@d/@H/diag_conv_ps_anl.@Y@m@d@H.nc4</cyclestr></datadep>
-        <datadep age="05:00"><cyclestr offset="-03:00:00">&COMRRFS_A_NA;/rrfs.@Y@m@d/@H/diag_conv_ps_anl.@Y@m@d@H.nc4</cyclestr></datadep>
-        <datadep age="05:00"><cyclestr offset="-04:00:00">&COMRRFS_A_NA;/rrfs.@Y@m@d/@H/diag_conv_ps_anl.@Y@m@d@H.nc4</cyclestr></datadep>
-        <datadep age="05:00"><cyclestr offset="-05:00:00">&COMRRFS_A_NA;/rrfs.@Y@m@d/@H/diag_conv_ps_anl.@Y@m@d@H.nc4</cyclestr></datadep>
-        <datadep age="05:00"><cyclestr offset="-06:00:00">&COMRRFS_A_NA;/rrfs.@Y@m@d/@H/diag_conv_ps_anl.@Y@m@d@H.nc4</cyclestr></datadep>
-      </and>
-    </dependency>
-
-  </task>
-
-
-<!-- ****** OCONUS PLOTS ****** -->
-<!-- ****** Alaska, Hawaii, and Puerto Rico ****** -->
+<!-- ****** North America full domain ****** -->
 
   <metatask>
     <var name="fhr">00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60</var>
-    <task name="create_akhipr_f#fhr#" maxtries="2" cycledefs="conus">
+    <task name="allvars_namerica_f#fhr#" maxtries="2" cycledefs="prod">
       &RESERVATION;
-      &PLOT_RESOURCES;
+      &PLOT2_RESOURCES;
 
-      <command>&HOMEDIR;/rocoto/launchAKHIPR</command>
-      <nodes> 1:ppn=6 </nodes>
-      <join><cyclestr>&LOG_DIR;/create_akhipr_@Y@m@d@H_f#fhr#.log</cyclestr></join>
-      <jobname>create_akhipr_f#fhr#</jobname>
-
-      <envar><name>USER</name><value>&USER;</value></envar>
-      <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
-      <envar><name>cyc</name><value><cyclestr>@H</cyclestr></value></envar>
-      <envar><name>fhr</name><value>#fhr#</value></envar>
-
-      <dependency>
-        <and>
-          <datadep age="10:00"><cyclestr>&COMRRFS_A_NA;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.ak.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr>&COMRRFS_A_NA;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.hi.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr>&COMRRFS_A_NA;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.pr.grib2</cyclestr></datadep>
-        </and>
-      </dependency>
-    </task>
-  </metatask>
-
-<!-- ****** North America ****** -->
-
-  <metatask>
-    <var name="fhr">00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60</var>
-    <task name="create_namerica_f#fhr#" maxtries="4" cycledefs="conus">
-      &RESERVATION;
-      &PLOT4_RESOURCES;
-
-      <command>&HOMEDIR;/rocoto/launchNAMERICA</command>
-      <nodes> 1:ppn=12 </nodes>
-      <join><cyclestr>&LOG_DIR;/create_namerica_@Y@m@d@H_f#fhr#.log</cyclestr></join>
-      <jobname>create_namerica_f#fhr#</jobname>
-
-      <envar><name>USER</name><value>&USER;</value></envar>
-      <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
-      <envar><name>cyc</name><value><cyclestr>@H</cyclestr></value></envar>
-      <envar><name>fhr</name><value>#fhr#</value></envar>
-
-      <dependency>
-        <and>
-          <datadep age="10:00"><cyclestr>&COMRRFS_A_NA;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.grib2</cyclestr></datadep>
-        </and>
-      </dependency>
-    </task>
-  </metatask>
-
-
-<!-- ****** RRFS Ensemble Member Plots ****** -->
-  <metatask>
-    <var name="fhr">00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60</var>
-    <task name="create_6members_f#fhr#" maxtries="3" cycledefs="conus">
-      &RESERVATION;
-      &PLOT_RESOURCES;
-
-      <command>&HOMEDIR;/rocoto/launch_6members</command>
-      <nodes> 1:ppn=16 </nodes>
-      <join><cyclestr>&LOG_DIR;/create_6members_@Y@m@d@H_f#fhr#.log</cyclestr></join>
-      <jobname>create_6members_f#fhr#</jobname>
-
-      <envar><name>USER</name><value>&USER;</value></envar>
-      <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
-      <envar><name>cyc</name><value><cyclestr>@H</cyclestr></value></envar>
-      <envar><name>fhr</name><value>#fhr#</value></envar>
-
-      <dependency>
-        <and>      
-	  <datadep age="05:00"><cyclestr>&COMRRFS_A_NA;/refs.@Y@m@d/@H/mem0001/rrfs.t@Hz.prslev.f0#fhr#.conus_3km.grib2</cyclestr></datadep>
-	  <datadep age="05:00"><cyclestr>&COMRRFS_A_NA;/refs.@Y@m@d/@H/mem0002/rrfs.t@Hz.prslev.f0#fhr#.conus_3km.grib2</cyclestr></datadep>
-	  <datadep age="05:00"><cyclestr>&COMRRFS_A_NA;/refs.@Y@m@d/@H/mem0003/rrfs.t@Hz.prslev.f0#fhr#.conus_3km.grib2</cyclestr></datadep>
-	  <datadep age="05:00"><cyclestr>&COMRRFS_A_NA;/refs.@Y@m@d/@H/mem0004/rrfs.t@Hz.prslev.f0#fhr#.conus_3km.grib2</cyclestr></datadep>
-	  <datadep age="05:00"><cyclestr>&COMRRFS_A_NA;/refs.@Y@m@d/@H/mem0005/rrfs.t@Hz.prslev.f0#fhr#.conus_3km.grib2</cyclestr></datadep>
-        </and>
-      </dependency>
-
-    </task>
-  </metatask>
-
-<!-- ****** 3 PANEL PLOTS ****** -->
-<!-- ****** NAM vs RRFS Fire Weather Nest ***** -->
-
-  <metatask>
-    <var name="fhr">00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36</var>
-
-    <task name="create_firewx_f#fhr#" maxtries="5" cycledefs="conus">
-      &RESERVATION;
-      &PLOT_RESOURCES;
-
-      <command>&HOMEDIR;/rocoto/launchfirewx</command>
-      <nodes> 1:ppn=2 </nodes>
-      <join><cyclestr>&LOG_DIR;/create_firewx_@Y@m@d@H_f#fhr#.log</cyclestr></join>
-      <jobname>create_firewx_f#fhr#</jobname>
+      <command>&HOMEDIR;/rocoto/launch_allvars_namerica</command>
+      <nodes> 1:ppn=13 </nodes>
+      <join><cyclestr>&LOG_DIR;/allvars_namerica_@Y@m@d@H_f#fhr#.log</cyclestr></join>
+      <jobname>allvars_namerica_f#fhr#</jobname>
 
       <envar><name>USER</name><value>&USER;</value></envar>
       <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
@@ -261,37 +55,66 @@
 
       <dependency>
         <and>
-          <datadep age="05:00"><cyclestr>&COMnam;/nam.@Y@m@d/nam.t@Hz.firewxnest.hiresf#fhr#.tm00.grib2</cyclestr></datadep>
-          <datadep age="05:00"><cyclestr>&COMRRFS_FW;/rrfsfw.@Y@m@d/@H/rrfsfw.t@Hz.hires.f0#fhr#.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.grib2</cyclestr></datadep>
+        </and>
+      </dependency>
+    </task>
+  </metatask>
+
+<!-- ****** 3 PANEL PLOTS ****** -->
+<!-- ****** NAM vs RRFS Fire Weather Nest ****** -->
+
+  <metatask>
+    <var name="fhr">00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36</var>
+
+    <task name="allvars_firewx_f#fhr#" maxtries="2" cycledefs="prod">
+      &RESERVATION;
+      &PLOT_RESOURCES;
+
+      <command>&HOMEDIR;/rocoto/launch_allvars_firewx</command>
+      <nodes> 1:ppn=2 </nodes>
+      <join><cyclestr>&LOG_DIR;/allvars_firewx_@Y@m@d@H_f#fhr#.log</cyclestr></join>
+      <jobname>allvars_firewx_f#fhr#</jobname>
+
+      <envar><name>USER</name><value>&USER;</value></envar>
+      <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
+      <envar><name>PDY</name><value><cyclestr>@Y@m@d</cyclestr></value></envar>
+      <envar><name>cyc</name><value><cyclestr>@H</cyclestr></value></envar>
+      <envar><name>fhr</name><value>#fhr#</value></envar>
+
+      <dependency>
+        <and>
+          <datadep age="10:00"><cyclestr>&COMnam;/nam.@Y@m@d/nam.t@Hz.firewxnest.hiresf#fhr#.tm00.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS_FW;/rrfsfw.@Y@m@d/@H/rrfsfw.t@Hz.hires.f0#fhr#.grib2</cyclestr></datadep>
         </and>
       </dependency>
 
     </task>
   </metatask>
 
-
 <!-- ****** HRRR vs RRFS_A ****** -->
 
   <metatask>
     <var name="fhr">00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48</var>
-    <task name="create_3panel_hrrr_f#fhr#" maxtries="3" cycledefs="conus">
+    <task name="create_3panel_hrrr_f#fhr#" maxtries="2" cycledefs="prod">
       &RESERVATION;
       &PLOT_RESOURCES;
 
-      <command>&HOMEDIR;/rocoto/launch3panel_hrrr</command>
-      <nodes> 1:ppn=64 </nodes>
-      <join><cyclestr>&LOG_DIR;/create_3panel_hrrr_@Y@m@d@H_f#fhr#.log</cyclestr></join>
-      <jobname>create_3panel_hrrr_f#fhr#</jobname>
+      <command>&HOMEDIR;/rocoto/launch_allvars_hrrr</command>
+      <nodes> 1:ppn=68 </nodes>
+      <join><cyclestr>&LOG_DIR;/allvars_hrrr_@Y@m@d@H_f#fhr#.log</cyclestr></join>
+      <jobname>allvars_hrrr_f#fhr#</jobname>
 
       <envar><name>USER</name><value>&USER;</value></envar>
       <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
+      <envar><name>PDY</name><value><cyclestr>@Y@m@d</cyclestr></value></envar>
       <envar><name>cyc</name><value><cyclestr>@H</cyclestr></value></envar>
       <envar><name>fhr</name><value>#fhr#</value></envar>
 
       <dependency>
         <and>
-          <datadep age="05:00"><cyclestr>&COMhrrr;/hrrr.@Y@m@d/conus/hrrr.t@Hz.wrfprsf#fhr#.grib2</cyclestr></datadep>
-          <datadep age="05:00"><cyclestr>&COMRRFS_A_NA;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.conus_3km.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMhrrr;/hrrr.@Y@m@d/conus/hrrr.t@Hz.wrfprsf#fhr#.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.conus_3km.grib2</cyclestr></datadep>
         </and>
       </dependency>
 
@@ -303,24 +126,25 @@
 
   <metatask>
     <var name="fhr">00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60</var>
-    <task name="create_3panel_nam_f#fhr#" maxtries="3" cycledefs="conus">
+    <task name="allvars_nam_f#fhr#" maxtries="2" cycledefs="prod">
       &RESERVATION;
       &PLOT_RESOURCES;
 
       <command>&HOMEDIR;/rocoto/launch3panel_nam</command>
-      <nodes> 1:ppn=48 </nodes>
-      <join><cyclestr>&LOG_DIR;/create_3panel_nam_@Y@m@d@H_f#fhr#.log</cyclestr></join>
-      <jobname>create_3panel_nam_f#fhr#</jobname>
+      <nodes> 1:ppn=57 </nodes>
+      <join><cyclestr>&LOG_DIR;/allvars_nam_@Y@m@d@H_f#fhr#.log</cyclestr></join>
+      <jobname>allvars_nam_f#fhr#</jobname>
 
       <envar><name>USER</name><value>&USER;</value></envar>
       <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
+      <envar><name>PDY</name><value><cyclestr>@Y@m@d</cyclestr></value></envar>
       <envar><name>cyc</name><value><cyclestr>@H</cyclestr></value></envar>
       <envar><name>fhr</name><value>#fhr#</value></envar>
 
       <dependency>
         <and>      
-          <datadep age="05:00"><cyclestr>&COMnam;/nam.@Y@m@d/nam.t@Hz.conusnest.hiresf#fhr#.tm00.grib2</cyclestr></datadep>
-	  <datadep age="05:00"><cyclestr>&COMRRFS_A_NA;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.conus_3km.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMnam;/nam.@Y@m@d/nam.t@Hz.conusnest.hiresf#fhr#.tm00.grib2</cyclestr></datadep>
+	  <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.conus_3km.grib2</cyclestr></datadep>
         </and>
       </dependency>
 
@@ -328,28 +152,58 @@
   </metatask>
 
 
+<!-- ****** QPF & Snowfall for NAM vs RRFS_A ****** -->
+
+  <metatask>
+    <var name="dom">alaska hawaii puerto_rico conus northeast mid_atlantic southeast ohio_valley upper_midwest north_central central south_central northwest southwest colorado boston_nyc seattle_portland sf_bay_area la_vegas</var>
+    <task name="qpfsnowfall_nam_#dom#" maxtries="2" cycledefs="conus">
+      &RESERVATION;
+      &PLOT2_RESOURCES;
+      
+      <command>&HOMEDIR;/rocoto/launch_qpfsnowfall_nam</command>
+      <nodes> 1:ppn=1 </nodes>
+      <join><cyclestr>&LOG_DIR;/qpfsnowfall_nam_@Y@m@d@H_#dom#.log</cyclestr></join>
+      <jobname>qpfsnowfall_nam_#dom#</jobname>
+      
+      <envar><name>USER</name><value>&USER;</value></envar>
+      <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
+      <envar><name>PDY</name><value><cyclestr>@Y@m@d</cyclestr></value></envar>
+      <envar><name>cyc</name><value><cyclestr>@H</cyclestr></value></envar>
+      <envar><name>dom</name><value>#dom#</value></envar>
+
+      <dependency> 
+        <and>
+          <datadep age="10:00"><cyclestr>&COMnam;/nam.@Y@m@d/nam.t@Hz.conusnest.hiresf60.tm00.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f060.conus_3km.grib2</cyclestr></datadep>
+        </and>
+      </dependency>
+
+    </task>
+  </metatask>
+
 <!-- ****** UH TRACKS ****** -->
 
   <metatask>
     <var name="dom">conus northeast mid_atlantic southeast ohio_valley upper_midwest north_central central south_central northwest southwest colorado boston_nyc seattle_portland sf_bay_area la_vegas</var>
-    <task name="uhtracks_nam_#dom#" maxtries="3" cycledefs="conus">
+    <task name="uhtracks_nam_#dom#" maxtries="2" cycledefs="prod">
       &RESERVATION;
-      &PLOTQPF_RESOURCES;
+      &PLOT2_RESOURCES;
 
-      <command>&HOMEDIR;/rocoto/launchUHTRACKS_nam</command>
+      <command>&HOMEDIR;/rocoto/launch_uhtracks_nam</command>
       <nodes> 1:ppn=1 </nodes>
       <join><cyclestr>&LOG_DIR;/uhtracks_nam_@Y@m@d@H_#dom#.log</cyclestr></join>
       <jobname>uhtracks_nam_#dom#</jobname>
 
       <envar><name>USER</name><value>&USER;</value></envar>
       <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
+      <envar><name>PDY</name><value><cyclestr>@Y@m@d</cyclestr></value></envar>
       <envar><name>cyc</name><value><cyclestr>@H</cyclestr></value></envar>
       <envar><name>dom</name><value>#dom#</value></envar>
 
       <dependency>
         <and>      
-          <datadep age="05:00"><cyclestr>&COMnam;/nam.@Y@m@d/nam.t@Hz.conusnest.hiresf60.tm00.grib2</cyclestr></datadep>
-	  <datadep age="05:00"><cyclestr>&COMRRFS_A_NA;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f060.conus_3km.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMnam;/nam.@Y@m@d/nam.t@Hz.conusnest.hiresf60.tm00.grib2</cyclestr></datadep>
+	  <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f060.conus_3km.grib2</cyclestr></datadep>
         </and>
       </dependency>
 
@@ -358,24 +212,25 @@
 
   <metatask>
     <var name="dom">conus northeast mid_atlantic southeast ohio_valley upper_midwest north_central central south_central northwest southwest colorado boston_nyc seattle_portland sf_bay_area la_vegas</var>
-    <task name="uhtracks_hrrr_#dom#" maxtries="3" cycledefs="conus">
+    <task name="uhtracks_hrrr_#dom#" maxtries="2" cycledefs="prod">
       &RESERVATION;
-      &PLOTQPF_RESOURCES;
+      &PLOT2_RESOURCES;
 
-      <command>&HOMEDIR;/rocoto/launchUHTRACKS_hrrr</command>
+      <command>&HOMEDIR;/rocoto/launch_uhtracks_hrrr</command>
       <nodes> 1:ppn=1 </nodes>
       <join><cyclestr>&LOG_DIR;/uhtracks_hrrr_@Y@m@d@H_#dom#.log</cyclestr></join>
       <jobname>uhtracks_hrrr_#dom#</jobname>
 
       <envar><name>USER</name><value>&USER;</value></envar>
       <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
+      <envar><name>PDY</name><value><cyclestr>@Y@m@d</cyclestr></value></envar>
       <envar><name>cyc</name><value><cyclestr>@H</cyclestr></value></envar>
       <envar><name>dom</name><value>#dom#</value></envar>
 
       <dependency>
         <and>      
           <datadep age="05:00"><cyclestr>&COMhrrr;/hrrr.@Y@m@d/conus/hrrr.t@Hz.wrfprsf48.grib2</cyclestr></datadep>
-	  <datadep age="05:00"><cyclestr>&COMRRFS_A_NA;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f048.conus_3km.grib2</cyclestr></datadep>
+	  <datadep age="05:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f048.conus_3km.grib2</cyclestr></datadep>
         </and>
       </dependency>
 
@@ -383,64 +238,11 @@
   </metatask>
 
 
-<!-- ****** 4 PANEL PLOTS ****** -->
-
-<!--  <metatask>
-    <var name="fhr">00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60</var>
-    <task name="create_4panel_f#fhr#" maxtries="3" cycledefs="conus">
-      &RESERVATION;
-      &PLOT4_RESOURCES;
-
-      <command>&HOMEDIR;/rocoto/launch4panel</command>
-      <nodes> 1:ppn=48 </nodes>
-      <join><cyclestr>&LOG_DIR;/create_4panel_@Y@m@d@H_f#fhr#.log</cyclestr></join>
-      <jobname>create_4panel_f#fhr#</jobname>
-
-      <envar><name>USER</name><value>&USER;</value></envar>
-      <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
-      <envar><name>cyc</name><value><cyclestr>@H</cyclestr></value></envar>
-      <envar><name>fhr</name><value>#fhr#</value></envar>
-
-      <dependency>
-        <and>      
-          <datadep age="05:00"><cyclestr>&COMnam;/nam.@Y@m@d/nam.t@Hz.conusnest.hiresf#fhr#.tm00.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr>&COMRRFS_A_NA;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.conus_3km.grib2</cyclestr></datadep>
-        </and>
-      </dependency>
-
-    </task>
-  </metatask> -->
-
-
 <!-- ******************************************************** -->
 <!-- ******************** Transfer Jobs ********************* -->
 <!-- ******************************************************** -->
 
-  <task name="transfer_monitor" maxtries="1" cycledefs="conus">
-    &RESERVATION_TRANSFER;
-    &TRANSFER_RESOURCES;
-
-    <command>bash &HOMEDIR;/scripts/transfer_monitor.ksh</command>
-    <nodes> 1:ppn=1 </nodes>
-    <join><cyclestr>&LOG_DIR;/transfer_monitor_@Y@m@d@H.log</cyclestr></join>
-    <jobname>transfer_monitor</jobname>
-
-    <envar><name>USER</name><value>&USER;</value></envar>    
-    <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
-    <envar><name>PDY</name><value><cyclestr>@Y@m@d</cyclestr></value></envar>
-    <envar><name>cyc</name><value><cyclestr>@H</cyclestr></value></envar>
-
-    <dependency>
-      <and>
-        <taskdep task="monitor_profiles"/>
-        <taskdep task="monitor_hist_rrfsa"/>
-        <taskdep task="monitor_hist_rrfsa_na"/>
-      </and>
-    </dependency>
-
-  </task>
-
-  <task name="transfer_firewx" maxtries="1" cycledefs="conus">
+  <task name="transfer_firewx" maxtries="1" cycledefs="prod">
     &RESERVATION_TRANSFER;
     &TRANSFER_RESOURCES;
 
@@ -451,44 +253,18 @@
 
     <envar><name>USER</name><value>&USER;</value></envar>
     <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
+    <envar><name>PDY</name><value><cyclestr>@Y@m@d</cyclestr></value></envar>
     <envar><name>cyc</name><value><cyclestr>@H</cyclestr></value></envar>
 
     <dependency>
       <and>
-        <taskdep task="create_firewx_f36"/>
+        <taskdep task="allvars_firewx_f36"/>
       </and>
     </dependency>
 
   </task>
 
-  <task name="transfer_oconus" maxtries="1" cycledefs="conus">
-    &RESERVATION_TRANSFER;
-    &TRANSFER_RESOURCES;
-
-    <command>bash &HOMEDIR;/scripts/transfer_oconus.ksh</command>
-    <nodes> 1:ppn=1 </nodes>
-    <join><cyclestr>&LOG_DIR;/transfer_oconus_@Y@m@d@H.log</cyclestr></join>
-    <jobname>transfer_oconus</jobname>
-
-    <envar><name>USER</name><value>&USER;</value></envar>
-    <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
-    <envar><name>cyc</name><value><cyclestr>@H</cyclestr></value></envar>
-
-    <dependency>
-      <or>
-        <and>
-          <taskdep task="create_akhipr_f60"/>
-        </and>
-        <and>
-          <taskdep task="create_akhipr_f00"/>
-          <timedep><cyclestr offset="14:00:00">@Y@m@d@H@M@S</cyclestr></timedep>
-        </and>
-      </or>
-    </dependency>
-
-  </task>
-
-  <task name="transfer_namerica" maxtries="1" cycledefs="conus">
+  <task name="transfer_namerica" maxtries="1" cycledefs="prod">
     &RESERVATION_TRANSFER;
     &TRANSFER_RESOURCES;
 
@@ -499,15 +275,16 @@
 
     <envar><name>USER</name><value>&USER;</value></envar>
     <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
+    <envar><name>PDY</name><value><cyclestr>@Y@m@d</cyclestr></value></envar>
     <envar><name>cyc</name><value><cyclestr>@H</cyclestr></value></envar>
 
     <dependency>
       <or>
         <and>
-          <taskdep task="create_namerica_f60"/>
+          <taskdep task="allvars_namerica_f60"/>
         </and>
         <and>
-          <taskdep task="create_namerica_f00"/>
+          <taskdep task="allvars_namerica_f00"/>
           <timedep><cyclestr offset="14:00:00">@Y@m@d@H@M@S</cyclestr></timedep>
         </and>
       </or>
@@ -515,7 +292,7 @@
 
   </task>
 
-  <task name="transfer_hrrr" maxtries="1" cycledefs="conus">
+  <task name="transfer_hrrr" maxtries="1" cycledefs="prod">
     &RESERVATION_TRANSFER;
     &TRANSFER_RESOURCES;
 
@@ -526,18 +303,19 @@
 
     <envar><name>USER</name><value>&USER;</value></envar>    
     <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
+    <envar><name>PDY</name><value><cyclestr>@Y@m@d</cyclestr></value></envar>
     <envar><name>cyc</name><value><cyclestr>@H</cyclestr></value></envar>
 
     <dependency>
       <and>
-        <taskdep task="create_3panel_hrrr_f48"/>
+        <taskdep task="allvars_hrrr_f48"/>
         <taskdep task="uhtracks_hrrr_conus"/>
       </and>
     </dependency>
 
   </task>
 
-  <task name="transfer_nam" maxtries="1" cycledefs="conus">
+  <task name="transfer_nam" maxtries="1" cycledefs="prod">
     &RESERVATION_TRANSFER;
     &TRANSFER_RESOURCES;
 
@@ -548,61 +326,14 @@
 
     <envar><name>USER</name><value>&USER;</value></envar>
     <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
+    <envar><name>PDY</name><value><cyclestr>@Y@m@d</cyclestr></value></envar>
     <envar><name>cyc</name><value><cyclestr>@H</cyclestr></value></envar>
 
     <dependency>
       <and>      
-        <taskdep task="create_3panel_nam_f60"/>
+        <taskdep task="allvars_nam_f60"/>
         <taskdep task="uhtracks_nam_conus"/>
-      </and>
-    </dependency>
-
-  </task>
-
-<!--  <task name="transfer_4panel" maxtries="1" cycledefs="conus">
-    &RESERVATION_TRANSFER;
-    &TRANSFER_RESOURCES;
-
-    <command>bash &HOMEDIR;/scripts/transfer_4panel.ksh</command>
-    <nodes> 1:ppn=1 </nodes>
-    <join><cyclestr>&LOG_DIR;/transfer_4panel_@Y@m@d@H.log</cyclestr></join>
-    <jobname>transfer_4panel</jobname>
-
-    <envar><name>USER</name><value>&USER;</value></envar>
-    <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
-    <envar><name>cyc</name><value><cyclestr>@H</cyclestr></value></envar>
-
-    <dependency>
-      <or>
-        <and>      
-          <taskdep task="create_4panel_f60"/>
-          <taskdep task="qpf_4panel_conus"/>
-        </and>
-        <and>
-          <taskdep task="create_4panel_f00"/>
-          <timedep><cyclestr offset="14:00:00">@Y@m@d@H@M@S</cyclestr></timedep>
-        </and>
-      </or>
-    </dependency>
-
-  </task> -->
-
-  <task name="transfer_ensemble" maxtries="1" cycledefs="conus">
-    &RESERVATION_TRANSFER;
-    &TRANSFER_RESOURCES;
-
-    <command>bash &HOMEDIR;/scripts/transfer_ensemble.ksh</command>
-    <nodes> 1:ppn=1 </nodes>
-    <join><cyclestr>&LOG_DIR;/transfer_ensemble_@Y@m@d@H.log</cyclestr></join>
-    <jobname>transfer_ensemble</jobname>
-
-    <envar><name>USER</name><value>&USER;</value></envar>
-    <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
-    <envar><name>cyc</name><value><cyclestr>@H</cyclestr></value></envar>
-
-    <dependency>
-      <and>
-        <taskdep task="create_6members_f60"/>
+        <taskdep task="qpfsnowfall_3panel_conus"/>
       </and>
     </dependency>
 

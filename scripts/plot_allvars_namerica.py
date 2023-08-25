@@ -53,7 +53,10 @@ msg = data1.select(shortName='HGT', level='500 mb')[0]	# msg is a Grib2Message o
 lat, lon = msg.grid(unrotate=False)
 
 # Specify plotting domains
-domains=['namerica']
+domain='namerica'
+
+# Paths to image files
+im = image.imread('/lfs/h2/emc/lam/noscrub/Benjamin.Blake/rrfs_graphics/noaa.png')
 
 # colors for difference plots, only need to define once
 difcolors = ['blue','#1874CD','dodgerblue','deepskyblue','turquoise','white','white','#EEEE00','#EEC900','darkorange','orangered','red']
@@ -247,8 +250,8 @@ def main():
   dom = domain
   print(('Working on '+dom))
 
-  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,im,par,transform
-  fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,im,par,transform = create_figure()
+  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
+  fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform = create_figure()
 
   # Split plots into 13 sets with multiprocessing
   sets = [1,2,3,4,5,6,7,8,9,10,11,12,13]
@@ -267,8 +270,6 @@ def create_figure():
 # Create figure and axes instances
   fig = plt.figure(figsize=(4,4))
   gs = GridSpec(4,4,wspace=0.0,hspace=0.0)
-  im = image.imread('/lfs/h2/emc/lam/noscrub/Benjamin.Blake/python.rrfs/noaa.png')
-  par = 1
 
   # Define where Cartopy maps are located
   cartopy.config['data_dir'] = '/lfs/h2/emc/lam/noscrub/Benjamin.Blake/python/NaturalEarth'
@@ -314,13 +315,13 @@ def create_figure():
   # Map/figure has been set up here, save axes instances for use again later
   keep_ax_lst_1 = ax1.get_children()[:]
 
-  return fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,im,par,transform
+  return fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
 
 ################################################################################
 
 def plot_sets(set):
 
-  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,im,par,transform
+  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
 
 # Add print to see if dom is being passed in
   print(('plot_sets dom variable '+dom))
@@ -355,7 +356,7 @@ def plot_sets(set):
 ################################################################################
 
 def plot_set_1():
-  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,im,par,transform
+  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
 
   xmin, xmax = ax1.get_xlim()
   ymin, ymax = ax1.get_ylim()
@@ -372,7 +373,7 @@ def plot_set_1():
 
   units = '\xb0''F'
   clevs = np.linspace(-46,134,31)
-  cm = cmap_t2m()
+  cm = rrfs_plot_utils.cmap_t2m()
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
   cs_1 = ax1.contourf(lon,lat,tmpsfc_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
@@ -396,7 +397,7 @@ def plot_set_1():
 ################################################################################
 
 def plot_set_2():
-  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,im,par,transform
+  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
 
   xmin, xmax = ax1.get_xlim()
   ymin, ymax = ax1.get_ylim()
@@ -437,7 +438,7 @@ def plot_set_2():
 ################################################################################
 
 def plot_set_3():
-  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,im,par,transform
+  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
 
   xmin, xmax = ax1.get_xlim()
   ymin, ymax = ax1.get_ylim()
@@ -482,7 +483,7 @@ def plot_set_3():
 ################################################################################
 
 def plot_set_4():
-  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,im,par,transform
+  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
 
   xmin, xmax = ax1.get_xlim()
   ymin, ymax = ax1.get_ylim()
@@ -525,7 +526,7 @@ def plot_set_4():
 ################################################################################
 
 def plot_set_5():
-  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,im,par,transform
+  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
 
   xmin, xmax = ax1.get_xlim()
   ymin, ymax = ax1.get_ylim()
@@ -569,7 +570,7 @@ def plot_set_5():
 ################################################################################
 
 def plot_set_6():
-  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,im,par,transform
+  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
 
   xmin, xmax = ax1.get_xlim()
   ymin, ymax = ax1.get_ylim()
@@ -610,7 +611,7 @@ def plot_set_6():
 ################################################################################
 
 def plot_set_7():
-  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,im,par,transform
+  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
 
   xmin, xmax = ax1.get_xlim()
   ymin, ymax = ax1.get_ylim()
@@ -652,7 +653,7 @@ def plot_set_7():
 ################################################################################
 
 def plot_set_8():
-  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,im,par,transform
+  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
 
   t1dom = time.perf_counter()
   xmin, xmax = ax1.get_xlim()
@@ -706,7 +707,7 @@ def plot_set_8():
   units = '\xb0''F'
   clevs = np.linspace(-46,134,31)
 #  clevs = np.linspace(-28,116,25)
-  cm = cmap_t2m()
+  cm = rrfs_plot_utils.cmap_t2m()
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
   cs_1 = ax1.contourf(lon,lat,tmp2m_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
@@ -797,7 +798,7 @@ def plot_set_8():
   skip = 200
   barblength = 3
   clevs = np.linspace(240,360,21)
-  cm = cmap_t850()
+  cm = rrfs_plot_utils.cmap_t850()
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
   cs_1 = ax1.contourf(lon,lat,thetae_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
@@ -925,7 +926,7 @@ def plot_set_8():
 ######################################################
 
 def plot_set_9():
-  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,im,par,transform
+  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
 
   t1dom = time.perf_counter()
   xmin, xmax = ax1.get_xlim()
@@ -1244,7 +1245,7 @@ def plot_set_9():
 ######################################################
 
 def plot_set_10():
-  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,im,par,transform
+  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
 
   t1dom = time.perf_counter()
   xmin, xmax = ax1.get_xlim()
@@ -1441,7 +1442,7 @@ def plot_set_10():
 ######################################################
 
 def plot_set_11():
-  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,im,par,transform
+  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
 
   t1dom = time.perf_counter()
   xmin, xmax = ax1.get_xlim()
@@ -1489,7 +1490,7 @@ def plot_set_11():
 ######################################################
 
 def plot_set_12():
-  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,im,par,transform
+  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
 
   t1dom = time.perf_counter()
   xmin, xmax = ax1.get_xlim()
@@ -1568,7 +1569,7 @@ def plot_set_12():
 ######################################################
 
 def plot_set_13():
-  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,im,par,transform
+  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
 
   t1dom = time.perf_counter()
   xmin, xmax = ax1.get_xlim()

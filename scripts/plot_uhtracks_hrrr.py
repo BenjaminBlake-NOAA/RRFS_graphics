@@ -36,13 +36,13 @@ hour = int(ymdh[8:10])
 cyc = str(hour).zfill(2)
 print(year, month, day, hour)
 
-# Forecast init and valid date/time
-itime = cycle
-fhrs = np.arange(0,runlength+1,1)
-vtime_list = [ncepy.ndate(itime,int(x)) for x in fhrs]
-
 # Runlength for HRRR and RRFS_A forecasts is 48 hours
 runlength = 48
+
+# Forecast init and valid date/time
+itime = ymdh
+fhrs = np.arange(0,runlength+1,1)
+vtime_list = [rrfs_plot_utils.ndate(itime,int(x)) for x in fhrs]
 
 # Define the paths to the input files
 HRRR_DIR = '/lfs/h1/ops/prod/com/hrrr/v4.1/hrrr.'+ymd
@@ -51,6 +51,9 @@ RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.6.5/prod/rrfs.'+ymd+'/'+cyc
 # Define prod and para strings
 prod_str = 'HRRR'
 para_str = 'RRFS_A'
+
+# Paths to image files
+im = image.imread('/lfs/h2/emc/lam/noscrub/Benjamin.Blake/rrfs_graphics/noaa.png')
 
 ###################################################
 # Read in all variables and calculate differences #
@@ -69,12 +72,8 @@ for j in range(len(vtime_list)):
     vtime = vtime_list[j]
 
     # Define the input files
-    if dom == 'alaska':
-      data1 = grib2io.open(HRRR_DIR+'/alaska/hrrr.t'+cyc+'z.wrfprsf'+fhour+'.ak.grib2')
-      data2 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.ak.grib2')
-    else:
-      data1 = grib2io.open(HRRR_DIR+'/conus/hrrr.t'+cyc+'z.wrfprsf'+fhour+'.grib2')
-      data2 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.conus_3km.grib2')
+    data1 = grib2io.open(HRRR_DIR+'/conus/hrrr.t'+cyc+'z.wrfprsf'+fhour+'.grib2')
+    data2 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.conus_3km.grib2')
 
     # Updraft helicity
     if (fhr > 0):
@@ -118,8 +117,6 @@ xextent,yextent,offset,extent,myproj = rrfs_plot_utils.domain_latlons_proj(dom)
 # Create figure and axes instances
 fig = plt.figure(figsize=(9,8))
 gs = GridSpec(9,8,wspace=0.0,hspace=0.0)
-im = image.imread('/lfs/h2/emc/lam/noscrub/Benjamin.Blake/python.rrfs/noaa.png')
-par = 1
 
 # Define where Cartopy maps are located
 cartopy.config['data_dir'] = '/lfs/h2/emc/lam/noscrub/Benjamin.Blake/python/NaturalEarth'
@@ -235,7 +232,7 @@ for fhr in fhrs:
   ax3.text(.5,1.03,prod_str+' (red), '+para_str+' (blue), Both (purple) \n Max 2-5 km Updraft Helicity > 50 ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=5,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  compress_and_save('compareuh25_accum_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.compress_and_save('compareuh25_accum_'+dom+'_f'+fhour+'.png')
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot Run-Total 2-5 km UH for forecast hour '+fhour) % t3)

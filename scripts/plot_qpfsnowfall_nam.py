@@ -44,6 +44,9 @@ date_list = [dtime + datetime.timedelta(hours=x) for x in fhours]
 NAM_DIR = '/lfs/h1/ops/prod/com/nam/v4.2/nam.'+ymd
 RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.6.5/prod/rrfs.'+ymd+'/'+cyc
 
+# Paths to image files
+im = image.imread('/lfs/h2/emc/lam/noscrub/Benjamin.Blake/rrfs_graphics/noaa.png')
+
 ######################################
 #    SET UP FIGURE FOR THE DOMAIN    #
 ######################################
@@ -54,8 +57,6 @@ xextent,yextent,offset,extent,myproj = rrfs_plot_utils.domain_latlons_proj(dom)
 # Create the figure
 fig = plt.figure(figsize=(9,8))
 gs = GridSpec(9,8,wspace=0.0,hspace=0.0)
-im = image.imread('/lfs/h2/emc/lam/noscrub/Benjamin.Blake/python.rrfs/noaa.png')
-par = 1
 
 # Define where Cartopy maps are located
 cartopy.config['data_dir'] = '/lfs/h2/emc/lam/noscrub/Benjamin.Blake/python/NaturalEarth'
