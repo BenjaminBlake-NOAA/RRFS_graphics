@@ -23,7 +23,7 @@ mkdir -p /lfs/h2/emc/stmp/${USER}
 mkdir -p /lfs/h2/emc/stmp/${USER}/namerica/${PDY}/${cyc}
 cd /lfs/h2/emc/stmp/${USER}/namerica/${PDY}/${cyc}
 
-python /lfs/h2/emc/lam/noscrub/${USER}/rrfs_graphics/plot_allvars_namerica.py $CDATE $fhr
+python /lfs/h2/emc/lam/noscrub/${USER}/rrfs_graphics/scripts/plot_allvars_namerica.py $CDATE $fhr
 
 date
 

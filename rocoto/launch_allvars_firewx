@@ -27,7 +27,7 @@ latlon=/lfs/h2/emc/ptmp/emc.lam/para/com/rrfsfw/v1.0.0/rrfsfw.${PDY}/${cyc}/rrfs
 cen_lat=`cat $latlon | cut -c1-4`
 cen_lon=`cat $latlon | cut -c6-11`
 
-python /lfs/h2/emc/lam/noscrub/${USER}/rrfs_graphics/plot_allvars_firewx.py $CDATE $fhr $cen_lat $cen_lon
+python /lfs/h2/emc/lam/noscrub/${USER}/rrfs_graphics/scripts/plot_allvars_firewx.py $CDATE $fhr $cen_lat $cen_lon
 
 date
 
