@@ -13,4 +13,4 @@ export PYTHONPATH="${PYTHONPATH}:/lfs/h2/emc/lam/noscrub/Benjamin.Blake/python:/
 module use /apps/ops/test/nco/modulefiles
 module load core/rocoto/1.3.5
 
-rocotorun -v 10 -w /lfs/h2/emc/lam/noscrub/Benjamin.Blake/python.rrfs/rocoto/drive_plots_20230815.xml -d /lfs/h2/emc/lam/noscrub/Benjamin.Blake/python.rrfs/rocoto/drive_plots.db
+rocotorun -v 10 -w /lfs/h2/emc/lam/noscrub/Benjamin.Blake/rrfs_graphics/rocoto/drive_plots.xml -d /lfs/h2/emc/lam/noscrub/Benjamin.Blake/rrfs_graphics/rocoto/drive_plots.db
