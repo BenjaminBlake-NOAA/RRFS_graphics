@@ -130,7 +130,7 @@
       &RESERVATION;
       &PLOT_RESOURCES;
 
-      <command>&HOMEDIR;/rocoto/launch3panel_nam</command>
+      <command>&HOMEDIR;/rocoto/launch_allvars_nam</command>
       <nodes> 1:ppn=57 </nodes>
       <join><cyclestr>&LOG_DIR;/allvars_nam_@Y@m@d@H_f#fhr#.log</cyclestr></join>
       <jobname>allvars_nam_f#fhr#</jobname>
