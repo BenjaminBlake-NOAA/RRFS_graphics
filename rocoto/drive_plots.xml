@@ -156,7 +156,7 @@
 
   <metatask>
     <var name="dom">alaska hawaii puerto_rico conus northeast mid_atlantic southeast ohio_valley upper_midwest north_central central south_central northwest southwest colorado boston_nyc seattle_portland sf_bay_area la_vegas</var>
-    <task name="qpfsnowfall_nam_#dom#" maxtries="2" cycledefs="conus">
+    <task name="qpfsnowfall_nam_#dom#" maxtries="2" cycledefs="prod">
       &RESERVATION;
       &PLOT2_RESOURCES;
       
