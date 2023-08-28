@@ -312,7 +312,7 @@ def ncl_grnd_hflux():
 #  Domain settings
 ####################################
 
-def domain_latlons_proj(dom,cen_lat,cen_lon):
+def domain_latlons_proj(dom):
 #  These are the available pre-defined domains:
 #  
 #  namerica, alaska, hawaii, puerto rico,
