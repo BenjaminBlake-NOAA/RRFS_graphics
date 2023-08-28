@@ -26,7 +26,7 @@
 
 <workflow realtime="T" scheduler="pbspro" cyclelifespan="00:15:00:00" cyclethrottle="4" taskthrottle="40">
 
-  <cycledef group="prod">202308260000 202312311200 12:00:00</cycledef>
+  <cycledef group="prod">202308281200 202312311200 12:00:00</cycledef>
  
   <log verbosity="10"><cyclestr>&LOG_DIR;/workflow_@Y@m@d@H.log</cyclestr></log> 
 
@@ -246,7 +246,7 @@
     &RESERVATION_TRANSFER;
     &TRANSFER_RESOURCES;
 
-    <command>bash &HOMEDIR;/scripts/transfer_firewx.ksh</command>
+    <command>bash &HOMEDIR;/scripts/transfer_firewx.sh</command>
     <nodes> 1:ppn=1 </nodes>
     <join><cyclestr>&LOG_DIR;/transfer_firewx_@Y@m@d@H.log</cyclestr></join>
     <jobname>transfer_firewx</jobname>
@@ -268,7 +268,7 @@
     &RESERVATION_TRANSFER;
     &TRANSFER_RESOURCES;
 
-    <command>bash &HOMEDIR;/scripts/transfer_namerica.ksh</command>
+    <command>bash &HOMEDIR;/scripts/transfer_namerica.sh</command>
     <nodes> 1:ppn=1 </nodes>
     <join><cyclestr>&LOG_DIR;/transfer_namerica_@Y@m@d@H.log</cyclestr></join>
     <jobname>transfer_namerica</jobname>
@@ -296,7 +296,7 @@
     &RESERVATION_TRANSFER;
     &TRANSFER_RESOURCES;
 
-    <command>bash &HOMEDIR;/scripts/transfer_hrrr.ksh</command>
+    <command>bash &HOMEDIR;/scripts/transfer_hrrr.sh</command>
     <nodes> 1:ppn=1 </nodes>
     <join><cyclestr>&LOG_DIR;/transfer_hrrr_@Y@m@d@H.log</cyclestr></join>
     <jobname>transfer_hrrr</jobname>
@@ -319,7 +319,7 @@
     &RESERVATION_TRANSFER;
     &TRANSFER_RESOURCES;
 
-    <command>bash &HOMEDIR;/scripts/transfer_nam.ksh</command>
+    <command>bash &HOMEDIR;/scripts/transfer_nam.sh</command>
     <nodes> 1:ppn=1 </nodes>
     <join><cyclestr>&LOG_DIR;/transfer_nam_@Y@m@d@H.log</cyclestr></join>
     <jobname>transfer_nam</jobname>

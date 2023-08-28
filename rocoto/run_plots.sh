@@ -2,9 +2,6 @@
 
 set -x
 
-date
-
-echo "into launch_allvars_nam"
 module load python/3.8.6
 module use /lfs/h1/mdl/nbm/save/apps/modulefiles
 module load python-modules/3.8.6
@@ -13,12 +10,7 @@ module load geos/3.8.1
 module load libjpeg-turbo/2.1.0
 export PYTHONPATH="${PYTHONPATH}:/lfs/h2/emc/lam/noscrub/Benjamin.Blake/python:/lfs/h2/emc/lam/noscrub/Benjamin.Blake/PyGSI"
 
-mkdir -p /lfs/h2/emc/stmp/${USER}
-mkdir -p /lfs/h2/emc/stmp/${user}/3panel_nam/${PDY}/${cyc}
-cd /lfs/h2/emc/stmp/${USER}/3panel_nam/${PDY}/${cyc}
+module use /apps/ops/test/nco/modulefiles
+module load core/rocoto/1.3.5
 
-python /lfs/h2/emc/lam/noscrub/${USER}/rrfs_graphics/plot_allvars_nam.py $CDATE $fhr
-
-date
-
-exit
+rocotorun -v 10 -w /lfs/h2/emc/lam/noscrub/Benjamin.Blake/python.rrfs/rocoto/drive_plots_20230815.xml -d /lfs/h2/emc/lam/noscrub/Benjamin.Blake/python.rrfs/rocoto/drive_plots.db
