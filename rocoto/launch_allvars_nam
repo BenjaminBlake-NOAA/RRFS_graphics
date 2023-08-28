@@ -14,7 +14,7 @@ module load libjpeg-turbo/2.1.0
 export PYTHONPATH="${PYTHONPATH}:/lfs/h2/emc/lam/noscrub/Benjamin.Blake/python:/lfs/h2/emc/lam/noscrub/Benjamin.Blake/PyGSI"
 
 mkdir -p /lfs/h2/emc/stmp/${USER}
-mkdir -p /lfs/h2/emc/stmp/${user}/3panel_nam/${PDY}/${cyc}
+mkdir -p /lfs/h2/emc/stmp/${USER}/3panel_nam/${PDY}/${cyc}
 cd /lfs/h2/emc/stmp/${USER}/3panel_nam/${PDY}/${cyc}
 
 python /lfs/h2/emc/lam/noscrub/${USER}/rrfs_graphics/scripts/plot_allvars_nam.py $CDATE $fhr
