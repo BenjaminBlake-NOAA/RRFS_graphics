@@ -333,7 +333,7 @@
       <and>      
         <taskdep task="allvars_nam_f60"/>
         <taskdep task="uhtracks_nam_conus"/>
-        <taskdep task="qpfsnowfall_3panel_conus"/>
+        <taskdep task="qpfsnowfall_nam_conus"/>
       </and>
     </dependency>
 
