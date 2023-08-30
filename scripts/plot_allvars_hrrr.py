@@ -48,7 +48,11 @@ HRRR_AK_DIR = '/lfs/h2/emc/stmp/Benjamin.Blake/3panel_hrrr/'+ymd+'/'+cyc
 RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.6.5/prod/rrfs.'+ymd+'/'+cyc
 
 # Specify plotting domains
-domains = ['alaska','conus','boston_nyc','central','colorado','la_vegas','mid_atlantic','north_central','northeast','northwest','ohio_valley','south_central','southeast','sf_bay_area','seattle_portland','southwest','upper_midwest']
+domset = str(sys.argv[3])
+if domset == 'conus':
+  domains = ['conus','boston_nyc','central','colorado','la_vegas','mid_atlantic','north_central','northeast','northwest','ohio_valley','south_central','southeast','sf_bay_area','seattle_portland','southwest','upper_midwest']
+elif domset == 'oconus':
+  domains = ['alaska']
 
 # Paths to image files
 im = image.imread('/lfs/h2/emc/lam/noscrub/Benjamin.Blake/rrfs_graphics/noaa.png')

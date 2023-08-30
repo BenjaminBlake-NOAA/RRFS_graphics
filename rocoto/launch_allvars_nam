@@ -4,6 +4,8 @@ set -x
 
 date
 
+domset='conus'
+
 echo "into launch_allvars_nam"
 module load python/3.8.6
 module use /lfs/h1/mdl/nbm/save/apps/modulefiles
@@ -17,7 +19,7 @@ mkdir -p /lfs/h2/emc/stmp/${USER}
 mkdir -p /lfs/h2/emc/stmp/${USER}/3panel_nam/${PDY}/${cyc}
 cd /lfs/h2/emc/stmp/${USER}/3panel_nam/${PDY}/${cyc}
 
-python /lfs/h2/emc/lam/noscrub/${USER}/rrfs_graphics/scripts/plot_allvars_nam.py $CDATE $fhr
+python /lfs/h2/emc/lam/noscrub/${USER}/rrfs_graphics/scripts/plot_allvars_nam.py $CDATE $fhr $domset
 
 date
 

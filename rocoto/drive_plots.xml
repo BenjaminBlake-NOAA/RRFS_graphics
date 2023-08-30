@@ -101,7 +101,7 @@
       &PLOT_RESOURCES;
 
       <command>&HOMEDIR;/rocoto/launch_allvars_hrrr</command>
-      <nodes> 1:ppn=68 </nodes>
+      <nodes> 1:ppn=64 </nodes>
       <join><cyclestr>&LOG_DIR;/allvars_hrrr_@Y@m@d@H_f#fhr#.log</cyclestr></join>
       <jobname>allvars_hrrr_f#fhr#</jobname>
 
@@ -121,6 +121,32 @@
     </task>
   </metatask>
 
+  <metatask>
+    <var name="fhr">00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48</var>
+    <task name="allvars_hrrr_alaska_f#fhr#" maxtries="2" cycledefs="prod">
+      &RESERVATION;
+      &PLOT_RESOURCES;
+
+      <command>&HOMEDIR;/rocoto/launch_allvars_hrrr_alaska</command>
+      <nodes> 1:ppn=4 </nodes>
+      <join><cyclestr>&LOG_DIR;/allvars_hrrr_alaska_@Y@m@d@H_f#fhr#.log</cyclestr></join>
+      <jobname>allvars_hrrr_alaska_f#fhr#</jobname>
+
+      <envar><name>USER</name><value>&USER;</value></envar>
+      <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
+      <envar><name>PDY</name><value><cyclestr>@Y@m@d</cyclestr></value></envar>
+      <envar><name>cyc</name><value><cyclestr>@H</cyclestr></value></envar>
+      <envar><name>fhr</name><value>#fhr#</value></envar>
+
+      <dependency>
+        <and>
+          <datadep age="10:00"><cyclestr>&COMhrrr;/hrrr.@Y@m@d/alaska/hrrr.t@Hz.wrfprsf#fhr#.ak.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.ak.grib2</cyclestr></datadep>
+        </and>
+      </dependency>
+
+    </task>
+  </metatask>
 
 <!-- ****** NAM Nest vs RRFS_A ****** -->
 
@@ -131,7 +157,7 @@
       &PLOT_RESOURCES;
 
       <command>&HOMEDIR;/rocoto/launch_allvars_nam</command>
-      <nodes> 1:ppn=57 </nodes>
+      <nodes> 1:ppn=48 </nodes>
       <join><cyclestr>&LOG_DIR;/allvars_nam_@Y@m@d@H_f#fhr#.log</cyclestr></join>
       <jobname>allvars_nam_f#fhr#</jobname>
 
@@ -144,7 +170,38 @@
       <dependency>
         <and>      
           <datadep age="10:00"><cyclestr>&COMnam;/nam.@Y@m@d/nam.t@Hz.conusnest.hiresf#fhr#.tm00.grib2</cyclestr></datadep>
-	  <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.conus_3km.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.conus_3km.grib2</cyclestr></datadep>
+        </and>
+      </dependency>
+
+    </task>
+  </metatask>
+
+  <metatask>
+    <var name="fhr">00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60</var>
+    <task name="allvars_nam_oconus_f#fhr#" maxtries="2" cycledefs="prod">
+      &RESERVATION;
+      &PLOT_RESOURCES;
+
+      <command>&HOMEDIR;/rocoto/launch_allvars_nam_oconus</command>
+      <nodes> 1:ppn=9 </nodes>
+      <join><cyclestr>&LOG_DIR;/allvars_nam_oconus_@Y@m@d@H_f#fhr#.log</cyclestr></join>
+      <jobname>allvars_nam_oconus_f#fhr#</jobname>
+
+      <envar><name>USER</name><value>&USER;</value></envar>
+      <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
+      <envar><name>PDY</name><value><cyclestr>@Y@m@d</cyclestr></value></envar>
+      <envar><name>cyc</name><value><cyclestr>@H</cyclestr></value></envar>
+      <envar><name>fhr</name><value>#fhr#</value></envar>
+
+      <dependency>
+        <and>      
+          <datadep age="10:00"><cyclestr>&COMnam;/nam.@Y@m@d/nam.t@Hz.alaskanest.hiresf#fhr#.tm00.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMnam;/nam.@Y@m@d/nam.t@Hz.hawaiinest.hiresf#fhr#.tm00.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMnam;/nam.@Y@m@d/nam.t@Hz.priconest.hiresf#fhr#.tm00.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.ak.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.hi.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.pr.grib2</cyclestr></datadep>
         </and>
       </dependency>
 
@@ -155,7 +212,7 @@
 <!-- ****** QPF & Snowfall for NAM vs RRFS_A ****** -->
 
   <metatask>
-    <var name="dom">alaska hawaii puerto_rico conus northeast mid_atlantic southeast ohio_valley upper_midwest north_central central south_central northwest southwest colorado boston_nyc seattle_portland sf_bay_area la_vegas</var>
+    <var name="dom">conus northeast mid_atlantic southeast ohio_valley upper_midwest north_central central south_central northwest southwest colorado boston_nyc seattle_portland sf_bay_area la_vegas</var>
     <task name="qpfsnowfall_nam_#dom#" maxtries="2" cycledefs="prod">
       &RESERVATION;
       &PLOT2_RESOURCES;
@@ -180,6 +237,38 @@
 
     </task>
   </metatask>
+
+  <metatask>
+    <var name="dom">alaska hawaii puerto_rico</var>
+    <task name="qpfsnowfall_nam_#dom#" maxtries="2" cycledefs="prod">
+      &RESERVATION;
+      &PLOT2_RESOURCES;
+      
+      <command>&HOMEDIR;/rocoto/launch_qpfsnowfall_nam</command>
+      <nodes> 1:ppn=1 </nodes>
+      <join><cyclestr>&LOG_DIR;/qpfsnowfall_nam_@Y@m@d@H_#dom#.log</cyclestr></join>
+      <jobname>qpfsnowfall_nam_#dom#</jobname>
+      
+      <envar><name>USER</name><value>&USER;</value></envar>
+      <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
+      <envar><name>PDY</name><value><cyclestr>@Y@m@d</cyclestr></value></envar>
+      <envar><name>cyc</name><value><cyclestr>@H</cyclestr></value></envar>
+      <envar><name>dom</name><value>#dom#</value></envar>
+
+      <dependency> 
+        <and>
+          <datadep age="10:00"><cyclestr>&COMnam;/nam.@Y@m@d/nam.t@Hz.alaskanest.hiresf60.tm00.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMnam;/nam.@Y@m@d/nam.t@Hz.hawaiinest.hiresf60.tm00.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMnam;/nam.@Y@m@d/nam.t@Hz.priconest.hiresf60.tm00.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f060.ak.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f060.hi.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f060.pr.grib2</cyclestr></datadep>
+        </and>
+      </dependency>
+
+    </task>
+  </metatask>
+
 
 <!-- ****** UH TRACKS ****** -->
 
@@ -229,8 +318,8 @@
 
       <dependency>
         <and>      
-          <datadep age="05:00"><cyclestr>&COMhrrr;/hrrr.@Y@m@d/conus/hrrr.t@Hz.wrfprsf48.grib2</cyclestr></datadep>
-	  <datadep age="05:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f048.conus_3km.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMhrrr;/hrrr.@Y@m@d/conus/hrrr.t@Hz.wrfprsf48.grib2</cyclestr></datadep>
+	  <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f048.conus_3km.grib2</cyclestr></datadep>
         </and>
       </dependency>
 
@@ -334,6 +423,32 @@
         <taskdep task="allvars_nam_f60"/>
         <taskdep task="uhtracks_nam_conus"/>
         <taskdep task="qpfsnowfall_nam_conus"/>
+      </and>
+    </dependency>
+
+  </task>
+
+  <task name="transfer_oconus" maxtries="1" cycledefs="prod">
+    &RESERVATION_TRANSFER;
+    &TRANSFER_RESOURCES;
+
+    <command>bash &HOMEDIR;/scripts/transfer_oconus.sh</command>
+    <nodes> 1:ppn=1 </nodes>
+    <join><cyclestr>&LOG_DIR;/transfer_oconus_@Y@m@d@H.log</cyclestr></join>
+    <jobname>transfer_oconus</jobname>
+
+    <envar><name>USER</name><value>&USER;</value></envar>
+    <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
+    <envar><name>PDY</name><value><cyclestr>@Y@m@d</cyclestr></value></envar>
+    <envar><name>cyc</name><value><cyclestr>@H</cyclestr></value></envar>
+
+    <dependency>
+      <and>      
+        <taskdep task="allvars_hrrr_alaska_f48"/>
+        <taskdep task="allvars_nam_oconus_f60"/>
+        <taskdep task="qpfsnowfall_nam_alaska"/>
+        <taskdep task="transfer_nam"/>
+        <taskdep task="transfer_hrrr"/>
       </and>
     </dependency>
 
