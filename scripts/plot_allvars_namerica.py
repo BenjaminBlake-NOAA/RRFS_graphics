@@ -53,7 +53,7 @@ msg = data1.select(shortName='HGT', level='500 mb')[0]	# msg is a Grib2Message o
 lat, lon = msg.grid(unrotate=False)
 
 # Specify plotting domains
-domain='namerica'
+domains=['namerica','caribbean']
 
 # Paths to image files
 im = image.imread('/lfs/h2/emc/lam/noscrub/Benjamin.Blake/rrfs_graphics/noaa.png')
@@ -246,23 +246,23 @@ print(("%.3f seconds to read all messages") % t3a)
 
 def main():
 
+  # Number of processes must coincide with the number of domains to plot
+  pool = MyPool(len(domains))
+  pool.map(create_figure,domains)
+
+#-------------------------------------------------------#
+
+def create_figure(domain):
+
   global dom
   dom = domain
   print(('Working on '+dom))
 
   global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
-  fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform = create_figure()
-
-  # Split plots into 13 sets with multiprocessing
-  sets = [1,2,3,4,5,6,7,8,9,10,11,12,13]
-  pool = MyPool(len(sets))
-  pool.map(plot_sets,sets)
 
 #######################################
 #    SET UP FIGURE FOR EACH DOMAIN    #
 #######################################
-
-def create_figure():
 
 # Call the domain_latlons_proj function from rrfs_plot_utils
   xextent,yextent,offset,extent,myproj = rrfs_plot_utils.domain_latlons_proj(dom)
@@ -311,11 +311,15 @@ def create_figure():
   ax1.add_feature(lakes)
   ax1.add_feature(states)
   ax1.add_feature(coastlines)
+  ax1.add_feature(borders)
 
   # Map/figure has been set up here, save axes instances for use again later
   keep_ax_lst_1 = ax1.get_children()[:]
 
-  return fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
+  # Split plots into 13 sets with multiprocessing
+  sets = [1,2,3,4,5,6,7,8,9,10,11,12,13]
+  pool2 = MyPool(len(sets))
+  pool2.map(plot_sets,sets)
 
 ################################################################################
 
@@ -372,15 +376,17 @@ def plot_set_1():
   print(('Working on tsfc for '+dom))
 
   units = '\xb0''F'
-  clevs = np.linspace(-46,134,31)
+  if dom == 'namerica':
+    clevs = np.linspace(-46,134,31)
+  elif dom == 'caribbean':
+    clevs = np.linspace(23,104,28)
   cm = rrfs_plot_utils.cmap_t2m()
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
   cs_1 = ax1.contourf(lon,lat,tmpsfc_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
   cs_1.cmap.set_under('white')
   cs_1.cmap.set_over('white')
-#  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,ticks=clevs,extend='both')
-  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,ticks=[-40,-28,-16,-4,8,20,32,44,56,68,80,92,104,116,128],extend='both')
+  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,extend='both')
   cbar1.set_label(units,fontsize=6)
   cbar1.ax.tick_params(labelsize=5)
   ax1.text(.5,1.03,'RRFS_A Surface Temperature ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
@@ -455,8 +461,11 @@ def plot_set_3():
   print(('Working on 10mwspd for '+dom))
 
   units = 'kts'
-  skip = 200
-  barblength = 3
+  if dom == 'namerica':
+    skip = 200
+  elif dom == 'caribbean':
+    skip = 40
+  barblength = 3.5
   clevs = [5,10,15,20,25,30,35,40,45,50,55,60]
   colorlist = ['turquoise','dodgerblue','blue','#FFF68F','#E3CF57','peru','brown','crimson','red','fuchsia','DarkViolet']
   cm = matplotlib.colors.ListedColormap(colorlist)
@@ -499,8 +508,11 @@ def plot_set_4():
   print(('Working on surface wind gust for '+dom))
 
   units = 'kts'
-  skip = 200
-  barblength = 3
+  if dom == 'namerica':
+    skip = 200
+  elif dom == 'caribbean':
+    skip = 40
+  barblength = 3.5
   clevs = [5,12.5,20,27.5,35,42.5,50,57.5,65,72.5,80]
   colorlist = ['turquoise','dodgerblue','blue','#FFF68F','#E3CF57','peru','brown','red','fuchsia','DarkViolet']
   cm = matplotlib.colors.ListedColormap(colorlist)
@@ -543,8 +555,11 @@ def plot_set_5():
     print(('Working on Max Hourly 10-m Wind Speed for '+dom))
 
     units = 'kts'
-    skip = 200
-    barblength = 3
+    if dom == 'namerica':
+      skip = 200
+    elif dom == 'caribbean':
+      skip = 40
+    barblength = 3.5
     clevs = [5,10,15,20,25,30,35,40,45,50,55,60]
     colorlist = ['turquoise','dodgerblue','blue','#FFF68F','#E3CF57','peru','brown','crimson','red','fuchsia','DarkViolet']
     cm = matplotlib.colors.ListedColormap(colorlist)
@@ -670,8 +685,11 @@ def plot_set_8():
   print(('Working on slp for '+dom))
 
   units = 'mb'
-  skip = 200
-  barblength = 3
+  if dom == 'namerica':
+    skip = 200
+  elif dom == 'caribbean':
+    skip = 40
+  barblength = 3.5
   clevs = [940,944,948,952,956,960,964,968,972,976,980,984,988,992,996,1000,1004,1008,1012,1016,1020,1024,1028,1032,1036,1040,1044,1048,1052,1056,1060]
   cm = plt.cm.Spectral_r
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
@@ -705,15 +723,17 @@ def plot_set_8():
   rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
 
   units = '\xb0''F'
-  clevs = np.linspace(-46,134,31)
-#  clevs = np.linspace(-28,116,25)
+  if dom == 'namerica':
+    clevs = np.linspace(-46,134,31)
+  elif dom == 'caribbean':
+    clevs = np.linspace(23,104,28)
   cm = rrfs_plot_utils.cmap_t2m()
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
   cs_1 = ax1.contourf(lon,lat,tmp2m_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
   cs_1.cmap.set_under('white')
   cs_1.cmap.set_over('white')
-  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,ticks=[-40,-28,-16,-4,8,20,32,44,56,68,80,92,104,116,128],extend='both')
+  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,extend='both')
   cbar1.set_label(units,fontsize=6)
   cbar1.ax.tick_params(labelsize=5)
   ax1.text(.5,1.03,'RRFS_A 2-m Temperature ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
@@ -736,12 +756,15 @@ def plot_set_8():
   rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
 
   units = '\xb0''F'
-  clevs = np.linspace(-45,80,26)
+  if dom == 'namerica':
+    clevs = np.linspace(-40,85,26)
+  elif dom == 'caribbean':
+    clevs = np.linspace(-5,85,19)
   cm = rrfs_plot_utils.cmap_q2m()
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
   cs_1 = ax1.contourf(lon,lat,dew2m_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
-  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,ticks=[-40,-30,-20,-10,0,10,20,30,40,50,60,70,80],extend='both')
+  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,extend='both')
   cbar1.set_label(units,fontsize=6)
   cbar1.ax.tick_params(labelsize=6)
   ax1.text(.5,1.03,'RRFS_A 2-m Dew Point Temperature ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
@@ -795,8 +818,11 @@ def plot_set_8():
   rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
 
   units = 'K'
-  skip = 200
-  barblength = 3
+  if dom == 'namerica':
+    skip = 200
+  elif dom == 'caribbean':
+    skip = 40
+  barblength = 3.5
   clevs = np.linspace(240,360,21)
   cm = rrfs_plot_utils.cmap_t850()
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
@@ -943,8 +969,8 @@ def plot_set_9():
   print(('Working on PW for '+dom))
 
   units = 'in'
-  clevs = [0.1,0.25,0.5,0.75,1,1.25,1.5,1.75,2,2.25]
-  colorlist = ['lightsalmon','khaki','palegreen','cyan','turquoise','cornflowerblue','mediumslateblue','darkorchid','deeppink']
+  clevs = [0.1,0.25,0.5,0.75,1,1.25,1.5,1.75,2,2.25,2.5]
+  colorlist = ['lightsalmon','khaki','palegreen','cyan','turquoise','cornflowerblue','mediumslateblue','darkorchid','deeppink','hotpink']
   cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
@@ -1599,7 +1625,7 @@ def plot_set_13():
   cbar1.ax.tick_params(labelsize=6)
   ax1.text(.5,1.03,'RRFS_A Near-Surface Smoke ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
   rrfs_plot_utils.compress_and_save('comparesmoke_'+dom+'_f'+fhour+'.png')
   t2 = time.perf_counter()
@@ -1630,7 +1656,7 @@ def plot_set_13():
   cbar1.ax.tick_params(labelsize=6)
   ax1.text(.5,1.03,'RRFS_A Vertically Integrated Smoke ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
   rrfs_plot_utils.compress_and_save('comparecolsmoke_'+dom+'_f'+fhour+'.png')
   t2 = time.perf_counter()
@@ -1657,7 +1683,7 @@ def plot_set_13():
   cbar1.ax.tick_params(labelsize=6)
   ax1.text(.5,1.03,'RRFS_A Near-Surface Dust ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
   rrfs_plot_utils.compress_and_save('comparedust_'+dom+'_f'+fhour+'.png')
   t2 = time.perf_counter()
@@ -1688,7 +1714,7 @@ def plot_set_13():
   cbar1.ax.tick_params(labelsize=6)
   ax1.text(.5,1.03,'RRFS_A Vertically Integrated Dust ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
   rrfs_plot_utils.compress_and_save('comparecoldust_'+dom+'_f'+fhour+'.png')
   t2 = time.perf_counter()

@@ -50,7 +50,7 @@ RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.6.5/prod/rrfs.'+ymd+'/'+cyc
 # Specify plotting domains
 domset = str(sys.argv[3])
 if domset == 'conus':
-  domains = ['conus','boston_nyc','central','colorado','la_vegas','mid_atlantic','north_central','northeast','northwest','ohio_valley','south_central','southeast','sf_bay_area','seattle_portland','southwest','upper_midwest']
+  domains = ['conus','boston_nyc','central','colorado','la_vegas','mid_atlantic','north_central','northeast','northwest','ohio_valley','south_central','southeast','south_florida','sf_bay_area','seattle_portland','southwest','upper_midwest']
 elif domset == 'oconus':
   domains = ['alaska']
 
@@ -680,7 +680,7 @@ def plot_set_1():
     skip = 100
   elif dom == 'southeast' or dom == 'alaska':
     skip = 40
-  elif dom == 'colorado' or dom == 'la_vegas' or dom =='mid_atlantic':
+  elif dom == 'colorado' or dom == 'la_vegas' or dom =='mid_atlantic' or dom == 'south_florida':
     skip = 18
   elif dom == 'boston_nyc':
     skip = 15
@@ -921,7 +921,7 @@ def plot_set_1():
     skip = 80
   elif dom == 'southeast':
     skip = 35
-  elif dom == 'colorado' or dom == 'la_vegas' or dom =='mid_atlantic':
+  elif dom == 'colorado' or dom == 'la_vegas' or dom =='mid_atlantic' or dom == 'south_florida':
     skip = 12
   elif dom == 'boston_nyc':
     skip = 10
@@ -1264,7 +1264,7 @@ def plot_set_1():
     skip = 100
   elif dom == 'southeast' or dom == 'alaska':
     skip = 40
-  elif dom == 'colorado' or dom == 'la_vegas' or dom == 'mid_atlantic':
+  elif dom == 'colorado' or dom == 'la_vegas' or dom == 'mid_atlantic' or dom == 'south_florida':
     skip = 18
   elif dom == 'boston_nyc':
     skip = 15

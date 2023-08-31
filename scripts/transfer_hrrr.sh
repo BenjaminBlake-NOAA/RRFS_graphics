@@ -86,6 +86,7 @@ rsync -t *northwest*.png bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdoc
 rsync -t *ohio_valley*.png bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/users/emc.campara/rrfs/cyc/hrrr/images/
 rsync -t *south_central*.png bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/users/emc.campara/rrfs/cyc/hrrr/images/
 rsync -t *southeast*.png bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/users/emc.campara/rrfs/cyc/hrrr/images/
+rsync -t *south_florida*.png bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/users/emc.campara/rrfs/cyc/hrrr/images/
 rsync -t *sf_bay_area*.png bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/users/emc.campara/rrfs/cyc/hrrr/images/
 rsync -t *seattle_portland*.png bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/users/emc.campara/rrfs/cyc/hrrr/images/
 rsync -t *southwest*.png bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/users/emc.campara/rrfs/cyc/hrrr/images/

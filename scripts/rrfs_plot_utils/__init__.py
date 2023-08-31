@@ -315,7 +315,7 @@ def ncl_grnd_hflux():
 def domain_latlons_proj(dom):
 #  These are the available pre-defined domains:
 #  
-#  namerica, alaska, hawaii, puerto rico,
+#  namerica, caribbean, alaska, hawaii, puerto rico,
 #  conus, northeast, mid_atlantic, southeast, ohio_valley,
 #  upper_midwest, north_central, central, south_central,
 #  northwest, southwest, colorado, boston_nyc,
@@ -332,6 +332,16 @@ def domain_latlons_proj(dom):
     xextent = -3700000
     yextent = -2500000
     offset = 1
+  elif dom == 'caribbean':
+    llcrnrlon = -89.0
+    llcrnrlat = 15.1
+    urcrnrlon = -60.5
+    urcrnrlat = 29.5
+    cen_lat = 25.0
+    cen_lon = -82.0
+    xextent=-300000
+    yextent=-725000
+    offset=0.25
   elif dom == 'alaska':
     llcrnrlon = -167.5
     llcrnrlat = 50.5
@@ -402,6 +412,16 @@ def domain_latlons_proj(dom):
     cen_lon = -89.0
     xextent=-12438
     yextent=-448648
+    offset=0.25
+  elif dom == 'south_florida':
+    llcrnrlon = -84.0
+    llcrnrlat = 23.0
+    urcrnrlon = -77
+    urcrnrlat = 28.0
+    cen_lat = 24.0
+    cen_lon = -81.0
+    xextent=-206000
+    yextent=-6000
     offset=0.25
   elif dom == 'ohio_valley':
     llcrnrlon = -91.5

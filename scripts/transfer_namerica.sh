@@ -74,6 +74,7 @@ ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campa
 
 # Copy images from WCOSS to emcrzdm
 rsync -t *namerica*.png bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/users/emc.campara/rrfs/cyc/namerica/images/
+rsync -t *caribbean*.png bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/users/emc.campara/rrfs/cyc/namerica/images/
 
 date
 
