@@ -46,7 +46,7 @@ vtime_list = [rrfs_plot_utils.ndate(itime,int(x)) for x in fhrs]
 
 # Define the directory paths to the output files
 NAM_DIR = '/lfs/h1/ops/prod/com/nam/v4.2/nam.'+ymd
-RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.6.5/prod/rrfs.'+ymd+'/'+cyc
+RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.6.7/prod/rrfs.'+ymd+'/'+cyc
 
 # Define prod and para strings
 prod_str = 'NAM Nest'

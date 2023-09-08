@@ -45,7 +45,7 @@ vtime = rrfs_plot_utils.ndate(itime,int(fhr))
 # Define the directory paths to the output files
 HRRR_DIR = '/lfs/h1/ops/prod/com/hrrr/v4.1/hrrr.'+ymd+'/conus'
 HRRR_AK_DIR = '/lfs/h2/emc/stmp/Benjamin.Blake/3panel_hrrr/'+ymd+'/'+cyc
-RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.6.5/prod/rrfs.'+ymd+'/'+cyc
+RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.6.7/prod/rrfs.'+ymd+'/'+cyc
 
 # Specify plotting domains
 domset = str(sys.argv[3])
@@ -3375,7 +3375,8 @@ def plot_set_3():
     rrfs_plot_utils.clear_plotables(ax3,keep_ax_lst_3,fig)
 
     units = 'kts'
-    clevs = [5,10,15,20,25,30,35,40,45,50,55,60]
+#    clevs = [5,10,15,20,25,30,35,40,45,50,55,60]
+    clevs = [10,20,30,40,50,60,70,80,90,100,110,120]
     clevsdif = [-12,-10,-8,-6,-4,-2,0,2,4,6,8,10,12]
     colorlist = ['turquoise','dodgerblue','blue','#FFF68F','#E3CF57','peru','brown','crimson','red','fuchsia','DarkViolet']
     cm = matplotlib.colors.ListedColormap(colorlist)

@@ -43,7 +43,7 @@ itime = ymdh
 vtime = rrfs_plot_utils.ndate(itime,int(fhr))
 
 # Define the directory paths to the input files
-RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.6.5/prod/rrfs.'+ymd+'/'+cyc
+RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.6.7/prod/rrfs.'+ymd+'/'+cyc
 
 # Define the input files
 data1 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.grib2')
@@ -560,7 +560,8 @@ def plot_set_5():
     elif dom == 'caribbean':
       skip = 40
     barblength = 3.5
-    clevs = [5,10,15,20,25,30,35,40,45,50,55,60]
+#    clevs = [5,10,15,20,25,30,35,40,45,50,55,60]
+    clevs = [10,20,30,40,50,60,70,80,90,100,110,120]
     colorlist = ['turquoise','dodgerblue','blue','#FFF68F','#E3CF57','peru','brown','crimson','red','fuchsia','DarkViolet']
     cm = matplotlib.colors.ListedColormap(colorlist)
     norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
