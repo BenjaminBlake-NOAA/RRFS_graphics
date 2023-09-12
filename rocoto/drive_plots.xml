@@ -5,8 +5,9 @@
  <!ENTITY LOG_DIR "/lfs/h2/emc/ptmp/Benjamin.Blake/logs_rrfs_graphics">
  <!ENTITY COMnam "/lfs/h1/ops/prod/com/nam/v4.2">
  <!ENTITY COMhrrr "/lfs/h1/ops/prod/com/hrrr/v4.1">
- <!ENTITY COMRRFS_A "/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.6.5/prod">
+ <!ENTITY COMRRFS_A "/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.6.7/prod">
  <!ENTITY COMRRFS_FW "/lfs/h2/emc/ptmp/emc.lam/para/com/rrfsfw/v1.0.0">
+ <!ENTITY OBSDIAG "/lfs/h2/emc/ptmp/donald.e.lippi/rrfs_a_diags/figs">
 
  <!ENTITY USER "Benjamin.Blake">
  <!ENTITY ACCOUNT "RRFS-DEV">
@@ -26,7 +27,8 @@
 
 <workflow realtime="T" scheduler="pbspro" cyclelifespan="00:15:00:00" cyclethrottle="4" taskthrottle="40">
 
-  <cycledef group="prod">202308281200 202312311200 12:00:00</cycledef>
+  <cycledef group="prod">202309010000 202312311200 06:00:00</cycledef>
+  <cycledef group="daily">202309120000 202312310000 24:00:00</cycledef>
  
   <log verbosity="10"><cyclestr>&LOG_DIR;/workflow_@Y@m@d@H.log</cyclestr></log> 
 
@@ -449,6 +451,33 @@
         <taskdep task="qpfsnowfall_nam_alaska"/>
         <taskdep task="transfer_nam"/>
         <taskdep task="transfer_hrrr"/>
+      </and>
+    </dependency>
+
+  </task>
+
+  <task name="transfer_obsdiag" maxtries="1" cycledefs="daily">
+    &RESERVATION_TRANSFER;
+    &TRANSFER_RESOURCES;
+
+    <command>bash &HOMEDIR;/scripts/transfer_obsdiag.sh</command>
+    <nodes> 1:ppn=1 </nodes>
+    <join><cyclestr>&LOG_DIR;/transfer_obsdiag_@Y@m@d.log</cyclestr></join>
+    <jobname>transfer_obsdiag</jobname>
+
+    <envar><name>USER</name><value>&USER;</value></envar>
+    <envar><name>PDYm1</name><value><cyclestr offset="-24:00:00">@Y@m@d</cyclestr></value></envar>
+    <envar><name>yyyy</name><value><cyclestr offset="-24:00:00">@Y</cyclestr></value></envar>
+    <envar><name>mm</name><value><cyclestr offset="-24:00:00">@m</cyclestr></value></envar>
+    <envar><name>dd</name><value><cyclestr offset="-24:00:00">@d</cyclestr></value></envar>
+
+    <dependency>
+      <and>
+        <datadep age="10:00"><cyclestr offset="-24:00:00">&OBSDIAG;/@Y/@m/@d/obs_diag_enkf_profiles.png</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr offset="-24:00:00">&OBSDIAG;/@Y/@m/@d/obs_diag_enkf_q.png</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr offset="-24:00:00">&OBSDIAG;/@Y/@m/@d/obs_diag_enkf_t.png</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr offset="-24:00:00">&OBSDIAG;/@Y/@m/@d/obs_diag_enkf_u.png</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr offset="-24:00:00">&OBSDIAG;/@Y/@m/@d/obs_diag_enkf_v.png</cyclestr></datadep>
       </and>
     </dependency>
 
