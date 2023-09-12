@@ -108,9 +108,10 @@ slp_2 = data2.select(shortName='MSLET',level='mean sea level')[0].data * 0.01
 slp_dif = slp_2 - slp_1
 
 # 1-h accumulated precipitation
-qpf1_1 = data1.select(shortName='APCP',timeRangeOfStatisticalProcess=1)[0].data * 0.0393701
-qpf1_2 = data2.select(shortName='APCP',timeRangeOfStatisticalProcess=1)[0].data * 0.0393701
-qpf1_dif = qpf1_2 - qpf1_1
+if (fhr > 0):
+  qpf1_1 = data1.select(shortName='APCP',timeRangeOfStatisticalProcess=1)[0].data * 0.0393701
+  qpf1_2 = data2.select(shortName='APCP',timeRangeOfStatisticalProcess=1)[0].data * 0.0393701
+  qpf1_dif = qpf1_2 - qpf1_1
 
 # 2-m temperature
 tmp2m_1 = data1.select(shortName='TMP',level='2 m above ground')[0].data
