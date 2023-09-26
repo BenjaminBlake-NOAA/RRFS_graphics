@@ -443,14 +443,17 @@ def create_figure():
      ax2.imshow(img, origin='upper', transform=transform)
      ax3.imshow(img, origin='upper', transform=transform)
 
+  ax1.add_feature(cfeature.LAND, linewidth=0, facecolor='lightgray')
   ax1.add_feature(COUNTIES, facecolor='none',edgecolor='gray')
   ax1.add_feature(lakes)
   ax1.add_feature(states)
   ax1.add_feature(coastline)
+  ax2.add_feature(cfeature.LAND, linewidth=0, facecolor='lightgray')
   ax2.add_feature(COUNTIES, facecolor='none',edgecolor='gray')
   ax2.add_feature(lakes)
   ax2.add_feature(states)
   ax2.add_feature(coastline)
+  ax3.add_feature(cfeature.LAND, linewidth=0, facecolor='lightgray')
   ax3.add_feature(COUNTIES, facecolor='none',edgecolor='gray')
   ax3.add_feature(lakes)
   ax3.add_feature(states)
@@ -546,7 +549,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFSFW - NAMFW SLP ('+units+') and 10-m Winds (kts) \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compareslp_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('compareslp_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot slp for: '+dom) % t3)
@@ -600,7 +603,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFSFW - NAMFW 2-m Temperature ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2')) 
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compare2mt_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('compare2mt_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot 2mt for: '+dom) % t3)
@@ -654,7 +657,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFSFW - NAMFW Surface Temperature ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2')) 
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparetsfc_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparetsfc_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot tsfc for: '+dom) % t3)
@@ -704,7 +707,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFSFW - NAMFW 2-m Dew Point Temperature ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compare2mdew_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('compare2mdew_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot 2mdew for: '+dom) % t3)
@@ -755,7 +758,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFSFW - NAMFW 2-m RH ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compare2mrh_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('compare2mrh_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot 2m RH for: '+dom) % t3)
@@ -816,7 +819,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFSFW - NAMFW 10-m Wind Speed (kts) \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))       
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compare10mwind_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('compare10mwind_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot 10mwspd for: '+dom) % t3)
@@ -873,7 +876,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFSFW - NAMFW Terrain Height ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compareterra_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('compareterra_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot Terrain for: '+dom) % t3)
@@ -928,7 +931,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFSFW - NAMFW Surface Wind Gust ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparegust_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparegust_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot surface wind gust for: '+dom) % t3)
@@ -986,7 +989,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFSFW - NAMFW Most Unstable CAPE ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparemucape_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparemucape_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot mucapecin for: '+dom) % t3)
@@ -1047,7 +1050,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFSFW - NAMFW 925 mb Heights (dam) \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compare925_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('compare925_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot 925 mb Hgt/Wind for: '+dom) % t3)
@@ -1103,7 +1106,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFSFW - NAMFW 850 mb $\Theta$e ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compare850t_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('compare850t_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot 850 mb Theta-e for: '+dom) % t3)
@@ -1163,7 +1166,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFSFW - NAMFW 700 mb RH ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compare700_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('compare700_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot 700 mb $\omega$ and RH for: '+dom) % t3)
@@ -1224,7 +1227,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFSFW - NAMFW 500 mb Heights (dam) \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compare500_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('compare500_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot 500 mb Hgt/Wind/Vort for: '+dom) % t3)
@@ -1281,7 +1284,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFSFW - NAMFW 250 mb Winds ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compare250wind_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('compare250wind_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot 250 mb WIND for: '+dom) % t3)
@@ -1336,7 +1339,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFSFW - NAMFW Precipitable Water ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparepw_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparepw_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot PW for: '+dom) % t3)
@@ -1389,7 +1392,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFSFW - NAMFW Percent of Frozen Precipitaion ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparepofp_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparepofp_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot PERCENT FROZEN PRECIP for: '+dom) % t3)
@@ -1445,7 +1448,7 @@ def plot_set_1():
 #  ax3.text(.5,1.03,'RRFSFW - NAMFW '+fhour+'-hr Accumulated Precipitation ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
 #  ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-#  rrfs_plot_utils.compress_and_save('compareqpf_'+dom+'_f'+fhour+'.png')
+#  rrfs_plot_utils.convert_and_save('compareqpf_'+dom+'_f'+fhour)
 #  t2 = time.perf_counter()
 #  t3 = round(t2-t1, 3)
 #  print(('%.3f seconds to plot qpf for: '+dom) % t3)
@@ -1503,7 +1506,7 @@ def plot_set_1():
     ax3.text(.5,1.03,'RRFSFW - NAMFW 1-hr Accumulated Precipitation ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))         
     ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-    rrfs_plot_utils.compress_and_save('compareqpf1_'+dom+'_f'+fhour+'.png')
+    rrfs_plot_utils.convert_and_save('compareqpf1_'+dom+'_f'+fhour)
     t2 = time.perf_counter()
     t3 = round(t2-t1, 3)
     print(('%.3f seconds to plot 1-h accumulated precip for: '+dom) % t3)
@@ -1557,7 +1560,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFSFW - NAMFW Snow Depth ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))         
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparesnow_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparesnow_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot snow depth for: '+dom) % t3)
@@ -1615,7 +1618,7 @@ def plot_set_1():
     ax3.text(.5,1.03,'RRFSFW - NAMFW Snow Depth from f00 ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-    rrfs_plot_utils.compress_and_save('comparesnow0_'+dom+'_f'+fhour+'.png')
+    rrfs_plot_utils.convert_and_save('comparesnow0_'+dom+'_f'+fhour)
     t2 = time.perf_counter()
     t3 = round(t2-t1, 3)
     print(('%.3f seconds to plot snow depth from f00 for: '+dom) % t3)
@@ -1669,7 +1672,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFSFW - NAMFW Snowfall ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))         
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compareweasd_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('compareweasd_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot snowfall for: '+dom) % t3)
@@ -1724,7 +1727,7 @@ def plot_set_1():
     ax3.text(.5,1.03,'RRFSFW - NAMFW 1-h Snowfall ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-    rrfs_plot_utils.compress_and_save('compareweasd1_'+dom+'_f'+fhour+'.png')
+    rrfs_plot_utils.convert_and_save('compareweasd1_'+dom+'_f'+fhour)
     t2 = time.perf_counter()
     t3 = round(t2-t1, 3)
     print(('%.3f seconds to plot 1-h WEASD for: '+dom) % t3)
@@ -1793,7 +1796,7 @@ def plot_set_2():
   ax3.text(.5,1.03,'RRFSFW - NAMFW PBL Height ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparehpbl_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparehpbl_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot PBL height for: '+dom) % t3)
@@ -1848,7 +1851,7 @@ def plot_set_2():
   ax3.text(.5,1.03,'RRFSFW - NAMFW PBL Height ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparehgtpbl_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparehgtpbl_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot PBL height for: '+dom) % t3)
@@ -1903,7 +1906,7 @@ def plot_set_2():
   ax3.text(.5,1.03,'RRFSFW - NAMFW Total Column Condensate ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparecond_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparecond_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot Total condensate for: '+dom) % t3)
@@ -1955,8 +1958,8 @@ def plot_set_2():
   ax3.text(.5,1.03,'NAMFW (red), RRFSFW (blue), Both (purple) \n 1-km Reflectivity > 20 ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=5,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  plt.savefig('compareref1km_'+dom+'_f'+fhour+'.png', format='png', bbox_inches='tight', dpi=300)
-#  rrfs_plot_utils.compress_and_save('compareref1km_'+dom+'_f'+fhour+'.png')
+#  plt.savefig('compareref1km_'+dom+'_f'+fhour, format='png', bbox_inches='tight', dpi=300)
+  rrfs_plot_utils.convert_and_save('compareref1km_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot 1-km reflectivity for: '+dom) % t3)
@@ -2007,8 +2010,8 @@ def plot_set_2():
   ax3.text(.5,1.03,'NAMFW (red), RRFSFW (blue), Both (purple) \n Composite Reflectivity > 20 ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=5,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  plt.savefig('comparerefc_'+dom+'_f'+fhour+'.png', format='png', bbox_inches='tight', dpi=300)
-#  rrfs_plot_utils.compress_and_save('comparerefc_'+dom+'_f'+fhour+'.png')
+#  plt.savefig('comparerefc_'+dom+'_f'+fhour, format='png', bbox_inches='tight', dpi=300)
+  rrfs_plot_utils.convert_and_save('comparerefc_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot composite reflectivity for: '+dom) % t3)
@@ -2061,7 +2064,7 @@ def plot_set_2():
     ax3.text(.5,1.03,'RRFSFW - NAMFW 1-h Max 2-5 km Updraft Helicity ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=5,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-    rrfs_plot_utils.compress_and_save('compareuh25_'+dom+'_f'+fhour+'.png')
+    rrfs_plot_utils.convert_and_save('compareuh25_'+dom+'_f'+fhour)
     t2 = time.perf_counter()
     t3 = round(t2-t1, 3)
     print(('%.3f seconds to plot Max Hourly 2-5 km UH for: '+dom) % t3)
@@ -2118,7 +2121,7 @@ def plot_set_2():
     ax3.text(.5,1.03,'RRFSFW - NAMFW 1-h Max 100-1000 mb Updraft Speed ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=5,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-    rrfs_plot_utils.compress_and_save('comparemaxuvv_'+dom+'_f'+fhour+'.png')
+    rrfs_plot_utils.convert_and_save('comparemaxuvv_'+dom+'_f'+fhour)
     t2 = time.perf_counter()
     t3 = round(t2-t1, 3)
     print(('%.3f seconds to plot Max Hourly Updraft Speed for: '+dom) % t3)
@@ -2175,7 +2178,7 @@ def plot_set_2():
     ax3.text(.5,1.03,'RRFSFW - NAMFW 1-h Max 100-1000 mb Downdraft Speed ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=5,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-    rrfs_plot_utils.compress_and_save('comparemaxdvv_'+dom+'_f'+fhour+'.png')
+    rrfs_plot_utils.convert_and_save('comparemaxdvv_'+dom+'_f'+fhour)
     t2 = time.perf_counter()
     t3 = round(t2-t1, 3)
     print(('%.3f seconds to plot Max Hourly Downdraft Speed for: '+dom) % t3)
@@ -2226,7 +2229,7 @@ def plot_set_2():
     ax3.text(.5,1.03,'NAMFW (red), RRFSFW (blue), Both (purple) \n 1-h Max 1-km Reflectivity > 20 ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=5,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-    rrfs_plot_utils.compress_and_save('comparemaxref1km_'+dom+'_f'+fhour+'.png')
+    rrfs_plot_utils.convert_and_save('comparemaxref1km_'+dom+'_f'+fhour)
     t2 = time.perf_counter()
     t3 = round(t2-t1, 3)
     print(('%.3f seconds to plot Max Hourly 1-km Reflectivity for: '+dom) % t3)
@@ -2280,7 +2283,7 @@ def plot_set_2():
     ax3.text(.5,1.03,'RRFSFW - NAMFW 1-h Max 10-m Winds ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-    rrfs_plot_utils.compress_and_save('comparemaxwind_'+dom+'_f'+fhour+'.png')
+    rrfs_plot_utils.convert_and_save('comparemaxwind_'+dom+'_f'+fhour)
     t2 = time.perf_counter()
     t3 = round(t2-t1, 3)
     print(('%.3f seconds to plot Max Hourly 10-m Wind Speed for: '+dom) % t3)
@@ -2337,7 +2340,7 @@ def plot_set_2():
     ax3.text(.5,1.03,'RRFSFW - NAMFW 1-h Min 2-m RH ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-    rrfs_plot_utils.compress_and_save('compareminrh_'+dom+'_f'+fhour+'.png')
+    rrfs_plot_utils.convert_and_save('compareminrh_'+dom+'_f'+fhour)
     t2 = time.perf_counter()
     t3 = round(t2-t1, 3)
     print(('%.3f seconds to plot Min Hourly 2m RH for: '+dom) % t3)
@@ -2388,7 +2391,7 @@ def plot_set_2():
   ax3.text(.5,1.03,'RRFSFW - NAMFW Haines Index \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparehindex_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparehindex_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot Haines Index for: '+dom) % t3)
@@ -2448,7 +2451,7 @@ def plot_set_2():
   ax3.text(.5,1.03,'RRFSFW - NAMFW Transport Wind ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparetrans_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparetrans_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot transport wind for: '+dom) % t3)
@@ -2503,7 +2506,7 @@ def plot_set_2():
   ax3.text(.5,1.03,'RRFSFW - NAMFW Ventilation Rate ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparevrate_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparevrate_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot ventilation rate for: '+dom) % t3)

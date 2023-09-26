@@ -585,7 +585,7 @@ def vars_figure(domain):
   # Define where Cartopy maps are located
   cartopy.config['data_dir'] = '/lfs/h2/emc/lam/noscrub/Benjamin.Blake/python/NaturalEarth'
   back_res='50m'
-  back_img='on'
+  back_img='off'
 
   ax1 = fig.add_subplot(gs[0:4,0:4], projection=myproj)
   ax2 = fig.add_subplot(gs[0:4,4:], projection=myproj)
@@ -623,12 +623,15 @@ def vars_figure(domain):
      ax2.imshow(img, origin='upper', transform=transform)
      ax3.imshow(img, origin='upper', transform=transform)
 
+  ax1.add_feature(cfeature.LAND, linewidth=0, facecolor='lightgray')
   ax1.add_feature(lakes)
   ax1.add_feature(states)
   ax1.add_feature(coastline)
+  ax2.add_feature(cfeature.LAND, linewidth=0, facecolor='lightgray')
   ax2.add_feature(lakes)
   ax2.add_feature(states)
   ax2.add_feature(coastline)
+  ax3.add_feature(cfeature.LAND, linewidth=0, facecolor='lightgray')
   ax3.add_feature(lakes)
   ax3.add_feature(states)
   ax3.add_feature(coastline)
@@ -739,7 +742,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFS_A - HRRR SLP ('+units+') and 10-m Winds (kts) \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compareslp_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('compareslp_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot slp for: '+dom) % t3)
@@ -796,7 +799,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFS_A - HRRR 2-m Temperature ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2')) 
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compare2mt_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('compare2mt_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot 2mt for: '+dom) % t3)
@@ -843,7 +846,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFS_A - HRRR Surface Temperature ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))       
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparetsfc_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparetsfc_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot tsfc for: '+dom) % t3)
@@ -896,7 +899,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFS_A - HRRR 2-m Dew Point Temperature ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compare2mdew_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('compare2mdew_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot 2mdew for: '+dom) % t3)
@@ -971,7 +974,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFS_A - HRRR 10-m Wind Speed (kts) \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))       
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compare10mwind_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('compare10mwind_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot 10mwspd for: '+dom) % t3)
@@ -1028,7 +1031,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFS_A - HRRR Terrain Height ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compareterra_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('compareterra_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot Terrain for: '+dom) % t3)
@@ -1083,7 +1086,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFS_A - HRRR Surface Wind Gust ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparegust_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparegust_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot surface wind gust for: '+dom) % t3)
@@ -1141,7 +1144,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFS_A - HRRR Most Unstable CAPE ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparemucape_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparemucape_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot mucapecin for: '+dom) % t3)
@@ -1190,7 +1193,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFS_A - HRRR Surface-Based CAPE ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparesfcape_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparesfcape_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot sfcapecin for: '+dom) % t3)
@@ -1239,7 +1242,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFS_A - HRRR Mixed Layer CAPE ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparemlcape_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparemlcape_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot mlcapecin for: '+dom) % t3)
@@ -1315,7 +1318,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFS_A - HRRR 850 mb $\Theta$e ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compare850t_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('compare850t_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot 850 mb Theta-e for: '+dom) % t3)
@@ -1375,7 +1378,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFS_A - HRRR 700 mb RH ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compare700_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('compare700_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot 700 mb $\omega$ and RH for: '+dom) % t3)
@@ -1436,7 +1439,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFS_A - HRRR 500 mb Heights (dam) \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compare500_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('compare500_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot 500 mb Hgt/Wind/Vort for: '+dom) % t3)
@@ -1493,7 +1496,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFS_A - HRRR 250 mb Winds ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compare250wind_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('compare250wind_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot 250 mb WIND for: '+dom) % t3)
@@ -1550,7 +1553,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFS_A - HRRR Surface Visibility ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparevis_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparevis_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot Surface Visibility for: '+dom) % t3)
@@ -1607,7 +1610,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFS_A - HRRR Cloud Base Height ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparezbase_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparezbase_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot Cloud Base Height for: '+dom) % t3)
@@ -1662,7 +1665,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFS_A - HRRR Cloud Ceiling Height ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparezceil_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparezceil_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot Cloud Ceiling Height for: '+dom) % t3)
@@ -1717,7 +1720,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFS_A - HRRR Cloud Top Height ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compareztop_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('compareztop_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot Cloud Top Height for: '+dom) % t3)
@@ -1772,7 +1775,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFS_A - HRRR Precipitable Water ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparepw_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparepw_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot PW for: '+dom) % t3)
@@ -1825,7 +1828,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFS_A - HRRR Percent of Frozen Precipitaion ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparepofp_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparepofp_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot PERCENT FROZEN PRECIP for: '+dom) % t3)
@@ -1882,7 +1885,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFS_A - HRRR '+fhour+'-hr Accumulated Precipitation ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compareqpf_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('compareqpf_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot qpf for: '+dom) % t3)
@@ -1939,7 +1942,7 @@ def plot_set_1():
 #    ax3.text(.5,1.03,'RRFS_A - HRRR 3-hr Accumulated Precipitation ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))         
 #    ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-#    rrfs_plot_utils.compress_and_save('compareqpf3_'+dom+'_f'+fhour+'.png')
+#    rrfs_plot_utils.convert_and_save('compareqpf3_'+dom+'_f'+fhour)
 #    t2 = time.perf_counter()
 #    t3 = round(t2-t1, 3)
 #    print(('%.3f seconds to plot qpf3 for: '+dom) % t3)
@@ -1993,7 +1996,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFS_A - HRRR Snow Depth ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))         
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparesnow_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparesnow_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot snow depth for: '+dom) % t3)
@@ -2051,7 +2054,7 @@ def plot_set_1():
     ax3.text(.5,1.03,'RRFS_A - HRRR Accumulated Snow Depth ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-    rrfs_plot_utils.compress_and_save('comparesnow0_'+dom+'_f'+fhour+'.png')
+    rrfs_plot_utils.convert_and_save('comparesnow0_'+dom+'_f'+fhour)
     t2 = time.perf_counter()
     t3 = round(t2-t1, 3)
     print(('%.3f seconds to plot snow depth for: '+dom) % t3)
@@ -2105,7 +2108,7 @@ def plot_set_1():
   ax3.text(.5,1.03,'RRFS_A - HRRR Snowfall ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))         
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compareasnow_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('compareasnow_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot snowfall for: '+dom) % t3)
@@ -2181,7 +2184,7 @@ def plot_set_2():
   ax3.text(.5,1.03,'RRFS_A - HRRR Lowest Mdl Lvl Cld Water ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compareclwmr_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('compareclwmr_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot lowest model level cloud water for: '+dom) % t3)
@@ -2236,7 +2239,7 @@ def plot_set_2():
   ax3.text(.5,1.03,'RRFS_A - HRRR Lowest Mdl Lvl Cld Ice ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compareicmr_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('compareicmr_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot lowest model level cloud ice for: '+dom) % t3)
@@ -2291,7 +2294,7 @@ def plot_set_2():
   ax3.text(.5,1.03,'RRFS_A - HRRR Lowest Mdl Lvl Rain ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparerwmr_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparerwmr_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot lowest model level rain for: '+dom) % t3)
@@ -2346,7 +2349,7 @@ def plot_set_2():
   ax3.text(.5,1.03,'RRFS_A - HRRR Lowest Mdl Lvl Snow ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparesnmr_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparesnmr_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot lowest model level snow for: '+dom) % t3)
@@ -2399,7 +2402,7 @@ def plot_set_2():
   ax3.text(.5,1.03,'RRFS_A - HRRR Surface Downward Shortwave Flux ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=5,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compareswdown_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('compareswdown_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot downward shortwave for: '+dom) % t3)
@@ -2450,7 +2453,7 @@ def plot_set_2():
   ax3.text(.5,1.03,'RRFS_A - HRRR Surface Upward Shortwave Flux ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=5,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compareswup_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('compareswup_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot upward shortwave for: '+dom) % t3)
@@ -2501,7 +2504,7 @@ def plot_set_2():
   ax3.text(.5,1.03,'RRFS_A - HRRR Surface Downward Longwave Flux ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=5,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparelwdown_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparelwdown_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot downward longwave for: '+dom) % t3)
@@ -2552,7 +2555,7 @@ def plot_set_2():
   ax3.text(.5,1.03,'RRFS_A - HRRR Surface Upward Longwave Flux ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=5,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparelwup_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparelwup_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot upward longwave for: '+dom) % t3)
@@ -2602,7 +2605,7 @@ def plot_set_2():
   ax3.text(.5,1.03,'RRFS_A - HRRR Ground Heat Flux ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparegdhfx_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparegdhfx_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot ground heat flux for: '+dom) % t3)
@@ -2652,7 +2655,7 @@ def plot_set_2():
   ax3.text(.5,1.03,'RRFS_A - HRRR Latent Heat Flux ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparelhfx_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparelhfx_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot latent heat flux for: '+dom) % t3)
@@ -2702,7 +2705,7 @@ def plot_set_2():
   ax3.text(.5,1.03,'RRFS_A - HRRR Sensible Heat Flux ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparesnhfx_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparesnhfx_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot sensible heat flux for: '+dom) % t3)
@@ -2757,7 +2760,7 @@ def plot_set_2():
   ax3.text(.5,1.03,'RRFS_A - HRRR PBL Height ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparehpbl_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparehpbl_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot PBL height for: '+dom) % t3)
@@ -2812,7 +2815,7 @@ def plot_set_2():
   ax3.text(.5,1.03,'RRFS_A - HRRR Total Column Cloud Water + Rain ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=5,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparetcolw_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparetcolw_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot Total column liquid for: '+dom) % t3)
@@ -2868,7 +2871,7 @@ def plot_set_2():
   ax3.text(.5,1.03,'RRFS_A - HRRR Vegetation Fraction ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compareveg_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('compareveg_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot vegetation fraction for: '+dom) % t3)
@@ -2923,7 +2926,7 @@ def plot_set_2():
   ax3.text(.5,1.03,'RRFS_A - HRRR 0-3 km Storm Relative Helicity ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=5,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparehel3km_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparehel3km_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot 0-3 km SRH for: '+dom) % t3)
@@ -2971,7 +2974,7 @@ def plot_set_2():
   ax3.text(.5,1.03,'RRFS_A - HRRR 0-1 km Storm Relative Helicity ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=5,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparehel1km_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparehel1km_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot 0-1 km SRH for: '+dom) % t3)
@@ -3023,8 +3026,8 @@ def plot_set_2():
   ax3.text(.5,1.03,'HRRR (red), RRFS_A (blue), Both (purple) \n 1-km Reflectivity > 20 ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=5,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  plt.savefig('compareref1km_'+dom+'_f'+fhour+'.png', format='png', bbox_inches='tight', dpi=300)
-#  rrfs_plot_utils.compress_and_save('compareref1km_'+dom+'_f'+fhour+'.png')
+#  plt.savefig('compareref1km_'+dom+'_f'+fhour, format='png', bbox_inches='tight', dpi=300)
+  rrfs_plot_utils.convert_and_save('compareref1km_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot 1-km reflectivity for: '+dom) % t3)
@@ -3075,8 +3078,8 @@ def plot_set_2():
   ax3.text(.5,1.03,'HRRR (red), RRFS_A (blue), Both (purple) \n Composite Reflectivity > 20 ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=5,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  plt.savefig('comparerefc_'+dom+'_f'+fhour+'.png', format='png', bbox_inches='tight', dpi=300)
-#  rrfs_plot_utils.compress_and_save('comparerefc_'+dom+'_f'+fhour+'.png')
+#  plt.savefig('comparerefc_'+dom+'_f'+fhour, format='png', bbox_inches='tight', dpi=300)
+  rrfs_plot_utils.convert_and_save('comparerefc_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot composite reflectivity for: '+dom) % t3)
@@ -3143,7 +3146,7 @@ def plot_set_3():
     ax3.text(.5,1.03,'RRFS_A - HRRR 1-h Max/Min 2-5 km Updraft Helicity ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=5,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-    rrfs_plot_utils.compress_and_save('compareuh25_'+dom+'_f'+fhour+'.png')
+    rrfs_plot_utils.convert_and_save('compareuh25_'+dom+'_f'+fhour)
     t2 = time.perf_counter()
     t3 = round(t2-t1, 3)
     print(('%.3f seconds to plot Max Hourly 2-5 km UH for: '+dom) % t3)
@@ -3190,7 +3193,7 @@ def plot_set_3():
     ax3.text(.5,1.03,'RRFS_A - HRRR 1-h Max/Min 0-3 km Updraft Helicity ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=5,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-    rrfs_plot_utils.compress_and_save('compareuh03_'+dom+'_f'+fhour+'.png')
+    rrfs_plot_utils.convert_and_save('compareuh03_'+dom+'_f'+fhour)
     t2 = time.perf_counter()
     t3 = round(t2-t1, 3)
     print(('%.3f seconds to plot Max Hourly 0-3 km UH for: '+dom) % t3)
@@ -3247,7 +3250,7 @@ def plot_set_3():
     ax3.text(.5,1.03,'RRFS_A - HRRR 1-h Max 100-1000 mb Updraft Speed ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=5,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-    rrfs_plot_utils.compress_and_save('comparemaxuvv_'+dom+'_f'+fhour+'.png')
+    rrfs_plot_utils.convert_and_save('comparemaxuvv_'+dom+'_f'+fhour)
     t2 = time.perf_counter()
     t3 = round(t2-t1, 3)
     print(('%.3f seconds to plot Max Hourly Updraft Speed for: '+dom) % t3)
@@ -3304,7 +3307,7 @@ def plot_set_3():
     ax3.text(.5,1.03,'RRFS_A - HRRR 1-h Max 100-1000 mb Downdraft Speed ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=5,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-    rrfs_plot_utils.compress_and_save('comparemaxdvv_'+dom+'_f'+fhour+'.png')
+    rrfs_plot_utils.convert_and_save('comparemaxdvv_'+dom+'_f'+fhour)
     t2 = time.perf_counter()
     t3 = round(t2-t1, 3)
     print(('%.3f seconds to plot Max Hourly Downdraft Speed for: '+dom) % t3)
@@ -3356,7 +3359,7 @@ def plot_set_3():
     ax3.text(.5,1.03,'HRRR (red), RRFS_A (blue), Both (purple) \n 1-h Max 1-km Reflectivity > 20 ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=5,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-    rrfs_plot_utils.compress_and_save('comparemaxref1km_'+dom+'_f'+fhour+'.png')
+    rrfs_plot_utils.convert_and_save('comparemaxref1km_'+dom+'_f'+fhour)
     t2 = time.perf_counter()
     t3 = round(t2-t1, 3)
     print(('%.3f seconds to plot Max Hourly 1-km Reflectivity for: '+dom) % t3)
@@ -3411,7 +3414,7 @@ def plot_set_3():
     ax3.text(.5,1.03,'RRFS_A - HRRR 1-h Max 10-m Winds ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-    rrfs_plot_utils.compress_and_save('comparemaxwind_'+dom+'_f'+fhour+'.png')
+    rrfs_plot_utils.convert_and_save('comparemaxwind_'+dom+'_f'+fhour)
     t2 = time.perf_counter()
     t3 = round(t2-t1, 3)
     print(('%.3f seconds to plot Max Hourly 10-m Wind Speed for: '+dom) % t3)
@@ -3463,7 +3466,7 @@ def plot_set_3():
   ax3.text(.5,1.03,'RRFS_A - HRRR Total Cloud Cover ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparetcdc_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparetcdc_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot Total Cloud Cover for: '+dom) % t3)
@@ -3518,7 +3521,7 @@ def plot_set_3():
   ax3.text(.5,1.03,'RRFS_A - HRRR Echo Top Height ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compareretop_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('compareretop_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot Echo Top Height for: '+dom) % t3)
@@ -3575,7 +3578,7 @@ def plot_set_3():
   ax3.text(.5,1.03,'RRFS_A - HRRR Precipitation Rate ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compareprate_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('compareprate_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot Precipitation Rate for: '+dom) % t3)
@@ -3631,7 +3634,7 @@ def plot_set_3():
   ax3.text(.5,1.03,'RRFS_A - HRRR Near-Surface Smoke ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=5,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparesmoke_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparesmoke_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot near-surface smoke for: '+dom) % t3)
@@ -3684,7 +3687,7 @@ def plot_set_3():
   ax3.text(.5,1.03,'RRFS_A - HRRR Near-Surface Smoke ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=5,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparecolsmoke_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparecolsmoke_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot total column-integrated smoke for: '+dom) % t3)
@@ -3720,7 +3723,7 @@ def plot_set_3():
   ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparedust_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparedust_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot near-surface dust for: '+dom) % t3)
@@ -3751,7 +3754,7 @@ def plot_set_3():
   ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparecoldust_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparecoldust_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot total column-integrated dust for: '+dom) % t3)
@@ -3803,7 +3806,7 @@ def plot_set_3():
   ax3.text(.5,1.03,'RRFS_A - HRRR Pressure at Cloud Base ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparepbase_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparepbase_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot Cloud Base Pressure for: '+dom) % t3)
@@ -3838,7 +3841,7 @@ def plot_set_3():
   ax3.text(.5,1.03,'RRFS_A - HRRR Pressure at Cloud Top ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compareptop_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('compareptop_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot Cloud Top Pressure for: '+dom) % t3)
@@ -3901,7 +3904,7 @@ def plot_set_4():
   ax3.text(.5,1.03,'RRFS_A - HRRR 0 m Soil Temperature ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparetsoil_0_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparetsoil_0_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot soil temperature 0 m below ground for: '+dom) % t3)
@@ -3948,7 +3951,7 @@ def plot_set_4():
   ax3.text(.5,1.03,'RRFS_A - HRRR 0.01 m Soil Temperature ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparetsoil_0.01_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparetsoil_0.01_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot soil temperature 0.01 m below ground for: '+dom) % t3)
@@ -3995,7 +3998,7 @@ def plot_set_4():
   ax3.text(.5,1.03,'RRFS_A - HRRR 0.04 m Soil Temperature ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparetsoil_0.04_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparetsoil_0.04_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot soil temperature 0.04 m below ground for: '+dom) % t3)
@@ -4042,7 +4045,7 @@ def plot_set_4():
   ax3.text(.5,1.03,'RRFS_A - HRRR 0.1 m Soil Temperature ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparetsoil_0.1_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparetsoil_0.1_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot soil temperature 0.1 m below ground for: '+dom) % t3)
@@ -4089,7 +4092,7 @@ def plot_set_4():
   ax3.text(.5,1.03,'RRFS_A - HRRR 0.3 m Soil Temperature ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparetsoil_0.3_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparetsoil_0.3_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot soil temperature 0.3 m below ground for: '+dom) % t3)
@@ -4136,7 +4139,7 @@ def plot_set_4():
   ax3.text(.5,1.03,'RRFS_A - HRRR 0.6 m Soil Temperature ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparetsoil_0.6_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparetsoil_0.6_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot soil temperature 0.6 m below ground for: '+dom) % t3)
@@ -4183,7 +4186,7 @@ def plot_set_4():
   ax3.text(.5,1.03,'RRFS_A - HRRR 1 m Soil Temperature ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparetsoil_1_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparetsoil_1_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot soil temperature 1 m below ground for: '+dom) % t3)
@@ -4230,7 +4233,7 @@ def plot_set_4():
   ax3.text(.5,1.03,'RRFS_A - HRRR 1.6 m Soil Temperature ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparetsoil_1.6_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparetsoil_1.6_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot soil temperature 1.6 m below ground for: '+dom) % t3)
@@ -4277,7 +4280,7 @@ def plot_set_4():
   ax3.text(.5,1.03,'RRFS_A - HRRR 3 m Soil Temperature ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparetsoil_3_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparetsoil_3_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot soil temperature 3 m below ground for: '+dom) % t3)
@@ -4332,7 +4335,7 @@ def plot_set_4():
   ax3.text(.5,1.03,'RRFS_A - HRRR 0 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparesoilw_0_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparesoilw_0_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot soil moisture 0 m below ground for: '+dom) % t3)
@@ -4361,7 +4364,7 @@ def plot_set_4():
   ax3.text(.5,1.03,'RRFS_A - HRRR 0.01 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparesoilw_0.01_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparesoilw_0.01_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot soil moisture 0.01 m below ground for: '+dom) % t3)
@@ -4390,7 +4393,7 @@ def plot_set_4():
   ax3.text(.5,1.03,'RRFS_A - HRRR 0.04 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparesoilw_0.04_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparesoilw_0.04_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot soil moisture 0.04 m below ground for: '+dom) % t3)
@@ -4419,7 +4422,7 @@ def plot_set_4():
   ax3.text(.5,1.03,'RRFS_A - HRRR 0.1 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparesoilw_0.1_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparesoilw_0.1_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot soil moisture 0.1 m below ground for: '+dom) % t3)
@@ -4448,7 +4451,7 @@ def plot_set_4():
   ax3.text(.5,1.03,'RRFS_A - HRRR 0.3 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparesoilw_0.3_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparesoilw_0.3_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot soil moisture 0.3 m below ground for: '+dom) % t3)
@@ -4477,7 +4480,7 @@ def plot_set_4():
   ax3.text(.5,1.03,'RRFS_A - HRRR 0.6 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparesoilw_0.6_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparesoilw_0.6_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot soil moisture 0.6 m below ground for: '+dom) % t3)
@@ -4506,7 +4509,7 @@ def plot_set_4():
   ax3.text(.5,1.03,'RRFS_A - HRRR 1 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparesoilw_1_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparesoilw_1_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot soil moisture 1 m below ground for: '+dom) % t3)
@@ -4535,7 +4538,7 @@ def plot_set_4():
   ax3.text(.5,1.03,'RRFS_A - HRRR 1.6 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparesoilw_1.6_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparesoilw_1.6_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot soil moisture 1.6 m below ground for: '+dom) % t3)
@@ -4564,7 +4567,7 @@ def plot_set_4():
   ax3.text(.5,1.03,'RRFS_A - HRRR 3 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparesoilw_3_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('comparesoilw_3_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot soil moisture 1.6 m below ground for: '+dom) % t3)

@@ -29,26 +29,26 @@ scp main11.php bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/users/em
 
 # Move images into correct directories on emcrzdm
 # remove images from cycm5 directory
-ssh bblake@emcrzdm.ncep.noaa.gov "rm /home/people/emc/www/htdocs/users/emc.campara/rrfs/cycm5/firewx/images/*.png"
+ssh bblake@emcrzdm.ncep.noaa.gov "rm /home/people/emc/www/htdocs/users/emc.campara/rrfs/cycm5/firewx/images/*.gif"
 
 # move cycm4 images to cycm5 directory
-ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campara/rrfs/cycm4/firewx/images/*.png /home/people/emc/www/htdocs/users/emc.campara/rrfs/cycm5/firewx/images/"
+ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campara/rrfs/cycm4/firewx/images/*.gif /home/people/emc/www/htdocs/users/emc.campara/rrfs/cycm5/firewx/images/"
 
 # move cycm3 images to cycm4 directory
-ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campara/rrfs/cycm3/firewx/images/*.png /home/people/emc/www/htdocs/users/emc.campara/rrfs/cycm4/firewx/images/"
+ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campara/rrfs/cycm3/firewx/images/*.gif /home/people/emc/www/htdocs/users/emc.campara/rrfs/cycm4/firewx/images/"
 
 # move cycm2 images to cycm3 directory
-ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campara/rrfs/cycm2/firewx/images/*.png /home/people/emc/www/htdocs/users/emc.campara/rrfs/cycm3/firewx/images/"
+ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campara/rrfs/cycm2/firewx/images/*.gif /home/people/emc/www/htdocs/users/emc.campara/rrfs/cycm3/firewx/images/"
 
 # move cycm1 images to cycm2 directory
-ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campara/rrfs/cycm1/firewx/images/*.png /home/people/emc/www/htdocs/users/emc.campara/rrfs/cycm2/firewx/images/"
+ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campara/rrfs/cycm1/firewx/images/*.gif /home/people/emc/www/htdocs/users/emc.campara/rrfs/cycm2/firewx/images/"
 
 # move cyc images to cycm1 directory
-ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campara/rrfs/cyc/firewx/images/*.png /home/people/emc/www/htdocs/users/emc.campara/rrfs/cycm1/firewx/images/"
+ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campara/rrfs/cyc/firewx/images/*.gif /home/people/emc/www/htdocs/users/emc.campara/rrfs/cycm1/firewx/images/"
 
 
 # Copy images from WCOSS to emcrzdm
-rsync -t *firewx*.png bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/users/emc.campara/rrfs/cyc/firewx/images/
+rsync -t *firewx*.gif bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/users/emc.campara/rrfs/cyc/firewx/images/
 
 date
 

@@ -1,7 +1,7 @@
 #!/bin/usr/env python
 
 import numpy as np
-import sys
+import sys,os
 import grib2io
 import pyproj
 import cartopy.crs as ccrs
@@ -59,14 +59,16 @@ def clear_plotables(ax,keep_ax_lst,fig):
        # if the artist isn't part of the initial set up, remove it
         a.remove()
 
-def compress_and_save(filename):
-  #### - compress and save the image - ####
-  ram = io.BytesIO()
-  plt.savefig(ram, format='png', bbox_inches='tight', dpi=300)
-  ram.seek(0)
-  im = Image.open(ram)
-  im2 = im.convert('RGB').convert('P', palette=Image.ADAPTIVE)
-  im2.save(filename, format='PNG')
+def convert_and_save(filename):
+  #### - convert and save the image - ####
+  plt.savefig(filename+'.png', bbox_inches='tight',dpi=150)
+  os.system('convert '+filename+'.png '+filename+'.gif')
+
+def convert_and_save_2(filename):
+  #### - convert and save the image - ####
+  #### - use higher dpi for single panel plots - ####
+  plt.savefig(filename+'.png', bbox_inches='tight',dpi=250)
+  os.system('convert '+filename+'.png '+filename+'.gif')
 
 def extrema(mat,mode='wrap',window=10):
   # From: http://matplotlib.org/basemap/users/examples.html

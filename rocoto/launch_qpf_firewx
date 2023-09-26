@@ -5,12 +5,11 @@ set -x
 date
 
 #USER=Benjamin.Blake
-#CDATE=2023082400
-#PDY=20230824
-#cyc=00
-#fhr=24
+#CDATE=2023091906
+#PDY=20230919
+#cyc=06
 
-echo "into launch_allvars_firewx"
+echo "into launchtest"
 module load python/3.8.6
 module use /lfs/h1/mdl/nbm/save/apps/modulefiles
 module load python-modules/3.8.6
@@ -28,7 +27,7 @@ latlon=/lfs/h2/emc/ptmp/emc.lam/para/com/rrfsfw/v1.0.0/rrfsfw.${PDY}/${cyc}/rrfs
 cen_lat=`cat $latlon | cut -c1-4`
 cen_lon=`cat $latlon | cut -c6-11`
 
-python /lfs/h2/emc/lam/noscrub/${USER}/rrfs_graphics/scripts/plot_allvars_firewx.py $CDATE $fhr $cen_lat $cen_lon
+python /lfs/h2/emc/lam/noscrub/${USER}/rrfs_graphics/scripts/plot_qpf_firewx.py $CDATE $cen_lat $cen_lon
 
 date
 

@@ -306,7 +306,7 @@ def create_figure(domain):
     img = plt.imread('/lfs/h2/emc/lam/noscrub/Benjamin.Blake/python/NaturalEarth/raster_files/NE1_50M_SR_W.tif')
     ax1.imshow(img, origin='upper', transform=myproj)
 
-#  ax1.add_feature(cfeature.LAND, linewidth=0, facecolor='lightgray')
+  ax1.add_feature(cfeature.LAND, linewidth=0, facecolor='lightgray')
 #  ax1.add_feature(cfeature.OCEAN,linewidth=0)
   ax1.add_feature(lakes)
   ax1.add_feature(states)
@@ -393,7 +393,7 @@ def plot_set_1():
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparetsfc_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save_2('comparetsfc_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot tsfc for: '+dom) % t3)
@@ -434,7 +434,7 @@ def plot_set_2():
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparehpbl_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save_2('comparehpbl_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot PBL height for: '+dom) % t3)
@@ -482,7 +482,7 @@ def plot_set_3():
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
  
-  rrfs_plot_utils.compress_and_save('compare10mwind_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save_2('compare10mwind_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot 10mwspd for: '+dom) % t3)
@@ -528,7 +528,7 @@ def plot_set_4():
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparegust_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save_2('comparegust_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot surface wind gust for: '+dom) % t3)
@@ -576,7 +576,7 @@ def plot_set_5():
     ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-    rrfs_plot_utils.compress_and_save('comparemaxwind_'+dom+'_f'+fhour+'.png')
+    rrfs_plot_utils.convert_and_save_2('comparemaxwind_'+dom+'_f'+fhour)
     t2 = time.perf_counter()
     t3 = round(t2-t1, 3)
     print(('%.3f seconds to plot Max Hourly 10-m Wind Speed for: '+dom) % t3)
@@ -617,7 +617,7 @@ def plot_set_6():
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparetcolw_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save_2('comparetcolw_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot Total column liquid for: '+dom) % t3)
@@ -659,7 +659,7 @@ def plot_set_7():
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparevis_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save_2('comparevis_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot Surface Visibility for: '+dom) % t3)
@@ -708,7 +708,7 @@ def plot_set_8():
 
   rrfs_plot_utils.plt_highs_and_lows(lon,lat,slp_1,xmin,xmax,ymin,ymax,offset,ax1,transform,mode='reflect',window=600)
 
-  rrfs_plot_utils.compress_and_save('compareslp_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save_2('compareslp_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot slp for: '+dom) % t3)
@@ -741,7 +741,7 @@ def plot_set_8():
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compare2mt_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save_2('compare2mt_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot 2mt for: '+dom) % t3)
@@ -772,7 +772,7 @@ def plot_set_8():
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compare2mdew_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save_2('compare2mdew_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot 2mdew for: '+dom) % t3)
@@ -803,7 +803,7 @@ def plot_set_8():
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparemucape_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save_2('comparemucape_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot mucapecin for: '+dom) % t3)
@@ -839,7 +839,7 @@ def plot_set_8():
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compare850t_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save_2('compare850t_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot 850 mb Theta-e for: '+dom) % t3)
@@ -873,7 +873,7 @@ def plot_set_8():
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compare700_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save_2('compare700_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot 700 mb $\omega$ and RH for: '+dom) % t3)
@@ -907,7 +907,7 @@ def plot_set_8():
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compare500_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save_2('compare500_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot 500 mb Hgt/Wind/Vort for: '+dom) % t3)
@@ -939,7 +939,7 @@ def plot_set_8():
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compare250wind_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save_2('compare250wind_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot 250 mb WIND for: '+dom) % t3)
@@ -985,7 +985,7 @@ def plot_set_9():
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparepw_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save_2('comparepw_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot PW for: '+dom) % t3)
@@ -1015,7 +1015,7 @@ def plot_set_9():
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparepofp_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save_2('comparepofp_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot PERCENT FROZEN PRECIP for: '+dom) % t3)
@@ -1048,7 +1048,7 @@ def plot_set_9():
     ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-    rrfs_plot_utils.compress_and_save('compareqpf_'+dom+'_f'+fhour+'.png')
+    rrfs_plot_utils.convert_and_save_2('compareqpf_'+dom+'_f'+fhour)
     t2 = time.perf_counter()
     t3 = round(t2-t1, 3)
     print(('%.3f seconds to plot total qpf for: '+dom) % t3)
@@ -1079,7 +1079,7 @@ def plot_set_9():
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparesnow_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save_2('comparesnow_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot snow depth for: '+dom) % t3)
@@ -1109,7 +1109,7 @@ def plot_set_9():
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compareasnow_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save_2('compareasnow_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot snowfall for: '+dom) % t3)
@@ -1140,7 +1140,7 @@ def plot_set_9():
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparetcoli_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save_2('comparetcoli_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot Tcoli for: '+dom) % t3)
@@ -1171,7 +1171,7 @@ def plot_set_9():
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparehel3km_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save_2('comparehel3km_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot 0-3 km SRH for: '+dom) % t3)
@@ -1196,7 +1196,7 @@ def plot_set_9():
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparehel1km_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save_2('comparehel1km_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot 0-1 km SRH for: '+dom) % t3)
@@ -1227,7 +1227,7 @@ def plot_set_9():
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compareref1km_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save_2('compareref1km_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot 1-km reflectivity for: '+dom) % t3)
@@ -1258,7 +1258,7 @@ def plot_set_9():
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparerefc_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save_2('comparerefc_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot composite reflectivity for: '+dom) % t3)
@@ -1306,7 +1306,7 @@ def plot_set_10():
     ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-    rrfs_plot_utils.compress_and_save('comparemaxuvv_'+dom+'_f'+fhour+'.png')
+    rrfs_plot_utils.convert_and_save_2('comparemaxuvv_'+dom+'_f'+fhour)
     t2 = time.perf_counter()
     t3 = round(t2-t1, 3)
     print(('%.3f seconds to plot Max Hourly Updraft Speed for: '+dom) % t3)
@@ -1332,7 +1332,7 @@ def plot_set_10():
     ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-    rrfs_plot_utils.compress_and_save('comparemaxdvv_'+dom+'_f'+fhour+'.png')
+    rrfs_plot_utils.convert_and_save_2('comparemaxdvv_'+dom+'_f'+fhour)
     t2 = time.perf_counter()
     t3 = round(t2-t1, 3)
     print(('%.3f seconds to plot Max Hourly Downdraft Speed for: '+dom) % t3)
@@ -1363,7 +1363,7 @@ def plot_set_10():
     ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-    rrfs_plot_utils.compress_and_save('comparemaxref1km_'+dom+'_f'+fhour+'.png')
+    rrfs_plot_utils.convert_and_save_2('comparemaxref1km_'+dom+'_f'+fhour)
     t2 = time.perf_counter()
     t3 = round(t2-t1, 3)
     print(('%.3f seconds to plot Max Hourly 1-km Reflectivity for: '+dom) % t3)
@@ -1392,7 +1392,7 @@ def plot_set_10():
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparetcdc_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save_2('comparetcdc_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot Total Cloud Cover for: '+dom) % t3)
@@ -1423,7 +1423,7 @@ def plot_set_10():
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compareretop_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save_2('compareretop_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot Echo Top Height for: '+dom) % t3)
@@ -1455,7 +1455,7 @@ def plot_set_10():
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compareprate_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save_2('compareprate_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot Precipitation Rate for: '+dom) % t3)
@@ -1503,7 +1503,7 @@ def plot_set_11():
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparezbase_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save_2('comparezbase_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot Cloud Base Height for: '+dom) % t3)
@@ -1550,7 +1550,7 @@ def plot_set_12():
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparezceil_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save_2('comparezceil_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot Cloud Ceiling Height for: '+dom) % t3)
@@ -1582,7 +1582,7 @@ def plot_set_12():
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compareztop_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save_2('compareztop_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot Cloud Top Height for: '+dom) % t3)
@@ -1628,7 +1628,7 @@ def plot_set_13():
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparesmoke_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save_2('comparesmoke_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot near-surface smoke for: '+dom) % t3)
@@ -1659,7 +1659,7 @@ def plot_set_13():
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparecolsmoke_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save_2('comparecolsmoke_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot total column-integrated smoke for: '+dom) % t3)
@@ -1686,7 +1686,7 @@ def plot_set_13():
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparedust_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save_2('comparedust_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot near-surface dust for: '+dom) % t3)
@@ -1717,7 +1717,7 @@ def plot_set_13():
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('comparecoldust_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save_2('comparecoldust_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot total column-integrated dust for: '+dom) % t3)

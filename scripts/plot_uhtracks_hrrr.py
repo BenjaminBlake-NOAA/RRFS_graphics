@@ -121,7 +121,7 @@ gs = GridSpec(9,8,wspace=0.0,hspace=0.0)
 # Define where Cartopy maps are located
 cartopy.config['data_dir'] = '/lfs/h2/emc/lam/noscrub/Benjamin.Blake/python/NaturalEarth'
 back_res='50m'
-back_img='on'
+back_img='off'
 
 ax1 = fig.add_subplot(gs[0:4,0:4], projection=myproj)
 ax2 = fig.add_subplot(gs[0:4,4:], projection=myproj)
@@ -232,7 +232,7 @@ for fhr in fhrs:
   ax3.text(.5,1.03,prod_str+' (red), '+para_str+' (blue), Both (purple) \n Max 2-5 km Updraft Helicity > 50 ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=5,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.compress_and_save('compareuh25_accum_'+dom+'_f'+fhour+'.png')
+  rrfs_plot_utils.convert_and_save('compareuh25_accum_'+dom+'_f'+fhour)
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot Run-Total 2-5 km UH for forecast hour '+fhour) % t3)
