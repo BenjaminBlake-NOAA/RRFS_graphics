@@ -8,9 +8,9 @@ date
 #CDATE=2023082200
 #PDY=20230822
 #cyc=00
-#dom='conus'
+#fhr=24
 
-echo "into launch_uhtracks_hrrr"
+echo "into launch_allvars_rrfs"
 module load python/3.8.6
 module use /lfs/h1/mdl/nbm/save/apps/modulefiles
 module load python-modules/3.8.6
@@ -21,10 +21,10 @@ export PYTHONPATH="${PYTHONPATH}:/lfs/h2/emc/lam/noscrub/Benjamin.Blake/python:/
 module load imagemagick/7.0.8-7
 
 mkdir -p /lfs/h2/emc/stmp/${USER}
-mkdir -p /lfs/h2/emc/stmp/${USER}/uhtracks_hrrr/${PDY}/${cyc}
-cd /lfs/h2/emc/stmp/${USER}/uhtracks_hrrr/${PDY}/${cyc}
+mkdir -p /lfs/h2/emc/stmp/${USER}/3panel_rrfs/${PDY}/${cyc}
+cd /lfs/h2/emc/stmp/${USER}/3panel_rrfs/${PDY}/${cyc}
 
-python /lfs/h2/emc/lam/noscrub/${USER}/rrfs_graphics/scripts/plot_uhtracks_hrrr.py $CDATE $dom
+python /lfs/h2/emc/lam/noscrub/${USER}/rrfs_graphics/scripts/plot_allvars_rrfs.py $CDATE $fhr
 
 date
 

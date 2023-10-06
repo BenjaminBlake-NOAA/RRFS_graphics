@@ -61,7 +61,7 @@ gs = GridSpec(9,8,wspace=0.0,hspace=0.0)
 # Define where Cartopy maps are located
 cartopy.config['data_dir'] = '/lfs/h2/emc/lam/noscrub/Benjamin.Blake/python/NaturalEarth'
 back_res='50m'
-back_img='on'
+back_img='off'
 
 ax1 = fig.add_subplot(gs[0:4,0:4], projection=myproj)
 ax2 = fig.add_subplot(gs[0:4,4:], projection=myproj)

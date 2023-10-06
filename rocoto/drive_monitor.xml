@@ -1,0 +1,91 @@
+<?xml version="1.0"?> 
+<!DOCTYPE workflow
+[
+ <!ENTITY HOMEDIR "/lfs/h2/emc/lam/noscrub/Benjamin.Blake/rrfs_graphics">
+ <!ENTITY LOG_DIR "/lfs/h2/emc/ptmp/Benjamin.Blake/logs_monitor">
+ <!ENTITY COMRRFS_A "/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.6.7/prod">
+
+ <!ENTITY USER "Benjamin.Blake">
+ <!ENTITY ACCOUNT "RRFS-DEV">
+
+ <!ENTITY RESERVATION '<queue>dev</queue><account>&ACCOUNT;</account>'>
+ <!ENTITY RESERVATION_TRANSFER '<queue>dev_transfer</queue><account>&ACCOUNT;</account>'>
+
+ <!ENTITY PLOT_RESOURCES '<walltime>00:10:00</walltime>'>
+ <!ENTITY TRANSFER_RESOURCES '<walltime>00:30:00</walltime>'>
+
+]>
+
+<!-- ********************************************************* -->
+<!-- **************** STARTING THE WORKFLOW ****************** -->
+<!-- ********************************************************* -->
+
+<workflow realtime="T" scheduler="pbspro" cyclelifespan="00:06:00:00" cyclethrottle="2" taskthrottle="2">
+
+  <cycledef group="hourly" activation_offset="02:00:00">202310061000 202312312300 01:00:00</cycledef>
+ 
+  <log verbosity="10"><cyclestr>&LOG_DIR;/workflow_@Y@m@d@H.log</cyclestr></log> 
+
+<!-- ******************************************************** -->
+<!-- ******************** Plotting Jobs ********************* -->
+<!-- ******************************************************** -->
+
+  <task name="monitor_hist_rrfs" maxtries="2" cycledefs="hourly">
+    &RESERVATION;
+    &PLOT_RESOURCES;
+
+    <command>&HOMEDIR;/rocoto/launch_histograms</command>
+    <nodes> 1:ppn=1 </nodes>
+    <join><cyclestr>&LOG_DIR;/monitor_hist_rrfs_@Y@m@d@H.log</cyclestr></join>
+    <jobname>monitor_hist_rrfs</jobname>
+
+    <envar><name>HOMErrfs</name><value>&HOMEDIR;</value></envar>
+    <envar><name>COMrrfs</name><value>&COMRRFS_A;</value></envar>
+    <envar><name>USER</name><value>&USER;</value></envar>
+    <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
+    <envar><name>PDY</name><value><cyclestr>@Y@m@d</cyclestr></value></envar>
+    <envar><name>cyc</name><value><cyclestr>@H</cyclestr></value></envar>
+
+    <dependency>
+      <and>
+        <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/diag_conv_ps_anl.@Y@m@d@H.nc4</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/diag_conv_ps_ges.@Y@m@d@H.nc4</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/diag_conv_q_anl.@Y@m@d@H.nc4</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/diag_conv_q_ges.@Y@m@d@H.nc4</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/diag_conv_t_anl.@Y@m@d@H.nc4</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/diag_conv_t_ges.@Y@m@d@H.nc4</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/diag_conv_uv_anl.@Y@m@d@H.nc4</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/diag_conv_uv_ges.@Y@m@d@H.nc4</cyclestr></datadep>
+      </and>
+    </dependency>
+
+  </task>
+
+
+<!-- ******************************************************** -->
+<!-- ******************** Transfer Jobs ********************* -->
+<!-- ******************************************************** -->
+
+  <task name="transfer_histograms" maxtries="1" cycledefs="hourly">
+    &RESERVATION_TRANSFER;
+    &TRANSFER_RESOURCES;
+
+    <command>bash &HOMEDIR;/scripts/transfer_histograms.sh</command>
+    <nodes> 1:ppn=1 </nodes>
+    <join><cyclestr>&LOG_DIR;/transfer_histograms_@Y@m@d@H.log</cyclestr></join>
+    <jobname>transfer_histograms</jobname>
+    <envar><name>USER</name><value>&USER;</value></envar>
+    <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
+    <envar><name>PDY</name><value><cyclestr>@Y@m@d</cyclestr></value></envar>
+    <envar><name>cyc</name><value><cyclestr>@H</cyclestr></value></envar>
+
+    <dependency>
+      <and>
+        <taskdep task="monitor_hist_rrfs"/>
+      </and>
+    </dependency>
+
+  </task>
+
+
+</workflow>

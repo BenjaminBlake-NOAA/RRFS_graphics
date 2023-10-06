@@ -1,0 +1,97 @@
+diagnostic:
+- conventional input:
+    analysis use:
+    - true
+    data type:
+    - O-A
+    observation id:
+    - 180
+    - 181
+    - 182
+    - 187
+    path:
+    - /lfs/h2/emc/stmp/Benjamin.Blake/cnvstat/CDATE/diag_conv_ps_anl.CDATE.nc4
+    plot type: &id001
+    - histogram
+- conventional input:
+    analysis use:
+    - true
+    data type:
+    - O-A
+    observation id:
+    - 188
+    path:
+    - /lfs/h2/emc/stmp/Benjamin.Blake/cnvstat/CDATE/diag_conv_ps_anl.CDATE.nc4
+    plot type: *id001
+- conventional input:
+    analysis use:
+    - true
+    data type:
+    - O-A
+    observation id:
+    - 180
+    - 181
+    - 182
+    - 183
+    - 187
+    path:
+    - /lfs/h2/emc/stmp/Benjamin.Blake/cnvstat/CDATE/diag_conv_t_anl.CDATE.nc4
+    plot type: *id001
+- conventional input:
+    analysis use:
+    - true
+    data type:
+    - O-A
+    observation id:
+    - 188
+    path:
+    - /lfs/h2/emc/stmp/Benjamin.Blake/cnvstat/CDATE/diag_conv_t_anl.CDATE.nc4
+    plot type: *id001
+- conventional input:
+    analysis use:
+    - true
+    data type:
+    - O-A
+    observation id:
+    - 180
+    - 181
+    - 182
+    - 183
+    - 187
+    path:
+    - /lfs/h2/emc/stmp/Benjamin.Blake/cnvstat/CDATE/diag_conv_q_anl.CDATE.nc4
+    plot type: *id001
+- conventional input:
+    analysis use:
+    - true
+    data type:
+    - O-A
+    observation id:
+    - 188
+    path:
+    - /lfs/h2/emc/stmp/Benjamin.Blake/cnvstat/CDATE/diag_conv_q_anl.CDATE.nc4
+    plot type: *id001
+- conventional input:
+    analysis use:
+    - true
+    data type:
+    - O-A
+    observation id:
+    - 280
+    - 281
+    - 282
+    - 284
+    - 287
+    path:
+    - /lfs/h2/emc/stmp/Benjamin.Blake/cnvstat/CDATE/diag_conv_uv_anl.CDATE.nc4
+    plot type: *id001
+- conventional input:
+    analysis use:
+    - true
+    data type:
+    - O-A
+    observation id:
+    - 288
+    path:
+    - /lfs/h2/emc/stmp/Benjamin.Blake/cnvstat/CDATE/diag_conv_uv_anl.CDATE.nc4
+    plot type: *id001

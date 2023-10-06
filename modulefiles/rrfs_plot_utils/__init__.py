@@ -63,12 +63,14 @@ def convert_and_save(filename):
   #### - convert and save the image - ####
   plt.savefig(filename+'.png', bbox_inches='tight',dpi=150)
   os.system('convert '+filename+'.png '+filename+'.gif')
+  os.remove(filename+'.png')
 
 def convert_and_save_2(filename):
   #### - convert and save the image - ####
   #### - use higher dpi for single panel plots - ####
   plt.savefig(filename+'.png', bbox_inches='tight',dpi=250)
   os.system('convert '+filename+'.png '+filename+'.gif')
+  os.remove(filename+'.png')
 
 def extrema(mat,mode='wrap',window=10):
   # From: http://matplotlib.org/basemap/users/examples.html
