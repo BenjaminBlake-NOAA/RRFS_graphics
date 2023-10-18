@@ -136,11 +136,6 @@ def get_latlons_pcolormesh(msg):
   lats.append(lat)
   lons.append(lon)
 
-# Unshifted grid for contours and wind barbs
-  lat, lon = msg.grid()
-  lats.append(lat)
-  lons.append(lon)
-
 # Shift grid for pcolormesh
   lat1 = msg.latitudeFirstGridpoint
   lon1 = msg.longitudeFirstGridpoint
@@ -518,14 +513,14 @@ def domain_latlons_proj(dom):
     yextent=-99031
     offset=0.25
   elif dom == 'seattle_portland':
-    llcrnrlon = -125.0
+    llcrnrlon = -126.0
     llcrnrlat = 44.5
-    urcrnrlon = -119.0
+    urcrnrlon = -118.0
     urcrnrlat = 49.5
     cen_lat = 47.0
     cen_lon = -121.0
-    xextent=-227169
-    yextent=-200000
+    xextent=-275000
+    yextent=-180000
     offset=0.25
   elif dom == 'sf_bay_area':
     llcrnrlon = -123.5
