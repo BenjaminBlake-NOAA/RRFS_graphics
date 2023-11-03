@@ -1,0 +1,78 @@
+#!/bin/bash
+
+set -x
+
+date
+
+#USER=Benjamin.Blake
+#CDATE=2023102400
+#PDY=20231024
+#cyc=00
+#fhr=09
+HOMErrfs=/lfs/h2/emc/lam/noscrub/${USER}/rrfs_graphics
+
+fhrp6=$(( "${fhr#0}" + 6 ))
+if [ $fhrp6 -le 10 ] ; then
+  fhrp6=$(printf "%02d" $fhrp6)
+fi
+
+echo "into launchtest"
+module load python/3.8.6
+module use /lfs/h1/mdl/nbm/save/apps/modulefiles
+module load python-modules/3.8.6
+module load proj/7.1.0
+module load geos/3.8.1
+module load libjpeg-turbo/2.1.0
+export PYTHONPATH="${PYTHONPATH}:/lfs/h2/emc/lam/noscrub/Benjamin.Blake/python:/lfs/h2/emc/lam/noscrub/Benjamin.Blake/rrfs_graphics/modulefiles"
+module load imagemagick/7.0.8-7
+module load cfp/2.0.4
+module load cray-pals/1.0.12
+
+mkdir -p /lfs/h2/emc/stmp/${USER}
+mkdir -p /lfs/h2/emc/stmp/${USER}/ensemble/${PDY}/${cyc}/${fhr}
+cd /lfs/h2/emc/stmp/${USER}/ensemble/${PDY}/${cyc}/${fhr}
+
+# Execute plotting script 14 times serially - runs in 2 mins for each member
+python ${HOMErrfs}/scripts/plot_1member_rrfs.py $CDATE $fhr Control no
+python ${HOMErrfs}/scripts/plot_1member_rrfs.py $CDATE $fhr 1 no
+python ${HOMErrfs}/scripts/plot_1member_rrfs.py $CDATE $fhr 2 no
+python ${HOMErrfs}/scripts/plot_1member_rrfs.py $CDATE $fhr 3 no
+python ${HOMErrfs}/scripts/plot_1member_rrfs.py $CDATE $fhr 4 no
+python ${HOMErrfs}/scripts/plot_1member_rrfs.py $CDATE $fhr 5 no
+python ${HOMErrfs}/scripts/plot_1member_rrfs.py $CDATE $fhr HRRR no
+python ${HOMErrfs}/scripts/plot_1member_rrfs.py $CDATE $fhrp6 Control yes
+python ${HOMErrfs}/scripts/plot_1member_rrfs.py $CDATE $fhrp6 1 yes
+python ${HOMErrfs}/scripts/plot_1member_rrfs.py $CDATE $fhrp6 2 yes
+python ${HOMErrfs}/scripts/plot_1member_rrfs.py $CDATE $fhrp6 3 yes
+python ${HOMErrfs}/scripts/plot_1member_rrfs.py $CDATE $fhrp6 4 yes
+python ${HOMErrfs}/scripts/plot_1member_rrfs.py $CDATE $fhrp6 5 yes
+python ${HOMErrfs}/scripts/plot_1member_rrfs.py $CDATE $fhrp6 HRRR yes
+
+date
+
+# Combine all members into one gif image
+# Use CFP for parallelization across 17 domains
+# Create script to execute tasks in parallel
+echo "#!/bin/bash" > poescript_${fhr}
+echo "export HOMErrfs=${HOMErrfs}" >> poescript_${fhr}
+
+domains="conus boston_nyc central colorado la_vegas mid_atlantic north_central northeast northwest ohio_valley south_central southeast south_florida sf_bay_area seattle_portland southwest upper_midwest"
+
+for dom in ${domains}; do
+  echo "$HOMErrfs/scripts/combine_members.sh $fhr $fhrp6 $dom &" >> poescript_${fhr}
+done
+
+echo "wait" >> poescript_${fhr}
+chmod 775 poescript_${fhr}
+
+export CMDFILE=/lfs/h2/emc/stmp/${USER}/ensemble/${PDY}/${cyc}/${fhr}/poescript_${fhr}
+mpiexec -np 17 --cpu-bind core cfp $CMDFILE
+#export err=$?; err_chk
+
+# Remove individual member images
+cd /lfs/h2/emc/stmp/${USER}/ensemble/${PDY}/${cyc}
+rm -rf ${fhr}
+
+date
+
+exit
