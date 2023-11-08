@@ -39,7 +39,7 @@
 <!-- ****** ENSEMBLE MEMBER PLOTS ****** -->
 
   <metatask>
-    <var name="fhr">00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42</var>
+    <var name="fhr">00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54</var>
     <task name="ensemble_rrfs_f#fhr#" maxtries="2" cycledefs="prod">
       &RESERVATION;
       &PLOT_RESOURCES;
@@ -63,20 +63,48 @@
           <datadep age="10:00"><cyclestr>&COMRRFS_A;/refs.@Y@m@d/@H/mem0003/rrfs.t@Hz.prslev.f0#fhr#.conus_3km.grib2</cyclestr></datadep>
           <datadep age="10:00"><cyclestr>&COMRRFS_A;/refs.@Y@m@d/@H/mem0004/rrfs.t@Hz.prslev.f0#fhr#.conus_3km.grib2</cyclestr></datadep>
           <datadep age="10:00"><cyclestr>&COMRRFS_A;/refs.@Y@m@d/@H/mem0005/rrfs.t@Hz.prslev.f0#fhr#.conus_3km.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr>&COMhrrr;/hrrr.@Y@m@d/conus/hrrr.t@Hz.wrfprsf#fhr#.grib2</cyclestr></datadep>
           <datadep age="10:00"><cyclestr offset="-06:00:00">&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.conus_3km.grib2</cyclestr></datadep>
           <datadep age="10:00"><cyclestr offset="-06:00:00">&COMRRFS_A;/refs.@Y@m@d/@H/mem0001/rrfs.t@Hz.prslev.f0#fhr#.conus_3km.grib2</cyclestr></datadep>
           <datadep age="10:00"><cyclestr offset="-06:00:00">&COMRRFS_A;/refs.@Y@m@d/@H/mem0002/rrfs.t@Hz.prslev.f0#fhr#.conus_3km.grib2</cyclestr></datadep>
           <datadep age="10:00"><cyclestr offset="-06:00:00">&COMRRFS_A;/refs.@Y@m@d/@H/mem0003/rrfs.t@Hz.prslev.f0#fhr#.conus_3km.grib2</cyclestr></datadep>
           <datadep age="10:00"><cyclestr offset="-06:00:00">&COMRRFS_A;/refs.@Y@m@d/@H/mem0004/rrfs.t@Hz.prslev.f0#fhr#.conus_3km.grib2</cyclestr></datadep>
           <datadep age="10:00"><cyclestr offset="-06:00:00">&COMRRFS_A;/refs.@Y@m@d/@H/mem0005/rrfs.t@Hz.prslev.f0#fhr#.conus_3km.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr offset="-06:00:00">&COMhrrr;/hrrr.@Y@m@d/conus/hrrr.t@Hz.wrfprsf#fhr#.grib2</cyclestr></datadep>
         </and>
       </dependency>
 
     </task>
   </metatask>
 
+  <metatask>
+    <var name="fhr">55 56 57 58 59 60</var>
+    <task name="ensemble_rrfs_f#fhr#" maxtries="2" cycledefs="prod">
+      &RESERVATION;
+      &PLOT_RESOURCES;
+
+      <command>&HOMEDIR;/rocoto/launch_ensemble_rrfs</command>
+      <nodes> 1:ppn=17 </nodes>
+      <join><cyclestr>&LOG_DIR;/ensemble_rrfs_@Y@m@d@H_f#fhr#.log</cyclestr></join>
+      <jobname>ensemble_rrfs_f#fhr#</jobname>
+
+      <envar><name>USER</name><value>&USER;</value></envar>
+      <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
+      <envar><name>PDY</name><value><cyclestr>@Y@m@d</cyclestr></value></envar>
+      <envar><name>cyc</name><value><cyclestr>@H</cyclestr></value></envar>
+      <envar><name>fhr</name><value>#fhr#</value></envar>
+
+      <dependency>
+        <and>
+          <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.conus_3km.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS_A;/refs.@Y@m@d/@H/mem0001/rrfs.t@Hz.prslev.f0#fhr#.conus_3km.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS_A;/refs.@Y@m@d/@H/mem0002/rrfs.t@Hz.prslev.f0#fhr#.conus_3km.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS_A;/refs.@Y@m@d/@H/mem0003/rrfs.t@Hz.prslev.f0#fhr#.conus_3km.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS_A;/refs.@Y@m@d/@H/mem0004/rrfs.t@Hz.prslev.f0#fhr#.conus_3km.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS_A;/refs.@Y@m@d/@H/mem0005/rrfs.t@Hz.prslev.f0#fhr#.conus_3km.grib2</cyclestr></datadep>
+        </and>
+      </dependency>
+
+    </task>
+  </metatask>
 
 <!-- ****** North America, Caribbean plots (RRFS_A only) ****** -->
 
@@ -418,7 +446,7 @@
 
     <dependency>
       <and>
-        <taskdep task="ensemble_rrfs_f42"/>
+        <taskdep task="ensemble_rrfs_f60"/>
       </and>
     </dependency>
 
