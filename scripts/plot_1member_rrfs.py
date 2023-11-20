@@ -69,7 +69,7 @@ if ((member == 'HRRR') and (fhr > 48)) or ((timelag == 'yes') and (fhr > 60)):
   for var in vars:
     for dom in domains:
       filename = str(member+'_'+timelag+'_'+var+'_'+dom+'_f'+fhour)
-      os.system('cp /lfs/h2/emc/lam/noscrub/Benjamin.Blake/work2/NoOutput.gif '+filename+'.gif') 
+      os.system('cp /lfs/h2/emc/lam/noscrub/Benjamin.Blake/rrfs_graphics/NoOutput.gif '+filename+'.gif') 
   sys.exit()
 
 # Define the input files
@@ -85,21 +85,21 @@ if member == 'HRRR':
 # RRFS deterministic forecast
 elif member == 'Control':
   if timelag == 'yes':
-    DATA_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.7.1/prod/rrfs.'+ymdm1+'/'+cycm1
+    DATA_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.7.3/prod/rrfs.'+ymdm1+'/'+cycm1
     data1 = grib2io.open(DATA_DIR+'/rrfs.t'+cycm1+'z.prslev.f0'+fhour+'.conus_3km.grib2')
     memstr = 'Control TL'
   else:
-    DATA_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.7.1/prod/rrfs.'+ymd+'/'+cyc
+    DATA_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.7.3/prod/rrfs.'+ymd+'/'+cyc
     data1 = grib2io.open(DATA_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.conus_3km.grib2')
     memstr = 'Control'
 # RRFS ensemble member forecasts
 else:
   if timelag == 'yes':
-    DATA_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.7.1/prod/refs.'+ymdm1+'/'+cycm1+'/mem000'+member
+    DATA_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.7.3/prod/refs.'+ymdm1+'/'+cycm1+'/mem000'+member
     data1 = grib2io.open(DATA_DIR+'/rrfs.t'+cycm1+'z.prslev.f0'+fhour+'.conus_3km.grib2')
     memstr = 'Member '+member+' TL'
   else:
-    DATA_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.7.1/prod/refs.'+ymd+'/'+cyc+'/mem000'+member
+    DATA_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.7.3/prod/refs.'+ymd+'/'+cyc+'/mem000'+member
     data1 = grib2io.open(DATA_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.conus_3km.grib2')
     memstr = 'Member '+member
 

@@ -44,7 +44,7 @@ vtime = rrfs_plot_utils.ndate(itime,int(fhr))
 
 # Define the directory paths to the output files
 NAM_DIR = '/lfs/h1/ops/prod/com/nam/v4.2/nam.'+ymd
-RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.7.1/prod/rrfs.'+ymd+'/'+cyc
+RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.7.3/prod/rrfs.'+ymd+'/'+cyc
 
 # Specify plotting domains
 domset = str(sys.argv[3])

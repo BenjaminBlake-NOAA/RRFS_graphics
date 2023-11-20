@@ -43,7 +43,7 @@ itime = ymdh
 vtime = rrfs_plot_utils.ndate(itime,int(fhr))
 
 # Define the directory paths to the input files
-RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.7.1/prod/rrfs.'+ymd+'/'+cyc
+RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.7.3/prod/rrfs.'+ymd+'/'+cyc
 
 # Define the input files
 data1 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.grib2')
@@ -198,6 +198,13 @@ hel3km_1 = data1.select(shortName='HLCY',scaledValueOfFirstFixedSurface=3000)[0]
 hel1km_1 = data1.select(shortName='HLCY',scaledValueOfFirstFixedSurface=1000)[0].data
 
 if (fhr > 0):
+# Max/Min Hourly 2-5 km Updraft Helicity
+  maxuh25_1 = data1.select(shortName='MXUPHL',level='5000-2000 m above ground')[0].data
+  minuh25_1 = data1.select(shortName='MNUPHL',level='5000-2000 m above ground')[0].data
+  maxuh25_1[maxuh25_1 < 10] = 0
+  minuh25_1[minuh25_1 > -10] = 0
+  uh25_1 = maxuh25_1 + minuh25_1
+
 # Max Hourly Updraft Speed
   maxuvv_1 = data1.select(shortName='MAXUVV')[0].data
 
@@ -1283,11 +1290,42 @@ def plot_set_10():
   y1 = ymin + ((ymax-ymin)*0.03)
 
 #################################
-  # Plot Max Hourly Updraft Speed
+  # Plot Max/Min Hourly 2-5 km UH
 #################################
   if (fhr > 0):
     t1 = time.perf_counter()
+    print(('Working on Max/Min Hourly 2-5 km UH for '+dom))
+
+    units = 'm${^2}$ s$^{-2}$'
+    clevs = [-150,-100,-75,-50,-25,-10,0,10,25,50,75,100,150,200,250,300]
+    colorlist = ['blue','#1874CD','dodgerblue','deepskyblue','turquoise','#E5E5E5','#E5E5E5','#EEEE00','#EEC900','darkorange','orangered','red','firebrick','mediumvioletred','darkviolet'] 
+    cm = matplotlib.colors.ListedColormap(colorlist)
+    norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
+
+    cs_1 = ax1.contourf(lon,lat,uh25_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+    cs_1.cmap.set_under('darkblue')
+    cs_1.cmap.set_over('black')
+    cbar1 = fig.colorbar(cs_1,ax=ax1,ticks=clevs,orientation='horizontal',pad=0.01,shrink=1.0,extend='both')
+    cbar1.set_label(units,fontsize=6)
+    cbar1.ax.tick_params(labelsize=5)
+    ax1.text(.5,1.03,'RRFS_A 1-h Max/Min 2-5 km Updraft Helicity ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
+
+    rrfs_plot_utils.convert_and_save_2('compareuh25_'+dom+'_f'+fhour)
+    t2 = time.perf_counter()
+    t3 = round(t2-t1, 3)
+    print(('%.3f seconds to plot Max Hourly 2-5 km UH for: '+dom) % t3)
+
+#################################
+  # Plot Max Hourly Updraft Speed
+#################################
+    t1 = time.perf_counter()
     print(('Working on Max Hourly Updraft Speed for '+dom))
+
+  # Clear off old plottables but keep all the map info
+    cbar1.remove()
+    rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
 
     units = 'm s$^{-1}$'
     clevs = [0.5,1,2.5,5,7.5,10,12.5,15,20,25,30,35,40,50,75]
