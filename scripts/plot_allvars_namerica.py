@@ -43,7 +43,7 @@ itime = ymdh
 vtime = rrfs_plot_utils.ndate(itime,int(fhr))
 
 # Define the directory paths to the input files
-RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.7.3/prod/rrfs.'+ymd+'/'+cyc
+RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.7.5/prod/rrfs.'+ymd+'/'+cyc
 
 # Define the input files
 data1 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.grib2')
@@ -1071,13 +1071,14 @@ def plot_set_9():
   rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
 
   units = 'in'
-  clevs = [0.1,1,2,3,6,9,12,18,24,36,48]
-  clevsdif = [-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6]
-  cm = rrfs_plot_utils.ncl_perc_11Lev()
+  clevs = [0.5,1,2,3,4,6,8,12,18,24,30,36]
+  colorlist = ['#adc4d9','#73bdff','#0f69db','#004da8','#002673','#ffff73','#ffaa00','#e64c00','#e60000','#730000','#e8beff']
+  cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
  
   cs_1 = ax1.contourf(lon,lat,snow_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
   cs_1.cmap.set_under('white')
+  cs_1.cmap.set_over('#CA7AF5')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,ticks=clevs,extend='both')
   cbar1.set_label(units,fontsize=6)
   cbar1.ax.set_xticklabels(clevs)
@@ -1102,12 +1103,14 @@ def plot_set_9():
   rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
 
   units = 'in'
-  clevs = [0.1,1,2,3,6,9,12,18,24,36,48]
-  cm = rrfs_plot_utils.ncl_perc_11Lev()
+  clevs = [0.5,1,2,3,4,6,8,12,18,24,30,36]
+  colorlist = ['#adc4d9','#73bdff','#0f69db','#004da8','#002673','#ffff73','#ffaa00','#e64c00','#e60000','#730000','#e8beff']
+  cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
  
   cs_1 = ax1.contourf(lon,lat,asnow_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
   cs_1.cmap.set_under('white')
+  cs_1.cmap.set_over('#CA7AF5')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,ticks=clevs,extend='both')
   cbar1.set_label(units,fontsize=6)
   cbar1.ax.set_xticklabels(clevs)

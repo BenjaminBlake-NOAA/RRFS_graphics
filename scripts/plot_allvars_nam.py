@@ -44,7 +44,7 @@ vtime = rrfs_plot_utils.ndate(itime,int(fhr))
 
 # Define the directory paths to the output files
 NAM_DIR = '/lfs/h1/ops/prod/com/nam/v4.2/nam.'+ymd
-RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.7.3/prod/rrfs.'+ymd+'/'+cyc
+RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.7.5/prod/rrfs.'+ymd+'/'+cyc
 
 # Specify plotting domains
 domset = str(sys.argv[3])
@@ -1808,14 +1808,16 @@ def plot_set_1():
   rrfs_plot_utils.clear_plotables(ax3,keep_ax_lst_3,fig)
 
   units = 'in'
-  clevs = [0.1,1,2,3,6,9,12,18,24,36,48]
+  clevs = [0.5,1,2,3,4,6,8,12,18,24,30,36]
   clevsdif = [-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6]
-  cm = rrfs_plot_utils.ncl_perc_11Lev()
+  colorlist = ['#adc4d9','#73bdff','#0f69db','#004da8','#002673','#ffff73','#ffaa00','#e64c00','#e60000','#730000','#e8beff']
+  cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N) 
   normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N) 
  
   cs_1 = ax1.pcolormesh(lon_shift,lat_shift,snow_1,transform=transform,cmap=cm,norm=norm)
   cs_1.cmap.set_under('white')
+  cs_1.cmap.set_over('#CA7AF5')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='both')
   cbar1.set_label(units,fontsize=6)
   cbar1.ax.set_xticklabels(clevs)
@@ -1825,6 +1827,7 @@ def plot_set_1():
 
   cs_2 = ax2.pcolormesh(lon_shift,lat_shift,snow_2,transform=transform,cmap=cm,norm=norm)
   cs_2.cmap.set_under('white')
+  cs_2.cmap.set_over('#CA7AF5')
   cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='both')
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.set_xticklabels(clevs)

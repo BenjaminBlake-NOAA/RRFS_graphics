@@ -5,7 +5,7 @@
  <!ENTITY LOG_DIR "/lfs/h2/emc/ptmp/Benjamin.Blake/logs_rrfs_graphics">
  <!ENTITY COMnam "/lfs/h1/ops/prod/com/nam/v4.2">
  <!ENTITY COMhrrr "/lfs/h1/ops/prod/com/hrrr/v4.1">
- <!ENTITY COMRRFS_A "/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.7.3/prod">
+ <!ENTITY COMRRFS_A "/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.7.5/prod">
  <!ENTITY COMRRFS_FW "/lfs/h2/emc/ptmp/emc.lam/para/com/rrfsfw/v1.0.0">
  <!ENTITY OBSDIAG "/lfs/h2/emc/ptmp/donald.e.lippi/rrfs_a_diags/figs">
 

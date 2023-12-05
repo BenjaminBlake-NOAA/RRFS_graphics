@@ -6,7 +6,7 @@ fhr=$1
 fhrp6=$2
 dom=$3
 
-vars="slp 2mt 2mdew 10mwind mucape 850t 500 250wind refc uh25 maxuvv qpf"
+vars="slp 2mt 2mdew 10mwind mucape 850t 500 250wind refc snow asnow uh25 maxuvv qpf"
 
 for var in ${vars}; do
   convert Control_no_${var}_${dom}_f${fhr}.gif Control_yes_${var}_${dom}_f${fhrp6}.gif -background white +append mem1-2_${var}_${dom}_f${fhr}.gif
