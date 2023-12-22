@@ -46,7 +46,7 @@ vtime_list = [rrfs_plot_utils.ndate(itime,int(x)) for x in fhrs]
 
 # Define the paths to the input files
 HRRR_DIR = '/lfs/h1/ops/prod/com/hrrr/v4.1/hrrr.'+ymd
-RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.7.5/prod/rrfs.'+ymd+'/'+cyc
+RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/na/prod/rrfs.'+ymd+'/'+cyc
 
 # Define prod and para strings
 prod_str = 'HRRR'

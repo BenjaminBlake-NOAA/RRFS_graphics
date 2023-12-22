@@ -5,7 +5,7 @@
  <!ENTITY LOG_DIR "/lfs/h2/emc/ptmp/Benjamin.Blake/logs_rrfs_graphics">
  <!ENTITY COMnam "/lfs/h1/ops/prod/com/nam/v4.2">
  <!ENTITY COMhrrr "/lfs/h1/ops/prod/com/hrrr/v4.1">
- <!ENTITY COMRRFS_A "/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.7.5/prod">
+ <!ENTITY COMRRFS_A "/lfs/h2/emc/ptmp/emc.lam/rrfs/na/prod">
  <!ENTITY COMRRFS_FW "/lfs/h2/emc/ptmp/emc.lam/para/com/rrfsfw/v1.0.0">
  <!ENTITY OBSDIAG "/lfs/h2/emc/ptmp/donald.e.lippi/rrfs_a_diags/figs">
 
@@ -27,8 +27,8 @@
 
 <workflow realtime="T" scheduler="pbspro" cyclelifespan="00:15:00:00" cyclethrottle="4" taskthrottle="60">
 
-  <cycledef group="prod">202311091200 202312311800 06:00:00</cycledef>
-  <cycledef group="daily">202311091200 202312310000 24:00:00</cycledef>
+  <cycledef group="prod">202312061200 202312311800 06:00:00</cycledef>
+  <cycledef group="daily">202312070000 202312310000 24:00:00</cycledef>
  
   <log verbosity="10"><cyclestr>&LOG_DIR;/workflow_@Y@m@d@H.log</cyclestr></log> 
 

@@ -42,7 +42,7 @@ date_list = [dtime + datetime.timedelta(hours=x) for x in fhours]
 
 # Define the directory paths to the output files
 NAM_DIR = '/lfs/h1/ops/prod/com/nam/v4.2/nam.'+ymd
-RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.7.5/prod/rrfs.'+ymd+'/'+cyc
+RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/na/prod/rrfs.'+ymd+'/'+cyc
 
 # Paths to image files
 im = image.imread('/lfs/h2/emc/lam/noscrub/Benjamin.Blake/rrfs_graphics/noaa.png')
@@ -72,20 +72,17 @@ ax3.set_extent(extent)
 axes = [ax1, ax2, ax3] 
 
 fline_wd = 0.5  # line width
-fline_wd_lakes = 0.35  # line width
+fline_wd_lakes = 0.25  # line width
 falpha = 0.5    # transparency
 
 # natural_earth
 lakes=cfeature.NaturalEarthFeature('physical','lakes',back_res,
                   edgecolor='black',facecolor='none',
-                  linewidth=fline_wd_lakes,alpha=falpha)
+                  linewidth=fline_wd_lakes)
 coastlines=cfeature.NaturalEarthFeature('physical','coastline',
                   back_res,edgecolor='black',facecolor='none',
                   linewidth=fline_wd,alpha=falpha)
 states=cfeature.NaturalEarthFeature('cultural','admin_1_states_provinces',
-                  back_res,edgecolor='black',facecolor='none',
-                  linewidth=fline_wd,alpha=falpha)
-borders=cfeature.NaturalEarthFeature('cultural','admin_0_countries',
                   back_res,edgecolor='black',facecolor='none',
                   linewidth=fline_wd,alpha=falpha)
 
@@ -99,15 +96,21 @@ if back_img=='on':
   ax2.imshow(img, origin='upper', transform=transform)
   ax3.imshow(img, origin='upper', transform=transform)
 
-ax1.add_feature(cfeature.LAND, linewidth=0, facecolor='lightgray')
+ax1.add_feature(cfeature.LAND, linewidth=0, facecolor='white')
+ax1.add_feature(cfeature.OCEAN, linewidth=0, facecolor='lightgray')
+ax1.add_feature(cfeature.LAKES, edgecolor='black', linewidth=fline_wd_lakes, facecolor='lightgray',zorder=0)
 ax1.add_feature(lakes)
 ax1.add_feature(states)
 ax1.add_feature(coastlines)
-ax2.add_feature(cfeature.LAND, linewidth=0, facecolor='lightgray')
+ax2.add_feature(cfeature.LAND, linewidth=0, facecolor='white')
+ax2.add_feature(cfeature.OCEAN, linewidth=0, facecolor='lightgray')
+ax2.add_feature(cfeature.LAKES, edgecolor='black', linewidth=fline_wd_lakes, facecolor='lightgray',zorder=0)
 ax2.add_feature(lakes)
 ax2.add_feature(states)
 ax2.add_feature(coastlines)
-ax3.add_feature(cfeature.LAND, linewidth=0, facecolor='lightgray')
+ax3.add_feature(cfeature.LAND, linewidth=0, facecolor='white)
+ax3.add_feature(cfeature.OCEAN, linewidth=0, facecolor='lightgray')
+ax3.add_feature(cfeature.LAKES, edgecolor='black', linewidth=fline_wd_lakes, facecolor='lightgray',zorder=0)
 ax3.add_feature(lakes)
 ax3.add_feature(states)
 ax3.add_feature(coastlines)
@@ -275,20 +278,20 @@ for j in range(len(date_list)):
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
   normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N)
 
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,asnow_1,transform=transform,cmap=cm,norm=norm)
-  cs_1.cmap.set_under('white')
+  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,asnow_1,transform=transform,cmap=cm,vmin=0.5,norm=norm)
+  cs_1.cmap.set_under('white',alpha=0.)
   cs_1.cmap.set_over('#CA7AF5')
-  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='both')
+  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='max')
   cbar1.set_label(units,fontsize=6)
   cbar1.ax.set_xticklabels(clevs)
   cbar1.ax.tick_params(labelsize=6)
   ax1.text(.5,1.03,'NAM Nest Snowfall (10:1) ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,asnow_2,transform=transform,cmap=cm,norm=norm)
-  cs_2.cmap.set_under('white')
+  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,asnow_2,transform=transform,cmap=cm,vmin=0.5,norm=norm)
+  cs_2.cmap.set_under('white',alpha=0.)
   cs_2.cmap.set_over('#CA7AF5')
-  cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='both')
+  cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='max')
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.set_xticklabels(clevs)
   cbar2.ax.tick_params(labelsize=6)

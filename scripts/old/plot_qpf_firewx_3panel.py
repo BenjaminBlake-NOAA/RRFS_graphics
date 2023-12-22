@@ -77,18 +77,20 @@ myproj=ccrs.LambertConformal(central_longitude=cen_lon, central_latitude=cen_lat
                         secant_latitudes=None, standard_parallels=None,globe=None)
 ax1 = fig.add_subplot(gs[0:4,0:4], projection=myproj)
 ax2 = fig.add_subplot(gs[0:4,4:], projection=myproj)
+ax3 = fig.add_subplot(gs[5:,1:7], projection=myproj)
 ax1.set_extent(extent)
 ax2.set_extent(extent)
-axes = [ax1, ax2]
+ax3.set_extent(extent)
+axes = [ax1, ax2, ax3]
 
-fline_wd = 0.5  # line width
-fline_wd_lakes = 0.25  # line width
+fline_wd = 0.6  # line width
+fline_wd_lakes = 0.35  # line width
 falpha = 0.5    # transparency
 
 # natural_earth
 lakes=cfeature.NaturalEarthFeature('physical','lakes',back_res,
                   edgecolor='black',facecolor='none',
-                  linewidth=fline_wd_lakes)
+                  linewidth=fline_wd_lakes,alpha=falpha)
 coastline=cfeature.NaturalEarthFeature('physical','coastline',
                   back_res,edgecolor='black',facecolor='none',
                   linewidth=fline_wd,alpha=falpha)
@@ -112,25 +114,28 @@ if back_img=='on':
   img = plt.imread('/lfs/h2/emc/lam/noscrub/Benjamin.Blake/python/NaturalEarth/raster_files/NE1_50M_SR_W.tif')
   ax1.imshow(img, origin='upper', transform=transform)
   ax2.imshow(img, origin='upper', transform=transform)
+  ax3.imshow(img, origin='upper', transform=transform)
 
-ax1.add_feature(cfeature.LAND, linewidth=0, facecolor='white')
-ax1.add_feature(cfeature.OCEAN, linewidth=0, facecolor='lightgray')
+ax1.add_feature(cfeature.LAND, linewidth=0, facecolor='lightgray')
 ax1.add_feature(COUNTIES, facecolor='none',edgecolor='gray')
-ax1.add_feature(cfeature.LAKES, edgecolor='black', linewidth=fline_wd_lakes, facecolor='lightgray',zorder=0)
 ax1.add_feature(lakes)
 ax1.add_feature(states)
 ax1.add_feature(coastline)
-ax2.add_feature(cfeature.LAND, linewidth=0, facecolor='white')
-ax2.add_feature(cfeature.OCEAN, linewidth=0, facecolor='lightgray')
+ax2.add_feature(cfeature.LAND, linewidth=0, facecolor='lightgray')
 ax2.add_feature(COUNTIES, facecolor='none',edgecolor='gray')
-ax2.add_feature(cfeature.LAKES, edgecolor='black', linewidth=fline_wd_lakes, facecolor='lightgray',zorder=0)
 ax2.add_feature(lakes)
 ax2.add_feature(states)
 ax2.add_feature(coastline)
+ax3.add_feature(cfeature.LAND, linewidth=0, facecolor='lightgray')
+ax3.add_feature(COUNTIES, facecolor='none',edgecolor='gray')
+ax3.add_feature(lakes)
+ax3.add_feature(states)
+ax3.add_feature(coastline)
 
 # Map/figure has been set up here, save axes instances for use again later
 keep_ax_lst_1 = ax1.get_children()[:]
 keep_ax_lst_2 = ax2.get_children()[:]
+keep_ax_lst_3 = ax3.get_children()[:]
 
 xmin, xmax = ax1.get_xlim()
 ymin, ymax = ax1.get_ylim()
@@ -166,15 +171,14 @@ for j in range(len(date_list)):
   else:
     qpf_1 += qpf  
   qpf_2 = data2.select(shortName='APCP')[1].data * 0.0393701
+  qpf_dif = qpf_2 - qpf_1
 
 ###################################################
 
 # Get the lats and lons - only need to do this once
   if (fhr == 1):
     msg = data1.select(shortName='HGT', level='500 mb')[0]  # msg is a Grib2Message object
-    msg2 = data2.select(shortName='HGT', level='500 mb')[0]  # msg is a Grib2Message object
     lat,lon,lat_shift,lon_shift = rrfs_plot_utils.get_latlons_pcolormesh(msg)
-    lat2,lon2,lat2_shift,lon2_shift = rrfs_plot_utils.get_latlons_pcolormesh(msg2)
 
 #################################
   # Plot Total QPF
@@ -211,7 +215,7 @@ for j in range(len(date_list)):
   ax1.text(.5,1.03,'NAM Nest '+fhour+'-hr Accumulated Precipitation ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs_2 = ax2.pcolormesh(lon2_shift,lat2_shift,qpf_2,transform=transform,cmap=cm,vmin=0.01,norm=norm)
+  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,qpf_2,transform=transform,cmap=cm,vmin=0.01,norm=norm)
   cs_2.cmap.set_under('white',alpha=0.)
   cs_2.cmap.set_over('pink')
   cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=1.0,ticks=[0.1,0.5,1,1.5,2,3,5,10,20],extend='max')
@@ -221,6 +225,15 @@ for j in range(len(date_list)):
   ax2.text(.5,1.03,'RRFS_A '+fhour+'-hr Accumulated Precipitation ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+
+  cs = ax3.pcolormesh(lon_shift,lat_shift,qpf_dif,transform=transform,cmap=cmdif,norm=normdif)
+  cs.cmap.set_under('darkblue')
+  cs.cmap.set_over('darkred')
+  cbar = plt.colorbar(cs,ax=ax3,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+  cbar.set_label(units,fontsize=6)
+  cbar.ax.tick_params(labelsize=6)
+  ax3.text(.5,1.03,'RRFS_A - NAM Nest '+fhour+'-hr Accumulated Precipitation ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   rrfs_plot_utils.convert_and_save('compareqpf_'+domain+'_f'+fhour)
   t2 = time.perf_counter()
