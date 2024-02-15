@@ -186,10 +186,8 @@ for j in range(len(date_list)):
   if (fhr > 1):
     cbar1.remove()
     cbar2.remove()
-    cbar.remove()
     rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
     rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
-    rrfs_plot_utils.clear_plotables(ax3,keep_ax_lst_3,fig)
 
   units = 'in'
   clevs = [0.01,0.1,0.25,0.5,0.75,1,1.25,1.5,1.75,2,2.5,3,4,5,7,10,15,20]

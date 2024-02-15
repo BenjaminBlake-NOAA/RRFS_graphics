@@ -27,8 +27,8 @@
 
 <workflow realtime="T" scheduler="pbspro" cyclelifespan="00:15:00:00" cyclethrottle="4" taskthrottle="60">
 
-  <cycledef group="prod">202312061200 202312311800 06:00:00</cycledef>
-  <cycledef group="daily">202312070000 202312310000 24:00:00</cycledef>
+  <cycledef group="prod">202402010000 202412311800 06:00:00</cycledef>
+  <cycledef group="daily">202402010000 202412310000 24:00:00</cycledef>
  
   <log verbosity="10"><cyclestr>&LOG_DIR;/workflow_@Y@m@d@H.log</cyclestr></log> 
 

@@ -339,8 +339,8 @@ def vars_figure(domain):
   lwdown_dif = lwdown_2 - lwdown_1
 
 # Upward longwave radiation
-  lwup_1 = data1.select(shortName='ULWRF')[1].data
-  lwup_2 = data2.select(shortName='ULWRF')[1].data
+  lwup_1 = data1.select(shortName='ULWRF')[3].data
+  lwup_2 = data2.select(shortName='ULWRF')[3].data
   lwup_dif = lwup_2 - lwup_1
 
 # Ground heat flux

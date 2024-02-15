@@ -65,7 +65,7 @@ domains = ['conus','boston_nyc','central','colorado','la_vegas','mid_atlantic','
 # Check to see if the member does not exist
 # Create placeholder images for relevant forecast hours
 if ((member == 'HRRR') and (fhr > 48)) or ((timelag == 'yes') and (fhr > 60)):
-  vars = ['slp','2mt','2mdew','10mwind','mucape','850t','500','250wind','refc','snow','asnow','uh25','maxuvv','qpf']
+  vars = ['slp','2mt','2mdew','10mwind','mucape','850t','500','250wind','refc','vis','zceil','snow','asnow','uh25','maxuvv','qpf']
   for var in vars:
     for dom in domains:
       filename = str(member+'_'+timelag+'_'+var+'_'+dom+'_f'+fhour)
@@ -191,6 +191,12 @@ wspd250_1 = np.sqrt(u250_1**2 + v250_1**2)
 
 # Composite reflectivity
 refc_1 = data1.select(shortName='REFC')[0].data
+
+# Visibility
+vis_1 = data1.select(shortName='VIS',level='surface')[0].data * 0.000621371
+
+# Cloud Ceiling Height
+zceil_1 = data1.select(shortName='HGT',level='cloud ceiling')[0].data * (3.28084/1000)
 
 # Snow depth
 snow_1 = data1.select(shortName='SNOD')[0].data * 39.3701
@@ -676,6 +682,83 @@ def create_figure(domain):
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot composite reflectivity for: '+dom) % t3)
+
+#################################
+  # Plot Surface Visibility
+#################################
+  t1 = time.perf_counter()
+  print(('Working on Surface Visibility for '+dom))
+
+  # Clear off old plottables but keep all the map info
+  if (member == '4') or (member == '5'):
+    cbar1.remove()
+  rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
+
+  units = 'miles'
+  clevs = [0.25,0.5,1,2,3,4,5,10]
+  colorlist = ['salmon','goldenrod','#EEEE00','palegreen','darkturquoise','blue','mediumpurple']
+  cm = matplotlib.colors.ListedColormap(colorlist)
+  norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
+
+  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,vis_1,transform=transform,cmap=cm,vmax=10,norm=norm)
+  cs_1.cmap.set_under('firebrick')
+  cs_1.cmap.set_over('white',alpha=0.)
+  if (member == '4') or (member == '5'):
+    cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.9,ticks=clevs,extend='min')
+    cbar1.set_label(units,fontsize=7)
+    cbar1.ax.tick_params(labelsize=6)
+  if (member == 'Control') or (member == '1'):
+    if timelag == 'yes':
+      ax1.text(.5,1.03,'Surface Visibility ('+units+') \n initialized: '+itimem1+' valid: '+vtimem1 + ' (f'+fhour+')',horizontalalignment='center',fontsize=7,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    else:
+      ax1.text(.5,1.03,'Surface Visibility ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=7,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax1.text(.5,0.95,memstr,horizontalalignment='center',fontsize=7,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  if (member != 'HRRR'):
+    ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+
+  rrfs_plot_utils.convert_and_save(member+'_'+timelag+'_vis_'+dom+'_f'+fhour)
+  t2 = time.perf_counter()
+  t3 = round(t2-t1, 3)
+  print(('%.3f seconds to plot Surface Visibility for: '+dom) % t3)
+
+#################################
+  # Plot Cloud Ceiling Height
+#################################
+  t1 = time.perf_counter()
+  print(('Working on Cloud Ceiling Height for '+dom))
+
+  # Clear off old plottables but keep all the map info
+  if (member == '4') or (member == '5'):
+    cbar1.remove()
+  rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
+
+  units = 'kft'
+  clevs = [0,0.1,0.3,0.5,1,5,10,15,20,25,30,35,40]
+  colorlist = ['firebrick','tomato','salmon','lightsalmon','goldenrod','khaki','gold','yellow','palegreen','mediumspringgreen','lime','limegreen']
+  cm = matplotlib.colors.ListedColormap(colorlist)
+  norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
+
+  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,zceil_1,transform=transform,cmap=cm,norm=norm)
+  cs_1.cmap.set_over('white')
+  if (member == '4') or (member == '5'):
+    cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.9,ticks=clevs,extend='max')
+    cbar1.set_label(units,fontsize=7)
+    cbar1.ax.tick_params(labelsize=6)
+  if (member == 'Control') or (member == '1'):
+    if timelag == 'yes':
+      ax1.text(.5,1.03,'Cloud Ceiling Height ('+units+') \n initialized: '+itimem1+' valid: '+vtimem1 + ' (f'+fhour+')',horizontalalignment='center',fontsize=7,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    else:
+      ax1.text(.5,1.03,'Cloud Ceiling Height ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=7,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax1.text(.5,0.95,memstr,horizontalalignment='center',fontsize=7,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  if (member != 'HRRR'):
+    ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+
+  rrfs_plot_utils.convert_and_save(member+'_'+timelag+'_zceil_'+dom+'_f'+fhour)
+  t2 = time.perf_counter()
+  t3 = round(t2-t1, 3)
+  print(('%.3f seconds to plot Cloud Ceiling Height for: '+dom) % t3)
 
 #################################
   # Plot snow depth

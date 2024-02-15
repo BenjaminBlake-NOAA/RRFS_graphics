@@ -130,11 +130,11 @@ def vars_figure(domain):
 ###################################################
   t1a = time.perf_counter()
 
-  global slp_1,tmp2m_1,tmpsfc_1,dew2m_1,uwind_1,vwind_1,wspd10m_1,terra_1,gust_1,mucape_1,cape_1,mlcape_1,thetae_1,u850_1,v850_1,omg700_1,rh700_1,z500_1,vort500_1,u500_1,v500_1,u250_1,v250_1,wspd250_1,vis_1,zbase_1,zceil_1,ztop_1,pw_1,pofp_1,qpf_1,snow_1,snow0_1,asnow_1,clwmr_1,icmr_1,rwmr_1,snmr_1,tmphyb_1,swdown_1,swup_1,lwdown_1,lwup_1,gdhfx_1,lhfx_1,snhfx_1,hpbl_1,tcolw_1,veg_1,hel3km_1,hel1km_1,ref1km_1,refc_1,uh25_1,uh03_1,maxuvv_1,maxdvv_1,maxref1km_1,maxwind_1,tcdc_1,retop_1,prate_1,smoke_1,colsmoke_1,rain1,fr1,pl1,sn1,mix1,pbase_1,ptop_1,tsoil_0_1,tsoil_001_1,tsoil_004_1,tsoil_01_1,tsoil_03_1,tsoil_06_1,tsoil_1_1,tsoil_16_1,tsoil_3_1,soilw_0_1,soilw_001_1,soilw_004_1,soilw_01_1,soilw_03_1,soilw_06_1,soilw_1_1,soilw_16_1,soilw_3_1
+  global slp_1,tmp2m_1,tmpsfc_1,dew2m_1,uwind_1,vwind_1,wspd10m_1,terra_1,gust_1,mucape_1,cape_1,mlcape_1,thetae_1,u850_1,v850_1,omg700_1,rh700_1,z500_1,vort500_1,u500_1,v500_1,u250_1,v250_1,wspd250_1,vis_1,zbase_1,zceil_1,ztop_1,pw_1,pofp_1,qpf_1,snow_1,snow0_1,asnow_1,clwmr_1,icmr_1,rwmr_1,snmr_1,tmphyb_1,swdown_1,swup_1,lwdown_1,lwup_1,gdhfx_1,lhfx_1,snhfx_1,hpbl_1,tcolw_1,veg_1,hel3km_1,hel1km_1,ref1km_1,refc_1,uh25_1,uh03_1,maxuvv_1,maxdvv_1,maxref1km_1,maxwind_1,tcdc_1,retop_1,prate_1,smoke_1,colsmoke_1,rain1,fr1,pl1,sn1,mix1,pbase_1,ptop_1,tsoil_0_1,tsoil_001_1,tsoil_004_1,tsoil_01_1,tsoil_03_1,tsoil_06_1,tsoil_1_1,tsoil_16_1,tsoil_3_1,soilw_0_1,soilw_001_1,soilw_004_1,soilw_01_1,soilw_03_1,soilw_06_1,soilw_1_1,soilw_16_1,soilw_3_1,frzr_1,frozr_1
 
-  global slp_2,tmp2m_2,tmpsfc_2,dew2m_2,uwind_2,vwind_2,wspd10m_2,terra_2,gust_2,mucape_2,cape_2,mlcape_2,thetae_2,u850_2,v850_2,omg700_2,rh700_2,z500_2,vort500_2,u500_2,v500_2,u250_2,v250_2,wspd250_2,vis_2,zbase_2,zceil_2,ztop_2,pw_2,pofp_2,qpf_2,snow_2,snow0_2,asnow_2,clwmr_2,icmr_2,rwmr_2,snmr_2,refd_2,tmphyb_2,swdown_2,swup_2,lwdown_2,lwup_2,gdhfx_2,lhfx_2,snhfx_2,hpbl_2,tcolw_2,veg_2,hel3km_2,hel1km_2,ref1km_2,refc_2,uh25_2,uh03_2,maxuvv_2,maxdvv_2,maxref1km_2,maxwind_2,tcdc_2,retop_2,prate_2,smoke_2,colsmoke_2,dust_2,coldust_2,rain2,fr2,pl2,sn2,mix2,pbase_2,ptop_2,tsoil_0_2,tsoil_001_2,tsoil_004_2,tsoil_01_2,tsoil_03_2,tsoil_06_2,tsoil_1_2,tsoil_16_2,tsoil_3_2,soilw_0_2,soilw_001_2,soilw_004_2,soilw_01_2,soilw_03_2,soilw_06_2,soilw_1_2,soilw_16_2,soilw_3_2
+  global slp_2,tmp2m_2,tmpsfc_2,dew2m_2,uwind_2,vwind_2,wspd10m_2,terra_2,gust_2,mucape_2,cape_2,mlcape_2,thetae_2,u850_2,v850_2,omg700_2,rh700_2,z500_2,vort500_2,u500_2,v500_2,u250_2,v250_2,wspd250_2,vis_2,zbase_2,zceil_2,ztop_2,pw_2,pofp_2,qpf_2,snow_2,snow0_2,asnow_2,clwmr_2,icmr_2,rwmr_2,snmr_2,refd_2,tmphyb_2,swdown_2,swup_2,lwdown_2,lwup_2,gdhfx_2,lhfx_2,snhfx_2,hpbl_2,tcolw_2,veg_2,hel3km_2,hel1km_2,ref1km_2,refc_2,uh25_2,uh03_2,maxuvv_2,maxdvv_2,maxref1km_2,maxwind_2,tcdc_2,retop_2,prate_2,smoke_2,colsmoke_2,dust_2,coldust_2,rain2,fr2,pl2,sn2,mix2,pbase_2,ptop_2,tsoil_0_2,tsoil_001_2,tsoil_004_2,tsoil_01_2,tsoil_03_2,tsoil_06_2,tsoil_1_2,tsoil_16_2,tsoil_3_2,soilw_0_2,soilw_001_2,soilw_004_2,soilw_01_2,soilw_03_2,soilw_06_2,soilw_1_2,soilw_16_2,soilw_3_2,frzr_2,frozr_2,tsnowp_2
 
-  global slp_dif,tmp2m_dif,tmpsfc_dif,dew2m_dif,wspd10m_dif,terra_dif,gust_dif,mucape_dif,cape_dif,mlcape_dif,thetae_dif,omg700_dif,rh700_dif,z500_dif,vort500_dif,wspd250_dif,vis_dif,zbase_dif,zceil_dif,ztop_dif,pw_dif,pofp_dif,qpf_dif,snow_dif,snow0_dif,asnow_dif,clwmr_dif,icmr_dif,rwmr_dif,snmr_dif,swdown_dif,swup_dif,lwdown_dif,lwup_dif,gdhfx_dif,lhfx_dif,snhfx_dif,hpbl_dif,tcolw_dif,veg_dif,hel3km_dif,hel1km_dif,uh25_dif,uh03_dif,maxuvv_dif,maxdvv_dif,maxwind_dif,tcdc_dif,retop_dif,prate_dif,smoke_dif,colsmoke_dif,pbase_dif,ptop_dif,tsoil_0_dif,tsoil_001_dif,tsoil_004_dif,tsoil_01_dif,tsoil_03_dif,tsoil_06_dif,tsoil_1_dif,tsoil_16_dif,tsoil_3_dif,soilw_0_dif,soilw_001_dif,soilw_004_dif,soilw_01_dif,soilw_03_dif,soilw_06_dif,soilw_1_dif,soilw_16_dif,soilw_3_dif,ref1km_both,refc_both,maxref1km_both
+  global slp_dif,tmp2m_dif,tmpsfc_dif,dew2m_dif,wspd10m_dif,terra_dif,gust_dif,mucape_dif,cape_dif,mlcape_dif,thetae_dif,omg700_dif,rh700_dif,z500_dif,vort500_dif,wspd250_dif,vis_dif,zbase_dif,zceil_dif,ztop_dif,pw_dif,pofp_dif,qpf_dif,snow_dif,snow0_dif,asnow_dif,clwmr_dif,icmr_dif,rwmr_dif,snmr_dif,swdown_dif,swup_dif,lwdown_dif,lwup_dif,gdhfx_dif,lhfx_dif,snhfx_dif,hpbl_dif,tcolw_dif,veg_dif,hel3km_dif,hel1km_dif,uh25_dif,uh03_dif,maxuvv_dif,maxdvv_dif,maxwind_dif,tcdc_dif,retop_dif,prate_dif,smoke_dif,colsmoke_dif,pbase_dif,ptop_dif,tsoil_0_dif,tsoil_001_dif,tsoil_004_dif,tsoil_01_dif,tsoil_03_dif,tsoil_06_dif,tsoil_1_dif,tsoil_16_dif,tsoil_3_dif,soilw_0_dif,soilw_001_dif,soilw_004_dif,soilw_01_dif,soilw_03_dif,soilw_06_dif,soilw_1_dif,soilw_16_dif,soilw_3_dif,frzr_dif,frozr_dif,ref1km_both,refc_both,maxref1km_both
 
 # Sea level pressure
   slp_1 = data1.select(shortName='MSLMA',level='mean sea level')[0].data * 0.01
@@ -281,9 +281,10 @@ def vars_figure(domain):
   pofp_dif = pofp_2 - pofp_1
 
 # Total Precipitation is missing, but you can add here
-  qpf_1 = data1.select(shortName='APCP',timeRangeOfStatisticalProcess=fhr)[0].data * 0.0393701
-  qpf_2 = data2.select(shortName='APCP')[1].data * 0.0393701
-  qpf_dif = qpf_2 - qpf_1
+  if (fhr > 0):
+    qpf_1 = data1.select(shortName='APCP',timeRangeOfStatisticalProcess=fhr)[0].data * 0.0393701
+    qpf_2 = data2.select(shortName='APCP')[1].data * 0.0393701
+    qpf_dif = qpf_2 - qpf_1
 
 # Snow depth
   snow_1 = data1.select(shortName='SNOD')[0].data * 39.3701
@@ -341,7 +342,7 @@ def vars_figure(domain):
   lwdown_dif = lwdown_2 - lwdown_1
 
 # Upward longwave radiation
-  lwup_1 = data1.select(shortName='ULWRF')[0].data
+  lwup_1 = data1.select(shortName='ULWRF')[1].data
   lwup_2 = data2.select(shortName='ULWRF')[3].data
   lwup_dif = lwup_2 - lwup_1
 
@@ -617,6 +618,20 @@ def vars_figure(domain):
   soilw_3_1 = data1.select(shortName='SOILW',level='3-3 m underground')[0].data
   soilw_3_2 = data2.select(shortName='SOILW',level='3-3 m underground')[0].data
   soilw_3_dif = soilw_3_2 - soilw_3_1
+
+  if (fhr > 0):
+# Freezing Rain
+    frzr_1 = data1.select(shortName='FRZR')[0].data * 0.0393701
+    frzr_2 = data2.select(shortName='FRZR')[0].data * 0.0393701
+    frzr_dif = frzr_2 - frzr_1
+
+# Sleet
+    frozr_1 = data1.select(shortName='FROZR')[0].data * 0.0393701
+    frozr_2 = data2.select(shortName='FROZR')[0].data * 0.0393701
+    frozr_dif = frozr_2 - frozr_1
+
+# Total Snow Precipitation
+    tsnowp_2 = data2.select(shortName='TSNOWP')[0].data * 0.0393701
 
   t2a = time.perf_counter()
   t3a = round(t2a-t1a, 3)
@@ -1890,59 +1905,60 @@ def plot_set_1():
 #################################
   # Plot QPF
 #################################
-  t1 = time.perf_counter()
-  print(('Working on qpf for '+dom))
+  if (fhr > 0):
+    t1 = time.perf_counter()
+    print(('Working on qpf for '+dom))
 
   # Clear off old plottables but keep all the map info
-  cbar1.remove()
-  cbar2.remove()
-  cbar3.remove()
-  rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
-  rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
-  rrfs_plot_utils.clear_plotables(ax3,keep_ax_lst_3,fig)
+    cbar1.remove()
+    cbar2.remove()
+    cbar3.remove()
+    rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
+    rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
+    rrfs_plot_utils.clear_plotables(ax3,keep_ax_lst_3,fig)
 
-  units = 'in'
-  clevs = [0.01,0.1,0.25,0.5,0.75,1,1.25,1.5,1.75,2,2.5,3,4,5,7,10,15,20]
-  clevsdif = [-1.5,-1.25,-1,-0.75,-0.5,-0.25,0,0.25,0.5,0.75,1,1.25,1.5]
-  colorlist = ['chartreuse','limegreen','green','blue','dodgerblue','deepskyblue','cyan','mediumpurple','mediumorchid','darkmagenta','darkred','crimson','orangered','darkorange','goldenrod','gold','yellow']  
-  cm = matplotlib.colors.ListedColormap(colorlist)
-  norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
-  normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N)
+    units = 'in'
+    clevs = [0.01,0.1,0.25,0.5,0.75,1,1.25,1.5,1.75,2,2.5,3,4,5,7,10,15,20]
+    clevsdif = [-1.5,-1.25,-1,-0.75,-0.5,-0.25,0,0.25,0.5,0.75,1,1.25,1.5]
+    colorlist = ['chartreuse','limegreen','green','blue','dodgerblue','deepskyblue','cyan','mediumpurple','mediumorchid','darkmagenta','darkred','crimson','orangered','darkorange','goldenrod','gold','yellow']  
+    cm = matplotlib.colors.ListedColormap(colorlist)
+    norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
+    normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N)
    
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,qpf_1,transform=transform,cmap=cm,vmin=0.01,norm=norm)
-  cs_1.cmap.set_under('white',alpha=0.)
-  cs_1.cmap.set_over('pink')
-  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,ticks=[0.1,0.5,1,1.5,2,3,5,10,20],extend='max')
-  cbar1.set_label(units,fontsize=6)
-  cbar1.ax.set_xticklabels([0.1,0.5,1,1.5,2,3,5,10,20])
-  cbar1.ax.tick_params(labelsize=6)
-  ax1.text(.5,1.03,'HRRR '+fhour+'-hr Accumulated Precipitation ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+    cs_1 = ax1.pcolormesh(lon_shift,lat_shift,qpf_1,transform=transform,cmap=cm,vmin=0.01,norm=norm)
+    cs_1.cmap.set_under('white',alpha=0.)
+    cs_1.cmap.set_over('pink')
+    cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,ticks=[0.1,0.5,1,1.5,2,3,5,10,20],extend='max')
+    cbar1.set_label(units,fontsize=6)
+    cbar1.ax.set_xticklabels([0.1,0.5,1,1.5,2,3,5,10,20])
+    cbar1.ax.tick_params(labelsize=6)
+    ax1.text(.5,1.03,'HRRR '+fhour+'-hr Accumulated Precipitation ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,qpf_2,transform=transform,cmap=cm,vmin=0.01,norm=norm)
-  cs_2.cmap.set_under('white',alpha=0.)
-  cs_2.cmap.set_over('pink')
-  cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=1.0,ticks=[0.1,0.5,1,1.5,2,3,5,10,20],extend='max')
-  cbar2.set_label(units,fontsize=6)
-  cbar2.ax.set_xticklabels([0.1,0.5,1,1.5,2,3,5,10,20])
-  cbar2.ax.tick_params(labelsize=6)
-  ax2.text(.5,1.03,'RRFS_A '+fhour+'-hr Accumulated Precipitation ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+    cs_2 = ax2.pcolormesh(lon_shift,lat_shift,qpf_2,transform=transform,cmap=cm,vmin=0.01,norm=norm)
+    cs_2.cmap.set_under('white',alpha=0.)
+    cs_2.cmap.set_over('pink')
+    cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=1.0,ticks=[0.1,0.5,1,1.5,2,3,5,10,20],extend='max')
+    cbar2.set_label(units,fontsize=6)
+    cbar2.ax.set_xticklabels([0.1,0.5,1,1.5,2,3,5,10,20])
+    cbar2.ax.tick_params(labelsize=6)
+    ax2.text(.5,1.03,'RRFS_A '+fhour+'-hr Accumulated Precipitation ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs = ax3.pcolormesh(lon_shift,lat_shift,qpf_dif,transform=transform,cmap=cmdif,norm=normdif)
-  cs.cmap.set_under('darkblue')
-  cs.cmap.set_over('darkred')
-  cbar3 = fig.colorbar(cs,ax=ax3,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
-  cbar3.set_label(units,fontsize=6)
-  cbar3.ax.tick_params(labelsize=6)
-  ax3.text(.5,1.03,'RRFS_A - HRRR '+fhour+'-hr Accumulated Precipitation ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+    cs = ax3.pcolormesh(lon_shift,lat_shift,qpf_dif,transform=transform,cmap=cmdif,norm=normdif)
+    cs.cmap.set_under('darkblue')
+    cs.cmap.set_over('darkred')
+    cbar3 = fig.colorbar(cs,ax=ax3,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+    cbar3.set_label(units,fontsize=6)
+    cbar3.ax.tick_params(labelsize=6)
+    ax3.text(.5,1.03,'RRFS_A - HRRR '+fhour+'-hr Accumulated Precipitation ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.convert_and_save('compareqpf_'+dom+'_f'+fhour)
-  t2 = time.perf_counter()
-  t3 = round(t2-t1, 3)
-  print(('%.3f seconds to plot qpf for: '+dom) % t3)
+    rrfs_plot_utils.convert_and_save('compareqpf_'+dom+'_f'+fhour)
+    t2 = time.perf_counter()
+    t3 = round(t2-t1, 3)
+    print(('%.3f seconds to plot qpf for: '+dom) % t3)
 
 #################################
   # Plot QPF3
@@ -4481,20 +4497,38 @@ def plot_set_4():
   print(('Working on soil moisture 0.01 m below ground for '+dom))
 
   # Clear off old plottables but keep all the map info
+  cbar1.remove()
+  cbar2.remove()
+  cbar3.remove()
   rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
   rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
   rrfs_plot_utils.clear_plotables(ax3,keep_ax_lst_3,fig)
 
   cs_1 = ax1.pcolormesh(lon_shift,lat_shift,soilw_001_1,norm=norm,transform=transform,cmap=cm)
+  cs_1.cmap.set_under('darkred')
+  cs_1.cmap.set_over('white')
+  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+  cbar1.set_label(units,fontsize=6)
+  cbar1.ax.tick_params(labelsize=6)
   ax1.text(.5,1.03,'HRRR 0.01 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_2 = ax2.pcolormesh(lon_shift,lat_shift,soilw_001_2,norm=norm,transform=transform,cmap=cm)
+  cs_2.cmap.set_under('darkred')
+  cs_2.cmap.set_over('white')
+  cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+  cbar2.set_label(units,fontsize=6)
+  cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS_A 0.01 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_3 = ax3.pcolormesh(lon_shift,lat_shift,soilw_001_dif,norm=normdif,transform=transform,cmap=cmdif)
+  cs_3.cmap.set_under('darkblue')
+  cs_3.cmap.set_over('darkred')
+  cbar3 = fig.colorbar(cs_3,ax=ax3,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+  cbar3.set_label(units,fontsize=6)
+  cbar3.ax.tick_params(labelsize=6)
   ax3.text(.5,1.03,'RRFS_A - HRRR 0.01 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
@@ -4510,20 +4544,38 @@ def plot_set_4():
   print(('Working on soil moisture 0.04 m below ground for '+dom))
 
   # Clear off old plottables but keep all the map info
+  cbar1.remove()
+  cbar2.remove()
+  cbar3.remove()
   rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
   rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
   rrfs_plot_utils.clear_plotables(ax3,keep_ax_lst_3,fig)
 
   cs_1 = ax1.pcolormesh(lon_shift,lat_shift,soilw_004_1,norm=norm,transform=transform,cmap=cm)
+  cs_1.cmap.set_under('darkred')
+  cs_1.cmap.set_over('white')
+  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+  cbar1.set_label(units,fontsize=6)
+  cbar1.ax.tick_params(labelsize=6)
   ax1.text(.5,1.03,'HRRR 0.04 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_2 = ax2.pcolormesh(lon_shift,lat_shift,soilw_004_2,norm=norm,transform=transform,cmap=cm)
+  cs_2.cmap.set_under('darkred')
+  cs_2.cmap.set_over('white')
+  cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+  cbar2.set_label(units,fontsize=6)
+  cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS_A 0.04 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_3 = ax3.pcolormesh(lon_shift,lat_shift,soilw_004_dif,norm=normdif,transform=transform,cmap=cmdif)
+  cs_3.cmap.set_under('darkblue')
+  cs_3.cmap.set_over('darkred')
+  cbar3 = fig.colorbar(cs_3,ax=ax3,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+  cbar3.set_label(units,fontsize=6)
+  cbar3.ax.tick_params(labelsize=6)
   ax3.text(.5,1.03,'RRFS_A - HRRR 0.04 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
@@ -4539,20 +4591,38 @@ def plot_set_4():
   print(('Working on soil moisture 0.1 m below ground for '+dom))
 
   # Clear off old plottables but keep all the map info
+  cbar1.remove()
+  cbar2.remove()
+  cbar3.remove()
   rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
   rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
   rrfs_plot_utils.clear_plotables(ax3,keep_ax_lst_3,fig)
 
   cs_1 = ax1.pcolormesh(lon_shift,lat_shift,soilw_01_1,norm=norm,transform=transform,cmap=cm)
+  cs_1.cmap.set_under('darkred')
+  cs_1.cmap.set_over('white')
+  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+  cbar1.set_label(units,fontsize=6)
+  cbar1.ax.tick_params(labelsize=6)
   ax1.text(.5,1.03,'HRRR 0.1 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_2 = ax2.pcolormesh(lon_shift,lat_shift,soilw_01_2,norm=norm,transform=transform,cmap=cm)
+  cs_2.cmap.set_under('darkred')
+  cs_2.cmap.set_over('white')
+  cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+  cbar2.set_label(units,fontsize=6)
+  cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS_A 0.1 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_3 = ax3.pcolormesh(lon_shift,lat_shift,soilw_01_dif,norm=normdif,transform=transform,cmap=cmdif)
+  cs_3.cmap.set_under('darkblue')
+  cs_3.cmap.set_over('darkred')
+  cbar3 = fig.colorbar(cs_3,ax=ax3,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+  cbar3.set_label(units,fontsize=6)
+  cbar3.ax.tick_params(labelsize=6)
   ax3.text(.5,1.03,'RRFS_A - HRRR 0.1 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
@@ -4568,20 +4638,38 @@ def plot_set_4():
   print(('Working on soil moisture 0.3 m below ground for '+dom))
 
   # Clear off old plottables but keep all the map info
+  cbar1.remove()
+  cbar2.remove()
+  cbar3.remove()
   rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
   rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
   rrfs_plot_utils.clear_plotables(ax3,keep_ax_lst_3,fig)
 
   cs_1 = ax1.pcolormesh(lon_shift,lat_shift,soilw_03_1,norm=norm,transform=transform,cmap=cm)
+  cs_1.cmap.set_under('darkred')
+  cs_1.cmap.set_over('white')
+  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+  cbar1.set_label(units,fontsize=6)
+  cbar1.ax.tick_params(labelsize=6)
   ax1.text(.5,1.03,'HRRR 0.3 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_2 = ax2.pcolormesh(lon_shift,lat_shift,soilw_03_2,norm=norm,transform=transform,cmap=cm)
+  cs_2.cmap.set_under('darkred')
+  cs_2.cmap.set_over('white')      
+  cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+  cbar2.set_label(units,fontsize=6)
+  cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS_A 0.3 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_3 = ax3.pcolormesh(lon_shift,lat_shift,soilw_03_dif,norm=normdif,transform=transform,cmap=cmdif)
+  cs_3.cmap.set_under('darkblue')
+  cs_3.cmap.set_over('darkred')
+  cbar3 = fig.colorbar(cs_3,ax=ax3,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+  cbar3.set_label(units,fontsize=6)
+  cbar3.ax.tick_params(labelsize=6)
   ax3.text(.5,1.03,'RRFS_A - HRRR 0.3 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
@@ -4597,20 +4685,38 @@ def plot_set_4():
   print(('Working on soil moisture 0.6 m below ground for '+dom))
 
   # Clear off old plottables but keep all the map info
+  cbar1.remove()
+  cbar2.remove()
+  cbar3.remove()
   rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
   rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
   rrfs_plot_utils.clear_plotables(ax3,keep_ax_lst_3,fig)
 
   cs_1 = ax1.pcolormesh(lon_shift,lat_shift,soilw_06_1,norm=norm,transform=transform,cmap=cm)
+  cs_1.cmap.set_under('darkred')
+  cs_1.cmap.set_over('white')
+  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+  cbar1.set_label(units,fontsize=6)
+  cbar1.ax.tick_params(labelsize=6)
   ax1.text(.5,1.03,'HRRR 0.6 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_2 = ax2.pcolormesh(lon_shift,lat_shift,soilw_06_2,norm=norm,transform=transform,cmap=cm)
+  cs_2.cmap.set_under('darkred')
+  cs_2.cmap.set_over('white')
+  cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+  cbar2.set_label(units,fontsize=6)
+  cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS_A 0.6 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_3 = ax3.pcolormesh(lon_shift,lat_shift,soilw_06_dif,norm=normdif,transform=transform,cmap=cmdif)
+  cs_3.cmap.set_under('darkblue')
+  cs_3.cmap.set_over('darkred')
+  cbar3 = fig.colorbar(cs_3,ax=ax3,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+  cbar3.set_label(units,fontsize=6)
+  cbar3.ax.tick_params(labelsize=6)
   ax3.text(.5,1.03,'RRFS_A - HRRR 0.6 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
@@ -4626,20 +4732,38 @@ def plot_set_4():
   print(('Working on soil moisture 1 m below ground for '+dom))
 
   # Clear off old plottables but keep all the map info
+  cbar1.remove()
+  cbar2.remove()
+  cbar3.remove()
   rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
   rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
   rrfs_plot_utils.clear_plotables(ax3,keep_ax_lst_3,fig)
 
   cs_1 = ax1.pcolormesh(lon_shift,lat_shift,soilw_1_1,norm=norm,transform=transform,cmap=cm)
+  cs_1.cmap.set_under('darkred')
+  cs_1.cmap.set_over('white')
+  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+  cbar1.set_label(units,fontsize=6)
+  cbar1.ax.tick_params(labelsize=6)
   ax1.text(.5,1.03,'HRRR 1 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_2 = ax2.pcolormesh(lon_shift,lat_shift,soilw_1_2,norm=norm,transform=transform,cmap=cm)
+  cs_2.cmap.set_under('darkred')
+  cs_2.cmap.set_over('white')
+  cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+  cbar2.set_label(units,fontsize=6)
+  cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS_A 1 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_3 = ax3.pcolormesh(lon_shift,lat_shift,soilw_1_dif,norm=normdif,transform=transform,cmap=cmdif)
+  cs_3.cmap.set_under('darkblue')
+  cs_3.cmap.set_over('darkred')
+  cbar3 = fig.colorbar(cs_3,ax=ax3,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+  cbar3.set_label(units,fontsize=6)
+  cbar3.ax.tick_params(labelsize=6)
   ax3.text(.5,1.03,'RRFS_A - HRRR 1 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
@@ -4655,20 +4779,38 @@ def plot_set_4():
   print(('Working on soil moisture 1.6 m below ground for '+dom))
 
   # Clear off old plottables but keep all the map info
+  cbar1.remove()
+  cbar2.remove()
+  cbar3.remove()
   rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
   rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
   rrfs_plot_utils.clear_plotables(ax3,keep_ax_lst_3,fig)
 
   cs_1 = ax1.pcolormesh(lon_shift,lat_shift,soilw_16_1,norm=norm,transform=transform,cmap=cm)
+  cs_1.cmap.set_under('darkred')
+  cs_1.cmap.set_over('white')
+  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+  cbar1.set_label(units,fontsize=6)
+  cbar1.ax.tick_params(labelsize=6)
   ax1.text(.5,1.03,'HRRR 1.6 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_2 = ax2.pcolormesh(lon_shift,lat_shift,soilw_16_2,norm=norm,transform=transform,cmap=cm)
+  cs_2.cmap.set_under('darkred')
+  cs_2.cmap.set_over('white')
+  cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+  cbar2.set_label(units,fontsize=6)
+  cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS_A 1.6 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_3 = ax3.pcolormesh(lon_shift,lat_shift,soilw_16_dif,norm=normdif,transform=transform,cmap=cmdif)
+  cs_3.cmap.set_under('darkblue')
+  cs_3.cmap.set_over('darkred')
+  cbar3 = fig.colorbar(cs_3,ax=ax3,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+  cbar3.set_label(units,fontsize=6)
+  cbar3.ax.tick_params(labelsize=6)
   ax3.text(.5,1.03,'RRFS_A - HRRR 1.6 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
@@ -4684,20 +4826,38 @@ def plot_set_4():
   print(('Working on soil moisture 3 m below ground for '+dom))
 
   # Clear off old plottables but keep all the map info
+  cbar1.remove()
+  cbar2.remove()
+  cbar3.remove()
   rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
   rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
   rrfs_plot_utils.clear_plotables(ax3,keep_ax_lst_3,fig)
 
   cs_1 = ax1.pcolormesh(lon_shift,lat_shift,soilw_3_1,norm=norm,transform=transform,cmap=cm)
+  cs_1.cmap.set_under('darkred')
+  cs_1.cmap.set_over('white')
+  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+  cbar1.set_label(units,fontsize=6)
+  cbar1.ax.tick_params(labelsize=6)
   ax1.text(.5,1.03,'HRRR 3 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_2 = ax2.pcolormesh(lon_shift,lat_shift,soilw_3_2,norm=norm,transform=transform,cmap=cm)
+  cs_2.cmap.set_under('darkred')
+  cs_2.cmap.set_over('white')
+  cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+  cbar2.set_label(units,fontsize=6)
+  cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS_A 3 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_3 = ax3.pcolormesh(lon_shift,lat_shift,soilw_3_dif,norm=normdif,transform=transform,cmap=cmdif)
+  cs_3.cmap.set_under('darkblue')
+  cs_3.cmap.set_over('darkred')
+  cbar3 = fig.colorbar(cs_3,ax=ax3,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+  cbar3.set_label(units,fontsize=6)
+  cbar3.ax.tick_params(labelsize=6)
   ax3.text(.5,1.03,'RRFS_A - HRRR 3 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
@@ -4705,6 +4865,137 @@ def plot_set_4():
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot soil moisture 1.6 m below ground for: '+dom) % t3)
+
+################################
+  # Plot Freezing Rain
+################################
+  if (fhr > 0):
+    t1 = time.perf_counter()
+    print(('Working on Freezing Rain for '+dom))
+
+  # Clear off old plottables but keep all the map info
+    cbar1.remove()
+    cbar2.remove()
+    cbar3.remove()
+    rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
+    rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
+    rrfs_plot_utils.clear_plotables(ax3,keep_ax_lst_3,fig)
+
+    units = 'in'
+    clevs = [0.002,0.01,0.05,0.1,0.25,0.5,0.75,1,2]
+    clevsdif = [-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0,0.1,0.2,0.3,0.4,0.5,0.6]
+    colorlist = ['#73bdff','#0f69db','#004da8','#002673','#ffff73','#ffaa00','#e60000','#730000']
+    cm = matplotlib.colors.ListedColormap(colorlist)
+    norm = matplotlib.colors.BoundaryNorm(clevs, cm.N) 
+    normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N)
+
+    cs_1 = ax1.pcolormesh(lon_shift,lat_shift,frzr_1,transform=transform,cmap=cm,vmin=0.002,norm=norm)
+    cs_1.cmap.set_under('white',alpha=0.)
+    cs_1.cmap.set_over('#e8beff')
+    cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,extend='max')
+    cbar1.set_label(units,fontsize=6)
+    cbar1.ax.set_xticklabels(clevs)
+    cbar1.ax.tick_params(labelsize=6)
+    ax1.text(.5,1.03,'HRRR Total Freezing Rain ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+
+    cs_2 = ax2.pcolormesh(lon_shift,lat_shift,frzr_2,transform=transform,cmap=cm,vmin=0.002,norm=norm)
+    cs_2.cmap.set_under('white',alpha=0.)
+    cs_2.cmap.set_over('#e8beff')
+    cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,extend='max')
+    cbar2.set_label(units,fontsize=6)
+    cbar2.ax.set_xticklabels(clevs)
+    cbar2.ax.tick_params(labelsize=6)
+    ax2.text(.5,1.03,'RRFS_A Total Freezing Rain ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+
+    cs_3 = ax3.pcolormesh(lon_shift,lat_shift,frzr_dif,norm=normdif,transform=transform,cmap=cmdif)
+    cs_3.cmap.set_under('darkblue')
+    cs_3.cmap.set_over('darkred')
+    cbar3 = fig.colorbar(cs_3,ax=ax3,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+    cbar3.set_label(units,fontsize=6)
+    cbar3.ax.tick_params(labelsize=6)
+    ax3.text(.5,1.03,'RRFS_A - HRRR Total Freezing Rain ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+
+    rrfs_plot_utils.convert_and_save('comparefrzr_'+dom+'_f'+fhour)
+    t2 = time.perf_counter()
+    t3 = round(t2-t1, 3)
+    print(('%.3f seconds to plot Freezing Rain for: '+dom) % t3)
+
+################################
+  # Plot Sleet
+################################
+    t1 = time.perf_counter()
+    print(('Working on Sleet for '+dom))
+
+  # Clear off old plottables but keep all the map info
+    cbar1.remove()
+    cbar2.remove()
+    cbar3.remove()
+    rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
+    rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
+    rrfs_plot_utils.clear_plotables(ax3,keep_ax_lst_3,fig)
+
+    cs_1 = ax1.pcolormesh(lon_shift,lat_shift,frozr_1,transform=transform,cmap=cm,vmin=0.002,norm=norm)
+    cs_1.cmap.set_under('white',alpha=0.)
+    cs_1.cmap.set_over('#e8beff')
+    cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,extend='max')
+    cbar1.set_label(units,fontsize=6)
+    cbar1.ax.set_xticklabels(clevs)
+    cbar1.ax.tick_params(labelsize=6)
+    ax1.text(.5,1.03,'HRRR Total Sleet ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+
+    cs_2 = ax2.pcolormesh(lon_shift,lat_shift,frozr_2,transform=transform,cmap=cm,vmin=0.002,norm=norm)
+    cs_2.cmap.set_under('white',alpha=0.)
+    cs_2.cmap.set_over('#e8beff')
+    cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,extend='max')
+    cbar2.set_label(units,fontsize=6)
+    cbar2.ax.set_xticklabels(clevs)
+    cbar2.ax.tick_params(labelsize=6)
+    ax2.text(.5,1.03,'RRFS_A Total Sleet ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+
+    cs_3 = ax3.pcolormesh(lon_shift,lat_shift,frozr_dif,norm=normdif,transform=transform,cmap=cmdif)
+    cs_3.cmap.set_under('darkblue')
+    cs_3.cmap.set_over('darkred')
+    cbar3 = fig.colorbar(cs_3,ax=ax3,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+    cbar3.set_label(units,fontsize=6)
+    cbar3.ax.tick_params(labelsize=6)
+    ax3.text(.5,1.03,'RRFS_A - HRRR Total Sleet ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+
+    rrfs_plot_utils.convert_and_save('comparefrozr_'+dom+'_f'+fhour)
+    t2 = time.perf_counter()
+    t3 = round(t2-t1, 3)
+    print(('%.3f seconds to plot Sleet for: '+dom) % t3)
+
+################################
+  # Plot Total Snow Precipitation
+################################
+    t1 = time.perf_counter()
+    print(('Working on TSNOWP for '+dom))
+
+  # Clear off old plottables but keep all the map info
+    cbar1.remove()
+    cbar3.remove()
+    rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
+    rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
+    rrfs_plot_utils.clear_plotables(ax3,keep_ax_lst_3,fig)
+
+    cs_2 = ax2.pcolormesh(lon_shift,lat_shift,tsnowp_2,transform=transform,cmap=cm,vmin=0.002,norm=norm)
+    ax2.text(.5,1.03,'RRFS_A Total Snow Precipitation ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+
+    rrfs_plot_utils.convert_and_save('comparetsnowp_'+dom+'_f'+fhour)
+    t2 = time.perf_counter()
+    t3 = round(t2-t1, 3)
+    print(('%.3f seconds to plot TSNOWP for: '+dom) % t3)
+
 
 ######################################################
 

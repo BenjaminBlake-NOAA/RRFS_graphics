@@ -108,7 +108,7 @@ ax2.add_feature(cfeature.LAKES, edgecolor='black', linewidth=fline_wd_lakes, fac
 ax2.add_feature(lakes)
 ax2.add_feature(states)
 ax2.add_feature(coastlines)
-ax3.add_feature(cfeature.LAND, linewidth=0, facecolor='white)
+ax3.add_feature(cfeature.LAND, linewidth=0, facecolor='white')
 ax3.add_feature(cfeature.OCEAN, linewidth=0, facecolor='lightgray')
 ax3.add_feature(cfeature.LAKES, edgecolor='black', linewidth=fline_wd_lakes, facecolor='lightgray',zorder=0)
 ax3.add_feature(lakes)
