@@ -15,7 +15,7 @@ cd /lfs/h2/emc/stmp/${USER}
 # Retrieve main19.php to update cycle dates
 scp bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/users/emc.campara/rrfs/main19.php .
 
-# Read in PDYm1, yyyy, mm, dd from Rocoto xml
+# Read in PDY, yyyy, mm, dd from Rocoto xml
 
 DATE=$(sed -n "197p" main19.php | cut -c 15-22)
 YEAR=`echo $DATE | cut -c1-4`
@@ -55,7 +55,7 @@ echo $DATEm4
 echo $DATEm5
 
 # Change dates in php file
-sed '197s/var cyclist=\["'${DATE}'","'${DATEm1}'","'${DATEm2}'","'${DATEm3}'","'${DATEm4}'","'${DATEm5}'"\]/var cyclist=\["'${PDYm1}'","'${DATE}'","'${DATEm1}'","'${DATEm2}'","'${DATEm3}'","'${DATEm4}'"\]/' main19.php > tmpfile
+sed '197s/var cyclist=\["'${DATE}'","'${DATEm1}'","'${DATEm2}'","'${DATEm3}'","'${DATEm4}'","'${DATEm5}'"\]/var cyclist=\["'${PDY}'","'${DATE}'","'${DATEm1}'","'${DATEm2}'","'${DATEm3}'","'${DATEm4}'"\]/' main19.php > tmpfile
 
 sed '182s/var cyc="'${YEAR}'\/'${MONTH}'\/'${DAY}'"/var cyc="'${yyyy}'\/'${mm}'\/'${dd}'"/' tmpfile > tmpfile2
 sed '183s/var cycm1="'${YEARm1}'\/'${MONTHm1}'\/'${DAYm1}'"/var cycm1="'${YEAR}'\/'${MONTH}'\/'${DAY}'"/' tmpfile2 > tmpfile3

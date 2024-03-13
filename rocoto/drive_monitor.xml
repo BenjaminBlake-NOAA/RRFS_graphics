@@ -22,7 +22,7 @@
 
 <workflow realtime="T" scheduler="pbspro" cyclelifespan="00:06:00:00" cyclethrottle="2" taskthrottle="2">
 
-  <cycledef group="hourly" activation_offset="02:00:00">202402010000 202412312300 01:00:00</cycledef>
+  <cycledef group="hourly" activation_offset="02:00:00">202402290000 202412312300 01:00:00</cycledef>
  
   <log verbosity="10"><cyclestr>&LOG_DIR;/workflow_@Y@m@d@H.log</cyclestr></log> 
 

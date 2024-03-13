@@ -299,9 +299,9 @@ def vars_figure(domain):
     snow0_dif = snow0_2 - snow0_1
 
 # Snowfall
-  asnow_1 = data1.select(shortName='ASNOW')[0].data * 39.3701
-  asnow_2 = data2.select(shortName='ASNOW')[0].data * 39.3701
-  asnow_dif = asnow_2 - asnow_1
+    asnow_1 = data1.select(shortName='ASNOW')[0].data * 39.3701
+    asnow_2 = data2.select(shortName='ASNOW')[0].data * 39.3701
+    asnow_dif = asnow_2 - asnow_1
 
 # Hybrid level 1 fields
   clwmr_1 = data1nat.select(shortName='CLMR',level='1 hybrid level')[0].data * 1000
@@ -2135,59 +2135,59 @@ def plot_set_1():
 #################################
   # Plot Snowfall
 #################################
-  t1 = time.perf_counter()
-  print(('Working on snowfall for '+dom))
+    t1 = time.perf_counter()
+    print(('Working on snowfall for '+dom))
 
   # Clear off old plottables but keep all the map info
-  cbar1.remove()
-  cbar2.remove()
-  cbar3.remove()
-  rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
-  rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
-  rrfs_plot_utils.clear_plotables(ax3,keep_ax_lst_3,fig)
+    cbar1.remove()
+    cbar2.remove()
+    cbar3.remove()
+    rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
+    rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
+    rrfs_plot_utils.clear_plotables(ax3,keep_ax_lst_3,fig)
 
-  units = 'in'
-  clevs = [0.5,1,2,3,4,6,8,12,18,24,30,36]
-  clevsdif = [-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6]
-  colorlist = ['#adc4d9','#73bdff','#0f69db','#004da8','#002673','#ffff73','#ffaa00','#e64c00','#e60000','#730000','#e8beff']
-  cm = matplotlib.colors.ListedColormap(colorlist)
-  norm = matplotlib.colors.BoundaryNorm(clevs, cm.N) 
-  normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N) 
+    units = 'in'
+    clevs = [0.5,1,2,3,4,6,8,12,18,24,30,36]
+    clevsdif = [-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6]
+    colorlist = ['#adc4d9','#73bdff','#0f69db','#004da8','#002673','#ffff73','#ffaa00','#e64c00','#e60000','#730000','#e8beff']
+    cm = matplotlib.colors.ListedColormap(colorlist)
+    norm = matplotlib.colors.BoundaryNorm(clevs, cm.N) 
+    normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N) 
  
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,asnow_1,transform=transform,cmap=cm,vmin=0.5,norm=norm)
-  cs_1.cmap.set_under('white',alpha=0.)
-  cs_1.cmap.set_over('#CA7AF5')
-  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='max')
-  cbar1.set_label(units,fontsize=6)
-  cbar1.ax.set_xticklabels(clevs)
-  cbar1.ax.tick_params(labelsize=6)
-  ax1.text(.5,1.03,'HRRR Snowfall (variable density) ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+    cs_1 = ax1.pcolormesh(lon_shift,lat_shift,asnow_1,transform=transform,cmap=cm,vmin=0.5,norm=norm)
+    cs_1.cmap.set_under('white',alpha=0.)
+    cs_1.cmap.set_over('#CA7AF5')
+    cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='max')
+    cbar1.set_label(units,fontsize=6)
+    cbar1.ax.set_xticklabels(clevs)
+    cbar1.ax.tick_params(labelsize=6)
+    ax1.text(.5,1.03,'HRRR Snowfall (variable density) ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,asnow_2,transform=transform,cmap=cm,vmin=0.5,norm=norm)
-  cs_2.cmap.set_under('white')
-  cs_2.cmap.set_over('#CA7AF5')
-  cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='both')
-  cbar2.set_label(units,fontsize=6)
-  cbar2.ax.set_xticklabels(clevs)
-  cbar2.ax.tick_params(labelsize=6)
-  ax2.text(.5,1.03,'RRFS_A Snowfall (variable density) ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+    cs_2 = ax2.pcolormesh(lon_shift,lat_shift,asnow_2,transform=transform,cmap=cm,vmin=0.5,norm=norm)
+    cs_2.cmap.set_under('white')
+    cs_2.cmap.set_over('#CA7AF5')
+    cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='both')
+    cbar2.set_label(units,fontsize=6)
+    cbar2.ax.set_xticklabels(clevs)
+    cbar2.ax.tick_params(labelsize=6)
+    ax2.text(.5,1.03,'RRFS_A Snowfall (variable density) ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs = ax3.pcolormesh(lon_shift,lat_shift,asnow_dif,transform=transform,cmap=cmdif,norm=normdif)
-  cs.cmap.set_under('darkblue')
-  cs.cmap.set_over('darkred')
-  cbar3 = fig.colorbar(cs,ax=ax3,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
-  cbar3.set_label(units,fontsize=6)
-  cbar3.ax.tick_params(labelsize=6)
-  ax3.text(.5,1.03,'RRFS_A - HRRR Snowfall ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))         
-  ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+    cs = ax3.pcolormesh(lon_shift,lat_shift,asnow_dif,transform=transform,cmap=cmdif,norm=normdif)
+    cs.cmap.set_under('darkblue')
+    cs.cmap.set_over('darkred')
+    cbar3 = fig.colorbar(cs,ax=ax3,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+    cbar3.set_label(units,fontsize=6)
+    cbar3.ax.tick_params(labelsize=6)
+    ax3.text(.5,1.03,'RRFS_A - HRRR Snowfall ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))         
+    ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.convert_and_save('compareasnow_'+dom+'_f'+fhour)
-  t2 = time.perf_counter()
-  t3 = round(t2-t1, 3)
-  print(('%.3f seconds to plot snowfall for: '+dom) % t3)
+    rrfs_plot_utils.convert_and_save('compareasnow_'+dom+'_f'+fhour)
+    t2 = time.perf_counter()
+    t3 = round(t2-t1, 3)
+    print(('%.3f seconds to plot snowfall for: '+dom) % t3)
 
 
   t3dom = round(t2-t1dom, 3)

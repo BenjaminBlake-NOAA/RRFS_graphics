@@ -27,8 +27,8 @@
 
 <workflow realtime="T" scheduler="pbspro" cyclelifespan="00:15:00:00" cyclethrottle="4" taskthrottle="60">
 
-  <cycledef group="prod">202402010000 202412311800 06:00:00</cycledef>
-  <cycledef group="daily">202402010000 202412310000 24:00:00</cycledef>
+  <cycledef group="prod">202402290000 202412311800 06:00:00</cycledef>
+  <cycledef group="daily">202402290100 202412310100 24:00:00</cycledef>
  
   <log verbosity="10"><cyclestr>&LOG_DIR;/workflow_@Y@m@d@H.log</cyclestr></log> 
 
@@ -586,18 +586,17 @@
     <jobname>transfer_obsdiag</jobname>
 
     <envar><name>USER</name><value>&USER;</value></envar>
-    <envar><name>PDYm1</name><value><cyclestr offset="-24:00:00">@Y@m@d</cyclestr></value></envar>
-    <envar><name>yyyy</name><value><cyclestr offset="-24:00:00">@Y</cyclestr></value></envar>
-    <envar><name>mm</name><value><cyclestr offset="-24:00:00">@m</cyclestr></value></envar>
-    <envar><name>dd</name><value><cyclestr offset="-24:00:00">@d</cyclestr></value></envar>
+    <envar><name>PDY</name><value><cyclestr>@Y@m@d</cyclestr></value></envar>
+    <envar><name>yyyy</name><value><cyclestr>@Y</cyclestr></value></envar>
+    <envar><name>mm</name><value><cyclestr>@m</cyclestr></value></envar>
+    <envar><name>dd</name><value><cyclestr>@d</cyclestr></value></envar>
 
     <dependency>
       <and>
-        <datadep age="10:00"><cyclestr offset="-24:00:00">&OBSDIAG;/@Y/@m/@d/obs_diag_enkf_profiles.png</cyclestr></datadep>
-        <datadep age="10:00"><cyclestr offset="-24:00:00">&OBSDIAG;/@Y/@m/@d/obs_diag_enkf_q.png</cyclestr></datadep>
-        <datadep age="10:00"><cyclestr offset="-24:00:00">&OBSDIAG;/@Y/@m/@d/obs_diag_enkf_t.png</cyclestr></datadep>
-        <datadep age="10:00"><cyclestr offset="-24:00:00">&OBSDIAG;/@Y/@m/@d/obs_diag_enkf_u.png</cyclestr></datadep>
-        <datadep age="10:00"><cyclestr offset="-24:00:00">&OBSDIAG;/@Y/@m/@d/obs_diag_enkf_v.png</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr>&OBSDIAG;/@Y/@m/@d/obs_diag_enkf_q.png</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr>&OBSDIAG;/@Y/@m/@d/obs_diag_enkf_t.png</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr>&OBSDIAG;/@Y/@m/@d/obs_diag_enkf_u.png</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr>&OBSDIAG;/@Y/@m/@d/obs_diag_enkf_v.png</cyclestr></datadep>
       </and>
     </dependency>
 
