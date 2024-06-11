@@ -41,7 +41,8 @@ date_list = [dtime + datetime.timedelta(hours=x) for x in fhours]
 
 # Define the directory paths to the input files
 NAM_DIR = '/lfs/h1/ops/prod/com/nam/v4.2/nam.'+ymd
-RRFSFW_DIR = '/lfs/h2/emc/ptmp/emc.lam/para/com/rrfsfw/v1.0.0/rrfsfw.'+ymd+'/'+cyc
+#RRFSFW_DIR = '/lfs/h2/emc/ptmp/emc.lam/para/com/rrfsfw/v1.0.0/rrfsfw.'+ymd+'/'+cyc
+RRFSFW_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.9.1/prod/rrfs.'+ymd+'/'+cyc
 
 # Specify plotting domains
 domain='firewx'
@@ -158,14 +159,15 @@ for j in range(len(date_list)):
 # Define the input files
   data1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.firewxnest.hiresf'+fhour+'.tm00.grib2')
   data1_m1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.firewxnest.hiresf'+fhour1+'.tm00.grib2')
-  data2 = grib2io.open(RRFSFW_DIR+'/rrfsfw.t'+cyc+'z.hires.f0'+fhour+'.grib2')
+  data2 = grib2io.open(RRFSFW_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.firewx_lcc.grib2')
 
   qpf = data1.select(shortName='APCP',timeRangeOfStatisticalProcess=1)[0].data * 0.0393701
   if (fhr == 1):
     qpf_1 = qpf
+    qpf_2 = data2.select(shortName='APCP')[0].data * 0.0393701
   else:
     qpf_1 += qpf  
-  qpf_2 = data2.select(shortName='APCP')[1].data * 0.0393701
+    qpf_2 = data2.select(shortName='APCP')[1].data * 0.0393701
 
 ###################################################
 

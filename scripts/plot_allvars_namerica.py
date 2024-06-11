@@ -43,7 +43,8 @@ itime = ymdh
 vtime = rrfs_plot_utils.ndate(itime,int(fhr))
 
 # Define the directory paths to the input files
-RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/na/prod/rrfs.'+ymd+'/'+cyc
+#RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/na/prod/rrfs.'+ymd+'/'+cyc
+RRFS_DIR = '/lfs/h2/emc/ptmp/Benjamin.Blake/rrfs/na/prod/rrfs.'+ymd+'/'+cyc
 
 # Define the input files
 data1 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.grib2')
@@ -128,7 +129,7 @@ u850_1 = data1.select(shortName='UGRD',level='850 mb')[0].data * 1.94384
 v850_1 = data1.select(shortName='VGRD',level='850 mb')[0].data * 1.94384
 
 # 700-mb omega and relative humidity
-omg700_1 = data1.select(shortName='VVEL',level='700 mb')[0].data
+#omg700_1 = data1.select(shortName='DZDT',level='700 mb')[0].data
 rh700_1 = data1.select(shortName='RH',level='700 mb')[0].data
 
 # 500 mb height, wind, vorticity
@@ -164,13 +165,18 @@ pw_1 = data1.select(shortName='PWAT',level='entire atmosphere (considered as a s
 pofp_1 = data1.select(shortName='CPOFP')[0].data
 
 # Total precipitation
-qpf_1 = data1.select(shortName='APCP')[1].data * 0.0393701
+if (fhr > 0):
+  if (fhr == 1):
+    qpf_1 = data1.select(shortName='APCP')[0].data * 0.0393701
+  else:
+    qpf_1 = data1.select(shortName='APCP')[1].data * 0.0393701
 
 # Snow depth
 snow_1 = data1.select(shortName='SNOD')[0].data * 39.3701
 
 # Snowfall
-asnow_1 = data1.select(shortName='ASNOW')[0].data * 39.3701
+if (fhr > 0):
+  asnow_1 = data1.select(shortName='ASNOW')[0].data * 39.3701
 
 # 1-km reflectivity
 ref1km_1 = data1.select(shortName='REFD',level='1000 m above ground')[0].data
@@ -182,14 +188,14 @@ refc_1 = data1.select(shortName='REFC')[0].data
 hpbl_1 = data1.select(shortName='HGT',level='planetary boundary layer')[0].data
 
 # Total column integrated liquid (cloud water + rain)
-tqw_1 = data1.select(shortName='TCOLW')[0].data
-tqr_1 = data1.select(shortName='TCOLR')[0].data
-tcolw_1 = tqw_1 + tqr_1
+#tqw_1 = data1.select(shortName='TCOLW')[0].data
+#tqr_1 = data1.select(shortName='TCOLR')[0].data
+#tcolw_1 = tqw_1 + tqr_1
 
 # Total column integrated ice (cloud ice + snow)
-tqi_1 = data1.select(shortName='TCOLI')[0].data
-tqs_1 = data1.select(shortName='TCOLS')[0].data
-tcoli_1 = tqi_1 + tqs_1
+#tqi_1 = data1.select(shortName='TCOLI')[0].data
+#tqs_1 = data1.select(shortName='TCOLS')[0].data
+#tcoli_1 = tqi_1 + tqs_1
 
 # 0-3 km Storm Relative Helicity
 hel3km_1 = data1.select(shortName='HLCY',scaledValueOfFirstFixedSurface=3000)[0].data
@@ -324,7 +330,7 @@ def create_figure(domain):
   keep_ax_lst_1 = ax1.get_children()[:]
 
   # Split plots into 13 sets with multiprocessing
-  sets = [1,2,3,4,5,6,7,8,9,10,11,12,13]
+  sets = [1,2,3,4,5,6,7,8,9,10,11,12]
   pool2 = MyPool(len(sets))
   pool2.map(plot_sets,sets)
 
@@ -361,8 +367,8 @@ def plot_sets(set):
     plot_set_11()
   elif set == 12:
     plot_set_12()
-  elif set == 13:
-    plot_set_13()
+#  elif set == 13:
+#    plot_set_13()
 
 ################################################################################
 
@@ -592,48 +598,48 @@ def plot_set_5():
 
 ################################################################################
 
-def plot_set_6():
-  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
+#def plot_set_6():
+#  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
 
-  xmin, xmax = ax1.get_xlim()
-  ymin, ymax = ax1.get_ylim()
-  xmax = int(round(xmax))
-  ymax = int(round(ymax))
-  x1 = xmin + ((xmax-xmin)*0.03)
-  y1 = ymin + ((ymax-ymin)*0.03)
+#  xmin, xmax = ax1.get_xlim()
+#  ymin, ymax = ax1.get_ylim()
+#  xmax = int(round(xmax))
+#  ymax = int(round(ymax))
+#  x1 = xmin + ((xmax-xmin)*0.03)
+#  y1 = ymin + ((ymax-ymin)*0.03)
 
 #################################
   # Plot total column liquid
 #################################
-  t1 = time.perf_counter()
-  print(('Working on Total column liquid for '+dom))
+#  t1 = time.perf_counter()
+#  print(('Working on Total column liquid for '+dom))
 
-  units = 'kg m${^{-2}}$'
-  clevs = [0.001,0.005,0.01,0.05,0.1,0.25,0.5,1,2,4,6,10,15,20,25]
-  q_color_list = plt.cm.gist_stern_r(np.linspace(0, 1, len(clevs)+1))
-  cm = matplotlib.colors.ListedColormap(q_color_list)
-  norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
+#  units = 'kg m${^{-2}}$'
+#  clevs = [0.001,0.005,0.01,0.05,0.1,0.25,0.5,1,2,4,6,10,15,20,25]
+#  q_color_list = plt.cm.gist_stern_r(np.linspace(0, 1, len(clevs)+1))
+#  cm = matplotlib.colors.ListedColormap(q_color_list)
+#  norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cs_1 = ax1.contourf(lon,lat,tcolw_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
-  cs_1.cmap.set_under('white')
-  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,extend='both')
-  cbar1.set_label(units,fontsize=6)
-#  cbar1.ax.set_xticklabels([0.001,0.01,0.1,0.5,2,6,15,25])
-  cbar1.ax.tick_params(labelsize=6)
-  ax1.text(.5,1.03,'RRFS_A Total Column Cloud Water + Rain ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
+#  cs_1 = ax1.contourf(lon,lat,tcolw_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+#  cs_1.cmap.set_under('white')
+#  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,extend='both')
+#  cbar1.set_label(units,fontsize=6)
+##  cbar1.ax.set_xticklabels([0.001,0.01,0.1,0.5,2,6,15,25])
+#  cbar1.ax.tick_params(labelsize=6)
+#  ax1.text(.5,1.03,'RRFS_A Total Column Cloud Water + Rain ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+#  ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+#  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.convert_and_save_2('comparetcolw_'+dom+'_f'+fhour)
-  t2 = time.perf_counter()
-  t3 = round(t2-t1, 3)
-  print(('%.3f seconds to plot Total column liquid for: '+dom) % t3)
+#  rrfs_plot_utils.convert_and_save_2('comparetcolw_'+dom+'_f'+fhour)
+#  t2 = time.perf_counter()
+#  t3 = round(t2-t1, 3)
+#  print(('%.3f seconds to plot Total column liquid for: '+dom) % t3)
 
-  plt.clf()
+#  plt.clf()
 
 ################################################################################
 
-def plot_set_7():
+def plot_set_6():
   global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
 
   xmin, xmax = ax1.get_xlim()
@@ -675,7 +681,7 @@ def plot_set_7():
 
 ################################################################################
 
-def plot_set_8():
+def plot_set_7():
   global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
 
   t1dom = time.perf_counter()
@@ -864,6 +870,7 @@ def plot_set_8():
   units = '%'
   clevs = [50,60,70,80,90,100]
   clevsw = [-100,-5]
+#  clevsw = [0.25,100]
   colors = ['blue']
   cm = plt.cm.BuGn
   cmw = matplotlib.colors.ListedColormap(colors)
@@ -874,8 +881,8 @@ def plot_set_8():
   cbar1 = fig.colorbar(cs1_a,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs)
   cbar1.set_label(units,fontsize=6) 
   cbar1.ax.tick_params(labelsize=6)
-  cs1_b = ax1.contourf(lon,lat,omg700_1,levels=clevsw,cmap=cmw,vmax=-5,transform=transform)
-  cs1_b.cmap.set_over('white',alpha=0.)
+#  cs1_b = ax1.contourf(lon,lat,omg700_1,levels=clevsw,cmap=cmw,vmax=-5,transform=transform)
+#  cs1_b.cmap.set_over('white',alpha=0.)
   ax1.text(.5,1.03,'RRFS_A 700 mb $\omega$ (rising motion in blue) and RH ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
@@ -959,7 +966,7 @@ def plot_set_8():
 
 ######################################################
 
-def plot_set_9():
+def plot_set_8():
   global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
 
   t1dom = time.perf_counter()
@@ -1095,65 +1102,66 @@ def plot_set_9():
 #################################
   # Plot snowfall
 #################################
-  t1 = time.perf_counter()
-  print(('Working on snowfall for '+dom))
+  if (fhr > 0):
+    t1 = time.perf_counter()
+    print(('Working on snowfall for '+dom))
 
   # Clear off old plottables but keep all the map info
-  cbar1.remove()
-  rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
+    cbar1.remove()
+    rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
 
-  units = 'in'
-  clevs = [0.5,1,2,3,4,6,8,12,18,24,30,36]
-  colorlist = ['#adc4d9','#73bdff','#0f69db','#004da8','#002673','#ffff73','#ffaa00','#e64c00','#e60000','#730000','#e8beff']
-  cm = matplotlib.colors.ListedColormap(colorlist)
-  norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
+    units = 'in'
+    clevs = [0.5,1,2,3,4,6,8,12,18,24,30,36]
+    colorlist = ['#adc4d9','#73bdff','#0f69db','#004da8','#002673','#ffff73','#ffaa00','#e64c00','#e60000','#730000','#e8beff']
+    cm = matplotlib.colors.ListedColormap(colorlist)
+    norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
  
-  cs_1 = ax1.contourf(lon,lat,asnow_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
-  cs_1.cmap.set_under('white')
-  cs_1.cmap.set_over('#CA7AF5')
-  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,ticks=clevs,extend='both')
-  cbar1.set_label(units,fontsize=6)
-  cbar1.ax.set_xticklabels(clevs)
-  cbar1.ax.tick_params(labelsize=6)
-  ax1.text(.5,1.03,'RRFS_A Snowfall (variable density) ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
+    cs_1 = ax1.contourf(lon,lat,asnow_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+    cs_1.cmap.set_under('white')
+    cs_1.cmap.set_over('#CA7AF5')
+    cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,ticks=clevs,extend='both')
+    cbar1.set_label(units,fontsize=6)
+    cbar1.ax.set_xticklabels(clevs)
+    cbar1.ax.tick_params(labelsize=6)
+    ax1.text(.5,1.03,'RRFS_A Snowfall (variable density) ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.convert_and_save_2('compareasnow_'+dom+'_f'+fhour)
-  t2 = time.perf_counter()
-  t3 = round(t2-t1, 3)
-  print(('%.3f seconds to plot snowfall for: '+dom) % t3)
+    rrfs_plot_utils.convert_and_save_2('compareasnow_'+dom+'_f'+fhour)
+    t2 = time.perf_counter()
+    t3 = round(t2-t1, 3)
+    print(('%.3f seconds to plot snowfall for: '+dom) % t3)
 
 #################################
   # Plot total column ice
 #################################
-  t1 = time.perf_counter()
-  print(('Working on Tcoli for '+dom))
+#  t1 = time.perf_counter()
+#  print(('Working on Tcoli for '+dom))
 
   # Clear off old plottables but keep all the map info
-  cbar1.remove()
-  rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
+#  cbar1.remove()
+#  rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
 
-  units = 'kg m${^{-2}}$'
-  clevs = [0.001,0.005,0.01,0.05,0.1,0.25,0.5,1,2,4,6,10,15,20,25]
-  q_color_list = plt.cm.gist_stern_r(np.linspace(0, 1, len(clevs)+1))
-  cm = matplotlib.colors.ListedColormap(q_color_list)
-  norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
+#  units = 'kg m${^{-2}}$'
+#  clevs = [0.001,0.005,0.01,0.05,0.1,0.25,0.5,1,2,4,6,10,15,20,25]
+#  q_color_list = plt.cm.gist_stern_r(np.linspace(0, 1, len(clevs)+1))
+#  cm = matplotlib.colors.ListedColormap(q_color_list)
+#  norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cs_1 = ax1.contourf(lon,lat,tcoli_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
-  cs_1.cmap.set_under('white')
-  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,extend='both')
-  cbar1.set_label(units,fontsize=6)
-  cbar1.ax.set_xticklabels([0.001,0.01,0.1,0.5,2,6,15,25])
-  cbar1.ax.tick_params(labelsize=6)
-  ax1.text(.5,1.03,'RRFS_A Total Column Cloud Ice + Snow ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
+#  cs_1 = ax1.contourf(lon,lat,tcoli_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+#  cs_1.cmap.set_under('white')
+#  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,extend='both')
+#  cbar1.set_label(units,fontsize=6)
+#  cbar1.ax.set_xticklabels([0.001,0.01,0.1,0.5,2,6,15,25])
+#  cbar1.ax.tick_params(labelsize=6)
+#  ax1.text(.5,1.03,'RRFS_A Total Column Cloud Ice + Snow ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+#  ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+#  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.convert_and_save_2('comparetcoli_'+dom+'_f'+fhour)
-  t2 = time.perf_counter()
-  t3 = round(t2-t1, 3)
-  print(('%.3f seconds to plot Tcoli for: '+dom) % t3)
+#  rrfs_plot_utils.convert_and_save_2('comparetcoli_'+dom+'_f'+fhour)
+#  t2 = time.perf_counter()
+#  t3 = round(t2-t1, 3)
+#  print(('%.3f seconds to plot Tcoli for: '+dom) % t3)
 
 #################################
   # Plot 0-3 km Storm Relative Helicity
@@ -1281,7 +1289,7 @@ def plot_set_9():
 
 ######################################################
 
-def plot_set_10():
+def plot_set_9():
   global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
 
   t1dom = time.perf_counter()
@@ -1509,7 +1517,7 @@ def plot_set_10():
 
 ######################################################
 
-def plot_set_11():
+def plot_set_10():
   global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
 
   t1dom = time.perf_counter()
@@ -1557,7 +1565,7 @@ def plot_set_11():
 
 ######################################################
 
-def plot_set_12():
+def plot_set_11():
   global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
 
   t1dom = time.perf_counter()
@@ -1636,7 +1644,7 @@ def plot_set_12():
 
 ######################################################
 
-def plot_set_13():
+def plot_set_12():
   global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
 
   t1dom = time.perf_counter()

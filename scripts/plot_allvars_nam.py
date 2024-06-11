@@ -45,6 +45,7 @@ vtime = rrfs_plot_utils.ndate(itime,int(fhr))
 # Define the directory paths to the output files
 NAM_DIR = '/lfs/h1/ops/prod/com/nam/v4.2/nam.'+ymd
 RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/na/prod/rrfs.'+ymd+'/'+cyc
+RRFS_DIR_2 = '/lfs/h2/emc/ptmp/Benjamin.Blake/rrfs/na/prod/rrfs.'+ymd+'/'+cyc
 
 # Specify plotting domains
 domset = str(sys.argv[3])
@@ -104,28 +105,28 @@ def vars_figure(domain):
 # Define the input files
   if dom == 'alaska':
     data1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.alaskanest.hiresf'+fhour+'.tm00.grib2')
-    data2 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.ak.grib2')
+    data2 = grib2io.open(RRFS_DIR_2+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.ak.grib2')
     if (fhr >= 1):
       data1_f00 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.alaskanest.hiresf00.tm00.grib2')
       data2_f00 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f000.ak.grib2')
   elif dom == 'hawaii':
     data1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.hawaiinest.hiresf'+fhour+'.tm00.grib2')
-    data2 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.hi.grib2')
+    data2 = grib2io.open(RRFS_DIR_2+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.hi.grib2')
     if (fhr >= 1):
       data1_f00 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.hawaiinest.hiresf00.tm00.grib2')
       data2_f00 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f000.hi.grib2')
   elif dom == 'puerto_rico':
     data1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.priconest.hiresf'+fhour+'.tm00.grib2')
-    data2 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.pr.grib2')
+    data2 = grib2io.open(RRFS_DIR_2+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.pr.grib2')
     if (fhr >= 1):
       data1_f00 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.priconest.hiresf00.tm00.grib2')
       data2_f00 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f000.pr.grib2')
   else:
     data1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.conusnest.hiresf'+fhour+'.tm00.grib2')
-    data2 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.conus_3km.grib2')
+    data2 = grib2io.open(RRFS_DIR_2+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.conus.grib2')
     if (fhr >= 1):
       data1_f00 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.conusnest.hiresf00.tm00.grib2')
-      data2_f00 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f000.conus_3km.grib2')
+      data2_f00 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f000.conus.grib2')
 
 
 # Get the lats and lons
@@ -138,11 +139,11 @@ def vars_figure(domain):
 ###################################################
   t1a = time.perf_counter()
 
-  global slp_1,tmp2m_1,tmpsfc_1,dew2m_1,uwind_1,vwind_1,wspd10m_1,terra_1,gust_1,mucape_1,cape_1,mlcape_1,thetae_1,u850_1,v850_1,omg700_1,rh700_1,z500_1,vort500_1,u500_1,v500_1,u250_1,v250_1,wspd250_1,vis_1,zbase_1,zceil_1,ztop_1,pw_1,pofp_1,snow_1,snow0_1,clwmr_1,icmr_1,rwmr_1,snmr_1,refd_1,tmphyb_1,swdown_1,swup_1,lwdown_1,lwup_1,gdhfx_1,lhfx_1,snhfx_1,hpbl_1,cond_1,tcolw_1,tcoli_1,veg_1,hel3km_1,hel1km_1,ref1km_1,refc_1,uh25_1,uh03_1,maxuvv_1,maxdvv_1,maxref1km_1,maxwind_1,hindex_1,utrans_1,vtrans_1,trans_1,tcdc_1,retop_1,prate_1,pratemax_1,rain1,fr1,pl1,sn1,mix1,pbase_1,ptop_1
+  global slp_1,tmp2m_1,tmpsfc_1,dew2m_1,uwind_1,vwind_1,wspd10m_1,terra_1,gust_1,mucape_1,cape_1,mlcape_1,thetae_1,u850_1,v850_1,omg700_1,rh700_1,z500_1,vort500_1,u500_1,v500_1,u250_1,v250_1,wspd250_1,vis_1,zbase_1,zceil_1,ztop_1,pw_1,pofp_1,snow_1,snow0_1,clwmr_1,icmr_1,rwmr_1,snmr_1,refd_1,tmphyb_1,swdown_1,swup_1,lwdown_1,lwup_1,gdhfx_1,lhfx_1,snhfx_1,hpbl_1,veg_1,hel3km_1,hel1km_1,ref1km_1,refc_1,uh25_1,uh03_1,maxuvv_1,maxdvv_1,maxref1km_1,maxwind_1,hindex_1,utrans_1,vtrans_1,trans_1,tcdc_1,retop_1,prate_1,pratemax_1,rain1,fr1,pl1,sn1,mix1,pbase_1,ptop_1
 
-  global slp_2,tmp2m_2,tmpsfc_2,dew2m_2,uwind_2,vwind_2,wspd10m_2,terra_2,gust_2,mucape_2,cape_2,mlcape_2,thetae_2,u850_2,v850_2,omg700_2,rh700_2,z500_2,vort500_2,u500_2,v500_2,u250_2,v250_2,wspd250_2,vis_2,zbase_2,zceil_2,ztop_2,pw_2,pofp_2,snow_2,snow0_2,clwmr_2,icmr_2,rwmr_2,snmr_2,refd_2,tmphyb_2,swdown_2,swup_2,lwdown_2,lwup_2,gdhfx_2,lhfx_2,snhfx_2,hpbl_2,cond_2,tcolw_2,tcoli_2,veg_2,hel3km_2,hel1km_2,ref1km_2,refc_2,uh25_2,uh03_2,maxuvv_2,maxdvv_2,maxref1km_2,maxwind_2,hindex_2,utrans_2,vtrans_2,trans_2,tcdc_2,retop_2,prate_2,pratemax_2,rain2,fr2,pl2,sn2,mix2,pbase_2,ptop_2
+  global slp_2,tmp2m_2,tmpsfc_2,dew2m_2,uwind_2,vwind_2,wspd10m_2,terra_2,gust_2,mucape_2,cape_2,mlcape_2,thetae_2,u850_2,v850_2,omg700_2,rh700_2,z500_2,vort500_2,u500_2,v500_2,u250_2,v250_2,wspd250_2,vis_2,zbase_2,zceil_2,ztop_2,pw_2,pofp_2,snow_2,snow0_2,clwmr_2,icmr_2,rwmr_2,snmr_2,refd_2,tmphyb_2,swdown_2,swup_2,lwdown_2,lwup_2,gdhfx_2,lhfx_2,snhfx_2,hpbl_2,veg_2,hel3km_2,hel1km_2,ref1km_2,refc_2,uh25_2,uh03_2,maxuvv_2,maxdvv_2,maxref1km_2,maxwind_2,hindex_2,utrans_2,vtrans_2,trans_2,tcdc_2,retop_2,prate_2,pratemax_2,rain2,fr2,pl2,sn2,mix2,pbase_2,ptop_2
 
-  global slp_dif,tmp2m_dif,tmpsfc_dif,dew2m_dif,wspd10m_dif,terra_dif,gust_dif,mucape_dif,cape_dif,mlcape_dif,thetae_dif,omg700_dif,rh700_dif,z500_dif,vort500_dif,wspd250_dif,vis_dif,zbase_dif,zceil_dif,ztop_dif,pw_dif,pofp_dif,snow_dif,snow0_dif,clwmr_dif,icmr_dif,rwmr_dif,snmr_dif,swdown_dif,swup_dif,lwdown_dif,lwup_dif,gdhfx_dif,lhfx_dif,snhfx_dif,hpbl_dif,cond_dif,tcolw_dif,tcoli_dif,veg_dif,hel3km_dif,hel1km_dif,uh25_dif,uh03_dif,maxuvv_dif,maxdvv_dif,maxwind_dif,hindex_dif,trans_dif,tcdc_dif,retop_dif,prate_dif,pratemax_dif,pbase_dif,ptop_dif,ref1km_both,refc_both,maxref1km_both
+  global slp_dif,tmp2m_dif,tmpsfc_dif,dew2m_dif,wspd10m_dif,terra_dif,gust_dif,mucape_dif,cape_dif,mlcape_dif,thetae_dif,rh700_dif,z500_dif,vort500_dif,wspd250_dif,vis_dif,zbase_dif,zceil_dif,ztop_dif,pw_dif,pofp_dif,snow_dif,snow0_dif,clwmr_dif,icmr_dif,rwmr_dif,snmr_dif,swdown_dif,swup_dif,lwdown_dif,lwup_dif,gdhfx_dif,lhfx_dif,snhfx_dif,hpbl_dif,veg_dif,hel3km_dif,hel1km_dif,uh25_dif,uh03_dif,maxuvv_dif,maxdvv_dif,maxwind_dif,hindex_dif,trans_dif,tcdc_dif,retop_dif,prate_dif,pratemax_dif,pbase_dif,ptop_dif,ref1km_both,refc_both,maxref1km_both
 
 # Sea level pressure
   slp_1 = data1.select(shortName='PRMSL',level='mean sea level')[0].data * 0.01
@@ -225,7 +226,7 @@ def vars_figure(domain):
 
 # 700-mb omega and relative humidity
   omg700_1 = data1.select(shortName='VVEL',level='700 mb')[0].data
-  omg700_2 = data2.select(shortName='VVEL',level='700 mb')[0].data
+#  omg700_2 = data2.select(shortName='DZDT',level='700 mb')[0].data
   rh700_1 = data1.select(shortName='RH',level='700 mb')[0].data
   rh700_2 = data2.select(shortName='RH',level='700 mb')[0].data
   rh700_dif = rh700_2 - rh700_1
@@ -325,37 +326,58 @@ def vars_figure(domain):
 
 # Downward shortwave radiation
   swdown_1 = data1.select(shortName='DSWRF')[1].data
-  swdown_2 = data2.select(shortName='DSWRF')[1].data
+  if (fhr == 0):
+    swdown_2 = data2.select(shortName='DSWRF')[0].data
+  else:
+    swdown_2 = data2.select(shortName='DSWRF')[1].data
   swdown_dif = swdown_2 - swdown_1
 
 # Upward shortwave radiation
   swup_1 = data1.select(shortName='USWRF')[1].data
-  swup_2 = data2.select(shortName='USWRF')[1].data
+  if (fhr == 0):
+    swup_2 = data2.select(shortName='USWRF')[0].data
+  else:
+    swup_2 = data2.select(shortName='USWRF')[1].data
   swup_dif = swup_2 - swup_1
 
 # Downward longwave radiation
   lwdown_1 = data1.select(shortName='DLWRF')[1].data
-  lwdown_2 = data2.select(shortName='DLWRF')[1].data
+  if (fhr == 0):
+    lwdown_2 = data2.select(shortName='DLWRF')[0].data
+  else:
+    lwdown_2 = data2.select(shortName='DLWRF')[1].data
   lwdown_dif = lwdown_2 - lwdown_1
 
 # Upward longwave radiation
   lwup_1 = data1.select(shortName='ULWRF')[3].data
-  lwup_2 = data2.select(shortName='ULWRF')[3].data
+  if (fhr == 0):
+    lwup_2 = data2.select(shortName='ULWRF')[1].data
+  else:
+    lwup_2 = data2.select(shortName='ULWRF')[3].data
   lwup_dif = lwup_2 - lwup_1
 
 # Ground heat flux
   gdhfx_1 = data1.select(shortName='GFLUX')[1].data
-  gdhfx_2 = data2.select(shortName='GFLUX')[1].data
+  if (fhr == 0):
+    gdhfx_2 = data2.select(shortName='GFLUX')[0].data
+  else:
+    gdhfx_2 = data2.select(shortName='GFLUX')[1].data
   gdhfx_dif = gdhfx_2 - gdhfx_1
 
 # Latent heat flux
   lhfx_1 = data1.select(shortName='LHTFL')[1].data
-  lhfx_2 = data2.select(shortName='LHTFL')[1].data
+  if (fhr == 0):
+    lhfx_2 = data2.select(shortName='LHTFL')[0].data
+  else:
+    lhfx_2 = data2.select(shortName='LHTFL')[1].data
   lhfx_dif = lhfx_2 - lhfx_1
 
 # Sensible heat flux
   snhfx_1 = data1.select(shortName='SHTFL')[1].data
-  snhfx_2 = data2.select(shortName='SHTFL')[1].data
+  if (fhr == 0):
+    snhfx_2 = data2.select(shortName='SHTFL')[0].data
+  else:
+    snhfx_2 = data2.select(shortName='SHTFL')[1].data
   snhfx_dif = snhfx_2 - snhfx_1
 
 # PBL height
@@ -364,27 +386,27 @@ def vars_figure(domain):
   hpbl_dif = hpbl_2 - hpbl_1
 
 # Total column condensate
-  cond_1 = data1.select(shortName='TCOLC')[0].data
-  cond_2 = data2.select(shortName='TCOLC')[0].data
-  cond_dif = cond_2 - cond_1
+#  cond_1 = data1.select(shortName='TCOLC')[0].data
+#  cond_2 = data2.select(shortName='TCOLC')[0].data
+#  cond_dif = cond_2 - cond_1
 
 # Total column integrated liquid (cloud water + rain)
-  tqw_1 = data1.select(shortName='TCOLW')[0].data
-  tqw_2 = data2.select(shortName='TCOLW')[0].data
-  tqr_1 = data1.select(shortName='TCOLR')[0].data
-  tqr_2 = data2.select(shortName='TCOLR')[0].data
-  tcolw_1 = tqw_1 + tqr_1
-  tcolw_2 = tqw_2 + tqr_2
-  tcolw_dif = tcolw_2 - tcolw_1
+#  tqw_1 = data1.select(shortName='TCOLW')[0].data
+#  tqw_2 = data2.select(shortName='TCOLW')[0].data
+#  tqr_1 = data1.select(shortName='TCOLR')[0].data
+#  tqr_2 = data2.select(shortName='TCOLR')[0].data
+#  tcolw_1 = tqw_1 + tqr_1
+#  tcolw_2 = tqw_2 + tqr_2
+#  tcolw_dif = tcolw_2 - tcolw_1
 
 # Total column integrated ice (cloud ice + snow)
-  tqi_1 = data1.select(shortName='TCOLI')[0].data
-  tqi_2 = data2.select(shortName='TCOLI')[0].data
-  tqs_1 = data1.select(shortName='TCOLS')[0].data
-  tqs_2 = data2.select(shortName='TCOLS')[0].data
-  tcoli_1 = tqi_1 + tqs_1
-  tcoli_2 = tqi_2 + tqs_2
-  tcoli_dif = tcoli_2 - tcoli_1
+#  tqi_1 = data1.select(shortName='TCOLI')[0].data
+#  tqi_2 = data2.select(shortName='TCOLI')[0].data
+#  tqs_1 = data1.select(shortName='TCOLS')[0].data
+#  tqs_2 = data2.select(shortName='TCOLS')[0].data
+#  tcoli_1 = tqi_1 + tqs_1
+#  tcoli_2 = tqi_2 + tqs_2
+#  tcoli_dif = tcoli_2 - tcoli_1
 
 # Vegetation Fraction
   veg_1 = data1.select(shortName='VEG')[0].data
@@ -1351,6 +1373,7 @@ def plot_set_1():
   units = '%'
   clevs = [50,60,70,80,90,100]
   clevsw = [-100,-5]
+#  clevsw = [0.25,100]
   clevsdif = [-30,-25,-20,-15,-10,-5,-0,5,10,15,20,25,30]
   colors = ['blue']
   cm = plt.cm.BuGn
@@ -1374,8 +1397,8 @@ def plot_set_1():
   cbar2 = fig.colorbar(cs2_a,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs)
   cbar2.set_label(units,fontsize=6) 
   cbar2.ax.tick_params(labelsize=6)
-  cs2_b = ax2.pcolormesh(lon_shift,lat_shift,omg700_2,transform=transform,cmap=cmw,vmax=-5,norm=normw)
-  cs2_b.cmap.set_over('white',alpha=0.)
+#  cs2_b = ax2.pcolormesh(lon_shift,lat_shift,omg700_2,transform=transform,cmap=cmw,vmax=-5,norm=normw)
+#  cs2_b.cmap.set_over('white',alpha=0.)
   ax2.text(.5,1.03,'RRFS_A 700 mb $\omega$ (rising motion in blue) and RH ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
@@ -2619,151 +2642,151 @@ def plot_set_2():
 #################################
   # Plot total column condensate
 #################################
-  t1 = time.perf_counter()
-  print(('Working on Total condensate for '+dom))
+#  t1 = time.perf_counter()
+#  print(('Working on Total condensate for '+dom))
 
   # Clear off old plottables but keep all the map info
-  cbar1.remove()
-  cbar2.remove()
-  cbar3.remove()
-  rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
-  rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
-  rrfs_plot_utils.clear_plotables(ax3,keep_ax_lst_3,fig)
+#  cbar1.remove()
+#  cbar2.remove()
+#  cbar3.remove()
+#  rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
+#  rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
+#  rrfs_plot_utils.clear_plotables(ax3,keep_ax_lst_3,fig)
 
-  units = 'kg m${^{-2}}$'
-  clevs = [0.001,0.005,0.01,0.05,0.1,0.25,0.5,1,2,4,6,10,15,20,25]
-  clevsdif = [-6,-4,-2,-1,-0.5,-0.25,0,0.25,0.5,1,2,4,6]
-  q_color_list = plt.cm.gist_stern_r(np.linspace(0, 1, len(clevs)+1))
-  cm = matplotlib.colors.ListedColormap(q_color_list)
-  norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
-  normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N)
+#  units = 'kg m${^{-2}}$'
+#  clevs = [0.001,0.005,0.01,0.05,0.1,0.25,0.5,1,2,4,6,10,15,20,25]
+#  clevsdif = [-6,-4,-2,-1,-0.5,-0.25,0,0.25,0.5,1,2,4,6]
+#  q_color_list = plt.cm.gist_stern_r(np.linspace(0, 1, len(clevs)+1))
+#  cm = matplotlib.colors.ListedColormap(q_color_list)
+#  norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
+#  normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N)
 
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,cond_1,transform=transform,cmap=cm,norm=norm)
-  cs_1.cmap.set_under('white')
-  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
-  cbar1.set_label(units,fontsize=6)
-  cbar1.ax.set_xticklabels([0.001,0.01,0.1,0.5,2,6,15,25])
-  cbar1.ax.tick_params(labelsize=6)
-  ax1.text(.5,1.03,'NAM Nest Total Column Condensate ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+#  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,cond_1,transform=transform,cmap=cm,norm=norm)
+#  cs_1.cmap.set_under('white')
+#  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+#  cbar1.set_label(units,fontsize=6)
+#  cbar1.ax.set_xticklabels([0.001,0.01,0.1,0.5,2,6,15,25])
+#  cbar1.ax.tick_params(labelsize=6)
+#  ax1.text(.5,1.03,'NAM Nest Total Column Condensate ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+#  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,cond_2,transform=transform,cmap=cm,norm=norm)
-  cs_2.cmap.set_under('white')
-  cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
-  cbar2.set_label(units,fontsize=6)
-  cbar2.ax.set_xticklabels([0.001,0.01,0.1,0.5,2,6,15,25])
-  cbar2.ax.tick_params(labelsize=6)
-  ax2.text(.5,1.03,'RRFS_A Total Column Condensate ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+#  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,cond_2,transform=transform,cmap=cm,norm=norm)
+#  cs_2.cmap.set_under('white')
+#  cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+#  cbar2.set_label(units,fontsize=6)
+#  cbar2.ax.set_xticklabels([0.001,0.01,0.1,0.5,2,6,15,25])
+#  cbar2.ax.tick_params(labelsize=6)
+#  ax2.text(.5,1.03,'RRFS_A Total Column Condensate ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+#  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+#  ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs = ax3.pcolormesh(lon_shift,lat_shift,cond_dif,transform=transform,cmap=cmdif,norm=normdif)
-  cs.cmap.set_under('darkblue')
-  cs.cmap.set_over('darkred')
-  cbar3 = fig.colorbar(cs,ax=ax3,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
-  cbar3.set_label(units,fontsize=6)
-  cbar3.ax.tick_params(labelsize=6)
-  ax3.text(.5,1.03,'RRFS_A - NAM Nest Total Column Condensate ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+#  cs = ax3.pcolormesh(lon_shift,lat_shift,cond_dif,transform=transform,cmap=cmdif,norm=normdif)
+#  cs.cmap.set_under('darkblue')
+#  cs.cmap.set_over('darkred')
+#  cbar3 = fig.colorbar(cs,ax=ax3,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+#  cbar3.set_label(units,fontsize=6)
+#  cbar3.ax.tick_params(labelsize=6)
+#  ax3.text(.5,1.03,'RRFS_A - NAM Nest Total Column Condensate ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+#  ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.convert_and_save('comparecond_'+dom+'_f'+fhour)
-  t2 = time.perf_counter()
-  t3 = round(t2-t1, 3)
-  print(('%.3f seconds to plot Total condensate for: '+dom) % t3)
+#  rrfs_plot_utils.convert_and_save('comparecond_'+dom+'_f'+fhour)
+#  t2 = time.perf_counter()
+#  t3 = round(t2-t1, 3)
+#  print(('%.3f seconds to plot Total condensate for: '+dom) % t3)
 
 #################################
   # Plot total column liquid
 #################################
-  t1 = time.perf_counter()
-  print(('Working on Total column liquid for '+dom))
+#  t1 = time.perf_counter()
+#  print(('Working on Total column liquid for '+dom))
 
   # Clear off old plottables but keep all the map info
-  cbar1.remove()
-  cbar2.remove()
-  cbar3.remove()
-  rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
-  rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
-  rrfs_plot_utils.clear_plotables(ax3,keep_ax_lst_3,fig)
+#  cbar1.remove()
+#  cbar2.remove()
+#  cbar3.remove()
+#  rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
+#  rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
+#  rrfs_plot_utils.clear_plotables(ax3,keep_ax_lst_3,fig)
 
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,tcolw_1,transform=transform,cmap=cm,norm=norm)
-  cs_1.cmap.set_under('white')
-  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
-  cbar1.set_label(units,fontsize=6)
-  cbar1.ax.set_xticklabels([0.001,0.01,0.1,0.5,2,6,15,25])
-  cbar1.ax.tick_params(labelsize=6)
-  ax1.text(.5,1.03,'NAM Nest Total Column Cloud Water + Rain ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+#  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,tcolw_1,transform=transform,cmap=cm,norm=norm)
+#  cs_1.cmap.set_under('white')
+#  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+#  cbar1.set_label(units,fontsize=6)
+#  cbar1.ax.set_xticklabels([0.001,0.01,0.1,0.5,2,6,15,25])
+#  cbar1.ax.tick_params(labelsize=6)
+#  ax1.text(.5,1.03,'NAM Nest Total Column Cloud Water + Rain ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+#  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,tcolw_2,transform=transform,cmap=cm,norm=norm)
-  cs_2.cmap.set_under('white')
-  cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
-  cbar2.set_label(units,fontsize=6)
-  cbar2.ax.set_xticklabels([0.001,0.01,0.1,0.5,2,6,15,25])
-  cbar2.ax.tick_params(labelsize=6)
-  ax2.text(.5,1.03,'RRFS_A Total Column Cloud Water + Rain ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+#  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,tcolw_2,transform=transform,cmap=cm,norm=norm)
+#  cs_2.cmap.set_under('white')
+#  cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+#  cbar2.set_label(units,fontsize=6)
+#  cbar2.ax.set_xticklabels([0.001,0.01,0.1,0.5,2,6,15,25])
+#  cbar2.ax.tick_params(labelsize=6)
+#  ax2.text(.5,1.03,'RRFS_A Total Column Cloud Water + Rain ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+#  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+#  ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs = ax3.pcolormesh(lon_shift,lat_shift,tcolw_dif,transform=transform,cmap=cmdif,norm=normdif)
-  cs.cmap.set_under('darkblue')
-  cs.cmap.set_over('darkred')
-  cbar3 = fig.colorbar(cs,ax=ax3,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
-  cbar3.set_label(units,fontsize=6)
-  cbar3.ax.tick_params(labelsize=6)
-  ax3.text(.5,1.03,'RRFS_A - NAM Nest Total Column Cloud Water + Rain ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=5,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+#  cs = ax3.pcolormesh(lon_shift,lat_shift,tcolw_dif,transform=transform,cmap=cmdif,norm=normdif)
+#  cs.cmap.set_under('darkblue')
+#  cs.cmap.set_over('darkred')
+#  cbar3 = fig.colorbar(cs,ax=ax3,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+#  cbar3.set_label(units,fontsize=6)
+#  cbar3.ax.tick_params(labelsize=6)
+#  ax3.text(.5,1.03,'RRFS_A - NAM Nest Total Column Cloud Water + Rain ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=5,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+#  ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.convert_and_save('comparetcolw_'+dom+'_f'+fhour)
-  t2 = time.perf_counter()
-  t3 = round(t2-t1, 3)
-  print(('%.3f seconds to plot Total column liquid for: '+dom) % t3)
+#  rrfs_plot_utils.convert_and_save('comparetcolw_'+dom+'_f'+fhour)
+#  t2 = time.perf_counter()
+#  t3 = round(t2-t1, 3)
+#  print(('%.3f seconds to plot Total column liquid for: '+dom) % t3)
 
 #################################
   # Plot total column ice
 #################################
-  t1 = time.perf_counter()
-  print(('Working on Tcoli for '+dom))
+#  t1 = time.perf_counter()
+#  print(('Working on Tcoli for '+dom))
 
   # Clear off old plottables but keep all the map info
-  cbar1.remove()
-  cbar2.remove()
-  cbar3.remove()
-  rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
-  rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
-  rrfs_plot_utils.clear_plotables(ax3,keep_ax_lst_3,fig)
+#  cbar1.remove()
+#  cbar2.remove()
+#  cbar3.remove()
+#  rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
+#  rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
+#  rrfs_plot_utils.clear_plotables(ax3,keep_ax_lst_3,fig)
 
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,tcoli_1,transform=transform,cmap=cm,norm=norm)
-  cs_1.cmap.set_under('white')
-  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
-  cbar1.set_label(units,fontsize=6)
-  cbar1.ax.set_xticklabels([0.001,0.01,0.1,0.5,2,6,15,25])
-  cbar1.ax.tick_params(labelsize=6)
-  ax1.text(.5,1.03,'NAM Nest Total Column Cloud Ice + Snow ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+#  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,tcoli_1,transform=transform,cmap=cm,norm=norm)
+#  cs_1.cmap.set_under('white')
+#  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+#  cbar1.set_label(units,fontsize=6)
+#  cbar1.ax.set_xticklabels([0.001,0.01,0.1,0.5,2,6,15,25])
+#  cbar1.ax.tick_params(labelsize=6)
+#  ax1.text(.5,1.03,'NAM Nest Total Column Cloud Ice + Snow ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+#  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,tcoli_2,transform=transform,cmap=cm,norm=norm)
-  cs_2.cmap.set_under('white')
-  cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
-  cbar2.set_label(units,fontsize=6)
-  cbar2.ax.set_xticklabels([0.001,0.01,0.1,0.5,2,6,15,25])
-  cbar2.ax.tick_params(labelsize=6)
-  ax2.text(.5,1.03,'RRFS_A Total Column Cloud Ice + Snow ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+#  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,tcoli_2,transform=transform,cmap=cm,norm=norm)
+#  cs_2.cmap.set_under('white')
+#  cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+#  cbar2.set_label(units,fontsize=6)
+#  cbar2.ax.set_xticklabels([0.001,0.01,0.1,0.5,2,6,15,25])
+#  cbar2.ax.tick_params(labelsize=6)
+#  ax2.text(.5,1.03,'RRFS_A Total Column Cloud Ice + Snow ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+#  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+#  ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs = ax3.pcolormesh(lon_shift,lat_shift,tcoli_dif,transform=transform,cmap=cmdif,norm=normdif)
-  cs.cmap.set_under('darkblue')
-  cs.cmap.set_over('darkred')
-  cbar3 = fig.colorbar(cs,ax=ax3,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
-  cbar3.set_label(units,fontsize=6)
-  cbar3.ax.tick_params(labelsize=6)
-  ax3.text(.5,1.03,'RRFS_A - NAM Nest Total Column Cloud Ice + Snow ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=5,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+#  cs = ax3.pcolormesh(lon_shift,lat_shift,tcoli_dif,transform=transform,cmap=cmdif,norm=normdif)
+#  cs.cmap.set_under('darkblue')
+#  cs.cmap.set_over('darkred')
+#  cbar3 = fig.colorbar(cs,ax=ax3,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+#  cbar3.set_label(units,fontsize=6)
+#  cbar3.ax.tick_params(labelsize=6)
+#  ax3.text(.5,1.03,'RRFS_A - NAM Nest Total Column Cloud Ice + Snow ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=5,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+#  ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.convert_and_save('comparetcoli_'+dom+'_f'+fhour)
-  t2 = time.perf_counter()
-  t3 = round(t2-t1, 3)
-  print(('%.3f seconds to plot Tcoli for: '+dom) % t3)
+#  rrfs_plot_utils.convert_and_save('comparetcoli_'+dom+'_f'+fhour)
+#  t2 = time.perf_counter()
+#  t3 = round(t2-t1, 3)
+#  print(('%.3f seconds to plot Tcoli for: '+dom) % t3)
 
 #################################
   # Plot vegetation fraction

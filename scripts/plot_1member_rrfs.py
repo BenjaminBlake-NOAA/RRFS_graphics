@@ -86,21 +86,21 @@ if member == 'HRRR':
 elif member == 'Control':
   if timelag == 'yes':
     DATA_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/na/prod/rrfs.'+ymdm1+'/'+cycm1
-    data1 = grib2io.open(DATA_DIR+'/rrfs.t'+cycm1+'z.prslev.f0'+fhour+'.conus_3km.grib2')
+    data1 = grib2io.open(DATA_DIR+'/rrfs.t'+cycm1+'z.prslev.f0'+fhour+'.conus.grib2')
     memstr = 'Control TL'
   else:
     DATA_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/na/prod/rrfs.'+ymd+'/'+cyc
-    data1 = grib2io.open(DATA_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.conus_3km.grib2')
+    data1 = grib2io.open(DATA_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.conus.grib2')
     memstr = 'Control'
 # RRFS ensemble member forecasts
 else:
   if timelag == 'yes':
     DATA_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/na/prod/refs.'+ymdm1+'/'+cycm1+'/mem000'+member
-    data1 = grib2io.open(DATA_DIR+'/rrfs.t'+cycm1+'z.prslev.f0'+fhour+'.conus_3km.grib2')
+    data1 = grib2io.open(DATA_DIR+'/rrfs.t'+cycm1+'z.m0'+member+'.prslev.f0'+fhour+'.conus.grib2')
     memstr = 'Member '+member+' TL'
   else:
     DATA_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/na/prod/refs.'+ymd+'/'+cyc+'/mem000'+member
-    data1 = grib2io.open(DATA_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.conus_3km.grib2')
+    data1 = grib2io.open(DATA_DIR+'/rrfs.t'+cyc+'z.m0'+member+'.prslev.f0'+fhour+'.conus.grib2')
     memstr = 'Member '+member
 
 # Get the lats and lons
@@ -201,10 +201,10 @@ zceil_1 = data1.select(shortName='HGT',level='cloud ceiling')[0].data * (3.28084
 # Snow depth
 snow_1 = data1.select(shortName='SNOD')[0].data * 39.3701
 
-# Snowfall
-asnow_1 = data1.select(shortName='ASNOW')[0].data * 39.3701
-
 if (fhr > 0):
+# Snowfall
+  asnow_1 = data1.select(shortName='ASNOW')[0].data * 39.3701
+
 # Max/Min Hourly 2-5 km Updraft Helicity
   maxuh25_1 = data1.select(shortName='MXUPHL',level='5000-2000 m above ground')[0].data
   minuh25_1 = data1.select(shortName='MNUPHL',level='5000-2000 m above ground')[0].data
@@ -218,6 +218,8 @@ if (fhr > 0):
 # Total precipitation
   if member == 'HRRR':
     qpf_1 = data1.select(shortName='APCP',timeRangeOfStatisticalProcess=fhr)[0].data * 0.0393701
+  elif (member != 'HRRR') and (fhr == 1):
+    qpf_1 = data1.select(shortName='APCP')[0].data * 0.0393701
   else:
     qpf_1 = data1.select(shortName='APCP')[1].data * 0.0393701
 
@@ -230,7 +232,10 @@ if (fhr > 0):
       qpf_2 = data2.select(shortName='APCP',timeRangeOfStatisticalProcess=6)[0].data * 0.0393701
       qpf_1 = qpf_1 - qpf_2
     else:
-      data2 = grib2io.open(DATA_DIR+'/rrfs.t'+cycm1+'z.prslev.f006.conus_3km.grib2')
+      if member == 'Control':
+        data2 = grib2io.open(DATA_DIR+'/rrfs.t'+cycm1+'z.prslev.f006.conus.grib2')
+      else:
+        data2 = grib2io.open(DATA_DIR+'/rrfs.t'+cycm1+'z.m0'+member+'.prslev.f006.conus.grib2')
       qpf_2 = data2.select(shortName='APCP')[1].data * 0.0393701
       qpf_1 = qpf_1 - qpf_2
 

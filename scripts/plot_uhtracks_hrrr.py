@@ -46,7 +46,8 @@ vtime_list = [rrfs_plot_utils.ndate(itime,int(x)) for x in fhrs]
 
 # Define the paths to the input files
 HRRR_DIR = '/lfs/h1/ops/prod/com/hrrr/v4.1/hrrr.'+ymd
-RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/na/prod/rrfs.'+ymd+'/'+cyc
+#RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/na/prod/rrfs.'+ymd+'/'+cyc
+RRFS_DIR = '/lfs/h2/emc/ptmp/Benjamin.Blake/rrfs/na/prod/rrfs.'+ymd+'/'+cyc
 
 # Define prod and para strings
 prod_str = 'HRRR'
@@ -73,15 +74,15 @@ for j in range(len(vtime_list)):
 
     # Define the input files
     data1 = grib2io.open(HRRR_DIR+'/conus/hrrr.t'+cyc+'z.wrfprsf'+fhour+'.grib2')
-    data2 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.conus_3km.grib2')
+    data2 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.conus.grib2')
 
     # Updraft helicity
     if (fhr > 0):
         uh25_1 = data1.select(shortName='MXUPHL',level='5000-2000 m above ground')[0].data
         uh25_2 = data2.select(shortName='MXUPHL',level='5000-2000 m above ground')[0].data
     elif (fhr == 0):
-        uh25_1 = data1.select(shortName='APCP')[0].data * 0.
-        uh25_2 = data2.select(shortName='APCP')[0].data * 0.
+        uh25_1 = data1.select(shortName='TMP')[0].data * 0.
+        uh25_2 = data2.select(shortName='TMP')[0].data * 0.
         uh25_1_final = np.zeros_like(uh25_1)
         uh25_2_final = np.zeros_like(uh25_2)
 

@@ -42,7 +42,8 @@ date_list = [dtime + datetime.timedelta(hours=x) for x in fhours]
 
 # Define the directory paths to the output files
 NAM_DIR = '/lfs/h1/ops/prod/com/nam/v4.2/nam.'+ymd
-RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/na/prod/rrfs.'+ymd+'/'+cyc
+#RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/na/prod/rrfs.'+ymd+'/'+cyc
+RRFS_DIR = '/lfs/h2/emc/ptmp/Benjamin.Blake/rrfs/na/prod/rrfs.'+ymd+'/'+cyc
 
 # Paths to image files
 im = image.imread('/lfs/h2/emc/lam/noscrub/Benjamin.Blake/rrfs_graphics/noaa.png')
@@ -157,7 +158,7 @@ for j in range(len(date_list)):
   else:
     data1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.conusnest.hiresf'+fhour+'.tm00.grib2')
     data1_m1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.conusnest.hiresf'+fhour1+'.tm00.grib2')
-    data2 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.conus_3km.grib2')
+    data2 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.conus.grib2')
 
   if (fhr <= 3):
     qpf = data1.select(shortName='APCP',timeRangeOfStatisticalProcess=fhr)[0].data * 0.0393701
@@ -184,7 +185,10 @@ for j in range(len(date_list)):
     asnowm1 = data1_m1.select(shortName='WEASD')[1].data /2.54
     asnow_1 += asnow
 #  qpf_2 = data2.select(shortName='APCP',timeRangeOfStatisticalProcess=fhr)[0].data * 0.0393701
-  qpf_2 = data2.select(shortName='APCP')[1].data * 0.0393701
+  if (fhr == 1):
+    qpf_2 = data2.select(shortName='APCP')[0].data * 0.0393701
+  else:
+    qpf_2 = data2.select(shortName='APCP')[1].data * 0.0393701
   qpf_dif = qpf_2 - qpf_1
   asnow_2 = data2.select(shortName='ASNOW')[0].data * 39.3701
   asnow_dif = asnow_2 - asnow_1

@@ -47,17 +47,18 @@ vtime = rrfs_plot_utils.ndate(itime,int(fhr))
 
 # Define the directory paths to the input files
 NAM_DIR = '/lfs/h1/ops/prod/com/nam/v4.2/nam.'+ymd
-RRFSFW_DIR = '/lfs/h2/emc/ptmp/emc.lam/para/com/rrfsfw/v1.0.0/rrfsfw.'+ymd+'/'+cyc
+#RRFSFW_DIR = '/lfs/h2/emc/ptmp/emc.lam/para/com/rrfsfw/v1.0.0/rrfsfw.'+ymd+'/'+cyc
+RRFSFW_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.9.1/prod/rrfs.'+ymd+'/'+cyc
 
 # Define the input files
 data1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.firewxnest.hiresf'+fhour+'.tm00.grib2')
-data2 = grib2io.open(RRFSFW_DIR+'/rrfsfw.t'+cyc+'z.hires.f0'+fhour+'.grib2')
+data2 = grib2io.open(RRFSFW_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.firewx_lcc.grib2')
 
 if (fhr >= 1):
   data1_m1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.firewxnest.hiresf'+fhour1+'.tm00.grib2')
-  data2_m1 = grib2io.open(RRFSFW_DIR+'/rrfsfw.t'+cyc+'z.hires.f0'+fhour1+'.grib2')
+  data2_m1 = grib2io.open(RRFSFW_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour1+'.firewx_lcc.grib2')
   data1_f00 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.firewxnest.hiresf00.tm00.grib2')
-  data2_f00 = grib2io.open(RRFSFW_DIR+'/rrfsfw.t'+cyc+'z.hires.f000.grib2')
+  data2_f00 = grib2io.open(RRFSFW_DIR+'/rrfs.t'+cyc+'z.prslev.f000.firewx_lcc.grib2')
 
 # Get the lats and lons
 msg = data1.select(shortName='HGT', level='500 mb')[0]	# msg is a Grib2Message object
@@ -187,7 +188,7 @@ v850_2 = data2.select(shortName='VGRD',level='850 mb')[0].data * 1.94384
 
 # 700-mb omega and relative humidity
 omg700_1 = data1.select(shortName='VVEL',level='700 mb')[0].data
-omg700_2 = data2.select(shortName='VVEL',level='700 mb')[0].data
+#omg700_2 = data2.select(shortName='DZDT',level='700 mb')[0].data
 rh700_1 = data1.select(shortName='RH',level='700 mb')[0].data
 rh700_2 = data2.select(shortName='RH',level='700 mb')[0].data
 
@@ -256,8 +257,8 @@ hgtpbl_1 = data1.select(shortName='HGT',level='planetary boundary layer')[0].dat
 hgtpbl_2 = data2.select(shortName='HGT',level='planetary boundary layer')[0].data
 
 # Total column condensate
-cond_1 = data1.select(shortName='TCOLC')[0].data
-cond_2 = data2.select(shortName='TCOLC')[0].data
+#cond_1 = data1.select(shortName='TCOLC')[0].data
+#cond_2 = data2.select(shortName='TCOLC')[0].data
 
 # 1-km reflectivity
 ref1km_1 = data1.select(shortName='REFD',level='1000 m above ground')[0].data
@@ -935,6 +936,7 @@ def plot_set_1():
   units = '%'
   clevs = [50,60,70,80,90,100]
   clevsw = [-100,-5]
+#  clevsw = [0.25,100]
   colors = ['blue']
   cm = plt.cm.BuGn
   cmw = matplotlib.colors.ListedColormap(colors)
@@ -956,8 +958,8 @@ def plot_set_1():
   cbar2 = fig.colorbar(cs2_a,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs)
   cbar2.set_label(units,fontsize=6) 
   cbar2.ax.tick_params(labelsize=6)
-  cs2_b = ax2.pcolormesh(lon2_shift,lat2_shift,omg700_2,transform=transform,cmap=cmw,vmax=-5,norm=normw)
-  cs2_b.cmap.set_over('white',alpha=0.)
+#  cs2_b = ax2.pcolormesh(lon2_shift,lat2_shift,omg700_2,transform=transform,cmap=cmw,vmax=-5,norm=normw)
+#  cs2_b.cmap.set_over('white',alpha=0.)
   ax2.text(.5,1.03,'RRFSFW 700 mb $\omega$ (rising motion in blue) and RH ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
@@ -1466,44 +1468,44 @@ def plot_set_2():
 #################################
   # Plot total column condensate
 #################################
-  t1 = time.perf_counter()
-  print(('Working on Total condensate for '+dom))
+#  t1 = time.perf_counter()
+#  print(('Working on Total condensate for '+dom))
 
   # Clear off old plottables but keep all the map info
-  cbar1.remove()
-  cbar2.remove()
-  rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
-  rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
+#  cbar1.remove()
+#  cbar2.remove()
+#  rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
+#  rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
 
-  units = 'kg m${^{-2}}$'
-  clevs = [0.001,0.005,0.01,0.05,0.1,0.25,0.5,1,2,4,6,10,15,20,25]
-  q_color_list = plt.cm.gist_stern_r(np.linspace(0, 1, len(clevs)+1))
-  cm = matplotlib.colors.ListedColormap(q_color_list)
-  norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
+#  units = 'kg m${^{-2}}$'
+#  clevs = [0.001,0.005,0.01,0.05,0.1,0.25,0.5,1,2,4,6,10,15,20,25]
+#  q_color_list = plt.cm.gist_stern_r(np.linspace(0, 1, len(clevs)+1))
+#  cm = matplotlib.colors.ListedColormap(q_color_list)
+#  norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,cond_1,transform=transform,cmap=cm,norm=norm)
-  cs_1.cmap.set_under('white')
-  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
-  cbar1.set_label(units,fontsize=6)
-  cbar1.ax.set_xticklabels([0.001,0.01,0.1,0.5,2,6,15,25])
-  cbar1.ax.tick_params(labelsize=6)
-  ax1.text(.5,1.03,'NAMFW Total Column Condensate ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+#  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,cond_1,transform=transform,cmap=cm,norm=norm)
+#  cs_1.cmap.set_under('white')
+#  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+#  cbar1.set_label(units,fontsize=6)
+#  cbar1.ax.set_xticklabels([0.001,0.01,0.1,0.5,2,6,15,25])
+#  cbar1.ax.tick_params(labelsize=6)
+#  ax1.text(.5,1.03,'NAMFW Total Column Condensate ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+#  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs_2 = ax2.pcolormesh(lon2_shift,lat2_shift,cond_2,transform=transform,cmap=cm,norm=norm)
-  cs_2.cmap.set_under('white')
-  cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
-  cbar2.set_label(units,fontsize=6)
-  cbar2.ax.set_xticklabels([0.001,0.01,0.1,0.5,2,6,15,25])
-  cbar2.ax.tick_params(labelsize=6)
-  ax2.text(.5,1.03,'RRFSFW Total Column Condensate ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+#  cs_2 = ax2.pcolormesh(lon2_shift,lat2_shift,cond_2,transform=transform,cmap=cm,norm=norm)
+#  cs_2.cmap.set_under('white')
+#  cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
+#  cbar2.set_label(units,fontsize=6)
+#  cbar2.ax.set_xticklabels([0.001,0.01,0.1,0.5,2,6,15,25])
+#  cbar2.ax.tick_params(labelsize=6)
+#  ax2.text(.5,1.03,'RRFSFW Total Column Condensate ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+#  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+#  ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.convert_and_save('comparecond_'+dom+'_f'+fhour)
-  t2 = time.perf_counter()
-  t3 = round(t2-t1, 3)
-  print(('%.3f seconds to plot Total condensate for: '+dom) % t3)
+#  rrfs_plot_utils.convert_and_save('comparecond_'+dom+'_f'+fhour)
+#  t2 = time.perf_counter()
+#  t3 = round(t2-t1, 3)
+#  print(('%.3f seconds to plot Total condensate for: '+dom) % t3)
 
 #################################
   # Plot 1-km reflectivity
