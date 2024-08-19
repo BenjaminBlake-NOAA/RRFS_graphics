@@ -5,7 +5,9 @@
  <!ENTITY LOG_DIR "/lfs/h2/emc/ptmp/Benjamin.Blake/logs_rrfs_graphics">
  <!ENTITY COMnam "/lfs/h1/ops/prod/com/nam/v4.2">
  <!ENTITY COMhrrr "/lfs/h1/ops/prod/com/hrrr/v4.1">
- <!ENTITY COMRRFS_A "/lfs/h2/emc/ptmp/emc.lam/rrfs/na/prod">
+ <!ENTITY COMRRFS "/lfs/h2/emc/ptmp/emc.lam/rrfs/na/prod">
+ <!ENTITY COMevs "/lfs/h1/ops/prod/com/evs/v1.0/stats/cam">
+ <!ENTITY COMpcpanl "/lfs/h1/ops/prod/com/pcpanl/v4.1">
  <!ENTITY COMRRFS_FW "/lfs/h2/emc/ptmp/emc.lam/rrfs/na/prod">
  <!ENTITY OBSDIAG "/lfs/h2/emc/ptmp/donald.e.lippi/rrfs_a_diags/figs">
 
@@ -27,8 +29,9 @@
 
 <workflow realtime="T" scheduler="pbspro" cyclelifespan="00:15:00:00" cyclethrottle="4" taskthrottle="60">
 
-  <cycledef group="prod">202404241800 202412311800 06:00:00</cycledef>
-  <cycledef group="daily">202404250100 202412310100 24:00:00</cycledef>
+  <cycledef group="prod">202407151200 202412311800 06:00:00</cycledef>
+  <cycledef group="daily">202407150100 202412310100 24:00:00</cycledef>
+  <cycledef group="verif">202408100000 202412310000 24:00:00</cycledef>
  
   <log verbosity="10"><cyclestr>&LOG_DIR;/workflow_@Y@m@d@H.log</cyclestr></log> 
 
@@ -57,18 +60,18 @@
 
       <dependency>
         <and>
-          <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr>&COMRRFS_A;/refs.@Y@m@d/@H/mem0001/rrfs.t@Hz.m01.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr>&COMRRFS_A;/refs.@Y@m@d/@H/mem0002/rrfs.t@Hz.m02.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr>&COMRRFS_A;/refs.@Y@m@d/@H/mem0003/rrfs.t@Hz.m03.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr>&COMRRFS_A;/refs.@Y@m@d/@H/mem0004/rrfs.t@Hz.m04.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr>&COMRRFS_A;/refs.@Y@m@d/@H/mem0005/rrfs.t@Hz.m05.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr offset="-06:00:00">&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr offset="-06:00:00">&COMRRFS_A;/refs.@Y@m@d/@H/mem0001/rrfs.t@Hz.m01.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr offset="-06:00:00">&COMRRFS_A;/refs.@Y@m@d/@H/mem0002/rrfs.t@Hz.m02.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr offset="-06:00:00">&COMRRFS_A;/refs.@Y@m@d/@H/mem0003/rrfs.t@Hz.m03.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr offset="-06:00:00">&COMRRFS_A;/refs.@Y@m@d/@H/mem0004/rrfs.t@Hz.m04.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr offset="-06:00:00">&COMRRFS_A;/refs.@Y@m@d/@H/mem0005/rrfs.t@Hz.m05.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS;/refs.@Y@m@d/@H/mem0001/rrfs.t@Hz.m01.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS;/refs.@Y@m@d/@H/mem0002/rrfs.t@Hz.m02.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS;/refs.@Y@m@d/@H/mem0003/rrfs.t@Hz.m03.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS;/refs.@Y@m@d/@H/mem0004/rrfs.t@Hz.m04.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS;/refs.@Y@m@d/@H/mem0005/rrfs.t@Hz.m05.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr offset="-06:00:00">&COMRRFS;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr offset="-06:00:00">&COMRRFS;/refs.@Y@m@d/@H/mem0001/rrfs.t@Hz.m01.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr offset="-06:00:00">&COMRRFS;/refs.@Y@m@d/@H/mem0002/rrfs.t@Hz.m02.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr offset="-06:00:00">&COMRRFS;/refs.@Y@m@d/@H/mem0003/rrfs.t@Hz.m03.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr offset="-06:00:00">&COMRRFS;/refs.@Y@m@d/@H/mem0004/rrfs.t@Hz.m04.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr offset="-06:00:00">&COMRRFS;/refs.@Y@m@d/@H/mem0005/rrfs.t@Hz.m05.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
         </and>
       </dependency>
 
@@ -94,19 +97,19 @@
 
       <dependency>
         <and>
-          <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr>&COMRRFS_A;/refs.@Y@m@d/@H/mem0001/rrfs.t@Hz.m01.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr>&COMRRFS_A;/refs.@Y@m@d/@H/mem0002/rrfs.t@Hz.m02.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr>&COMRRFS_A;/refs.@Y@m@d/@H/mem0003/rrfs.t@Hz.m03.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr>&COMRRFS_A;/refs.@Y@m@d/@H/mem0004/rrfs.t@Hz.m04.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr>&COMRRFS_A;/refs.@Y@m@d/@H/mem0005/rrfs.t@Hz.m05.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS;/refs.@Y@m@d/@H/mem0001/rrfs.t@Hz.m01.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS;/refs.@Y@m@d/@H/mem0002/rrfs.t@Hz.m02.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS;/refs.@Y@m@d/@H/mem0003/rrfs.t@Hz.m03.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS;/refs.@Y@m@d/@H/mem0004/rrfs.t@Hz.m04.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS;/refs.@Y@m@d/@H/mem0005/rrfs.t@Hz.m05.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
         </and>
       </dependency>
 
     </task>
   </metatask>
 
-<!-- ****** North America, Caribbean plots (RRFS_A only) ****** -->
+<!-- ****** North America, Caribbean plots (RRFS only) ****** -->
 
   <metatask>
     <var name="fhr">00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60</var>
@@ -127,7 +130,7 @@
 
       <dependency>
         <and>
-          <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.grib2</cyclestr></datadep>
         </and>
       </dependency>
     </task>
@@ -191,7 +194,7 @@
   </task>
 
 
-<!-- ****** HRRR vs RRFS_A ****** -->
+<!-- ****** HRRR vs RRFS ****** -->
 
   <metatask>
     <var name="fhr">00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48</var>
@@ -213,7 +216,7 @@
       <dependency>
         <and>
           <datadep age="10:00"><cyclestr>&COMhrrr;/hrrr.@Y@m@d/conus/hrrr.t@Hz.wrfprsf#fhr#.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
           <taskdep task="allvars_nam_f#fhr#"/>
         </and>
       </dependency>
@@ -241,7 +244,7 @@
       <dependency>
         <and>
           <datadep age="10:00"><cyclestr>&COMhrrr;/hrrr.@Y@m@d/alaska/hrrr.t@Hz.wrfprsf#fhr#.ak.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.ak.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.ak.grib2</cyclestr></datadep>
           <taskdep task="allvars_nam_oconus_f#fhr#"/>
         </and>
       </dependency>
@@ -249,7 +252,7 @@
     </task>
   </metatask>
 
-<!-- ****** NAM Nest vs RRFS_A ****** -->
+<!-- ****** NAM Nest vs RRFS ****** -->
 
   <metatask>
     <var name="fhr">00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60</var>
@@ -271,7 +274,7 @@
       <dependency>
         <and>      
           <datadep age="10:00"><cyclestr>&COMnam;/nam.@Y@m@d/nam.t@Hz.conusnest.hiresf#fhr#.tm00.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.conus.grib2</cyclestr></datadep>
         </and>
       </dependency>
 
@@ -300,9 +303,9 @@
           <datadep age="10:00"><cyclestr>&COMnam;/nam.@Y@m@d/nam.t@Hz.alaskanest.hiresf#fhr#.tm00.grib2</cyclestr></datadep>
           <datadep age="10:00"><cyclestr>&COMnam;/nam.@Y@m@d/nam.t@Hz.hawaiinest.hiresf#fhr#.tm00.grib2</cyclestr></datadep>
           <datadep age="10:00"><cyclestr>&COMnam;/nam.@Y@m@d/nam.t@Hz.priconest.hiresf#fhr#.tm00.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.ak.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.hi.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.pr.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.ak.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.hi.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f0#fhr#.pr.grib2</cyclestr></datadep>
         </and>
       </dependency>
 
@@ -310,7 +313,7 @@
   </metatask>
 
 
-<!-- ****** QPF & Snowfall for NAM vs RRFS_A ****** -->
+<!-- ****** QPF & Snowfall for NAM vs RRFS ****** -->
 
   <metatask>
     <var name="dom">conus northeast mid_atlantic southeast south_florida ohio_valley upper_midwest north_central central south_central northwest southwest colorado boston_nyc seattle_portland sf_bay_area la_vegas</var>
@@ -332,7 +335,7 @@
       <dependency> 
         <and>
           <datadep age="10:00"><cyclestr>&COMnam;/nam.@Y@m@d/nam.t@Hz.conusnest.hiresf60.tm00.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f060.conus.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f060.conus.grib2</cyclestr></datadep>
         </and>
       </dependency>
 
@@ -361,9 +364,9 @@
           <datadep age="10:00"><cyclestr>&COMnam;/nam.@Y@m@d/nam.t@Hz.alaskanest.hiresf60.tm00.grib2</cyclestr></datadep>
           <datadep age="10:00"><cyclestr>&COMnam;/nam.@Y@m@d/nam.t@Hz.hawaiinest.hiresf60.tm00.grib2</cyclestr></datadep>
           <datadep age="10:00"><cyclestr>&COMnam;/nam.@Y@m@d/nam.t@Hz.priconest.hiresf60.tm00.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f060.ak.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f060.hi.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f060.pr.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f060.ak.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f060.hi.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMRRFS;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f060.pr.grib2</cyclestr></datadep>
         </and>
       </dependency>
 
@@ -393,7 +396,7 @@
       <dependency>
         <and>      
           <datadep age="10:00"><cyclestr>&COMnam;/nam.@Y@m@d/nam.t@Hz.conusnest.hiresf60.tm00.grib2</cyclestr></datadep>
-	  <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f060.conus.grib2</cyclestr></datadep>
+	  <datadep age="10:00"><cyclestr>&COMRRFS;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f060.conus.grib2</cyclestr></datadep>
         </and>
       </dependency>
 
@@ -420,13 +423,91 @@
       <dependency>
         <and>      
           <datadep age="10:00"><cyclestr>&COMhrrr;/hrrr.@Y@m@d/conus/hrrr.t@Hz.wrfprsf48.grib2</cyclestr></datadep>
-	  <datadep age="10:00"><cyclestr>&COMRRFS_A;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f048.conus.grib2</cyclestr></datadep>
+	  <datadep age="10:00"><cyclestr>&COMRRFS;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f048.conus.grib2</cyclestr></datadep>
         </and>
       </dependency>
 
     </task>
   </metatask>
 
+<!-- ****** 4 PANEL PLOTS ****** -->
+<!-- ****** HRRR vs NAM Nest vs RRFS Control vs StageIV/CCPA ****** -->
+<!-- ****** CCPA files are available 2 days later ~22Z, submit at 00Z ****** -->
+
+  <task name="qpf_verif_f24" maxtries="2" cycledefs="verif">
+    &RESERVATION;
+    &PLOT_RESOURCES;
+
+    <command>&HOMEDIR;/rocoto/launch_qpf_verif</command>
+    <nodes> 1:ppn=17 </nodes>
+    <join><cyclestr offset="-02:12:00:00">&LOG_DIR;/qpf_verif_@Y@m@d@H_f24.log</cyclestr></join>
+    <jobname>qpf_verif_f24</jobname>
+
+    <envar><name>USER</name><value>&USER;</value></envar>
+    <envar><name>CDATE</name><value><cyclestr offset="-02:12:00:00">@Y@m@d@H</cyclestr></value></envar>
+    <envar><name>fhr</name><value>24</value></envar>
+
+    <dependency>
+      <and>
+        <datadep age="10:00"><cyclestr offset="-03:12:00:00">&COMhrrr;/hrrr.@Y@m@d/conus/hrrr.t@Hz.wrfprsf24.grib2</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr offset="-03:12:00:00">&COMnam;/nam.@Y@m@d/nam.t@Hz.conusnest.hiresf24.tm00.grib2</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr offset="-03:12:00:00">&COMRRFS;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f024.conus.grib2</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr offset="-02:12:00:00">&COMpcpanl;/pcpanl.@Y@m@d/st4_conus.@Y@m@d@H.24h.grb2</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr offset="-02:12:00:00">&COMevs;/atmos.@Y@m@d/namnest/precip/spatial_maps/ccpa.t@Hz.a24h.conus.nc</cyclestr></datadep>
+      </and>
+    </dependency>
+
+  </task>
+
+  <task name="qpf_verif_f36" maxtries="2" cycledefs="verif">
+    &RESERVATION;
+    &PLOT_RESOURCES;
+
+    <command>&HOMEDIR;/rocoto/launch_qpf_verif</command>
+    <nodes> 1:ppn=17 </nodes>
+    <join><cyclestr offset="-02:12:00:00">&LOG_DIR;/qpf_verif_@Y@m@d@H_f36.log</cyclestr></join>
+    <jobname>qpf_verif_f36</jobname>
+
+    <envar><name>USER</name><value>&USER;</value></envar>
+    <envar><name>CDATE</name><value><cyclestr offset="-02:12:00:00">@Y@m@d@H</cyclestr></value></envar>
+    <envar><name>fhr</name><value>36</value></envar>
+
+    <dependency>
+      <and>
+        <datadep age="10:00"><cyclestr offset="-04:00:00:00">&COMhrrr;/hrrr.@Y@m@d/conus/hrrr.t@Hz.wrfprsf36.grib2</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr offset="-04:00:00:00">&COMnam;/nam.@Y@m@d/nam.t@Hz.conusnest.hiresf36.tm00.grib2</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr offset="-04:00:00:00">&COMRRFS;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f036.conus.grib2</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr offset="-02:12:00:00">&COMpcpanl;/pcpanl.@Y@m@d/st4_conus.@Y@m@d@H.24h.grb2</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr offset="-02:12:00:00">&COMevs;/atmos.@Y@m@d/namnest/precip/spatial_maps/ccpa.t@Hz.a24h.conus.nc</cyclestr></datadep>
+      </and>
+    </dependency>
+
+  </task>
+
+  <task name="qpf_verif_f48" maxtries="2" cycledefs="verif">
+    &RESERVATION;
+    &PLOT_RESOURCES;
+
+    <command>&HOMEDIR;/rocoto/launch_qpf_verif</command>
+    <nodes> 1:ppn=17 </nodes>
+    <join><cyclestr offset="-02:12:00:00">&LOG_DIR;/qpf_verif_@Y@m@d@H_f48.log</cyclestr></join>
+    <jobname>qpf_verif_f48</jobname>
+
+    <envar><name>USER</name><value>&USER;</value></envar>
+    <envar><name>CDATE</name><value><cyclestr offset="-02:12:00:00">@Y@m@d@H</cyclestr></value></envar>
+    <envar><name>fhr</name><value>48</value></envar>
+
+    <dependency>
+      <and>
+        <datadep age="10:00"><cyclestr offset="-04:12:00:00">&COMhrrr;/hrrr.@Y@m@d/conus/hrrr.t@Hz.wrfprsf48.grib2</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr offset="-04:12:00:00">&COMnam;/nam.@Y@m@d/nam.t@Hz.conusnest.hiresf48.tm00.grib2</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr offset="-04:12:00:00">&COMRRFS;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.f048.conus.grib2</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr offset="-02:12:00:00">&COMpcpanl;/pcpanl.@Y@m@d/st4_conus.@Y@m@d@H.24h.grb2</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr offset="-02:12:00:00">&COMevs;/atmos.@Y@m@d/namnest/precip/spatial_maps/ccpa.t@Hz.a24h.conus.nc</cyclestr></datadep>
+      </and>
+    </dependency>
+
+  </task>
 
 <!-- ******************************************************** -->
 <!-- ******************** Transfer Jobs ********************* -->
@@ -604,5 +685,28 @@
 
   </task>
 
+  <task name="transfer_verif" maxtries="1" cycledefs="verif">
+    &RESERVATION_TRANSFER;
+    &TRANSFER_RESOURCES;
+
+    <command>bash &HOMEDIR;/scripts/transfer_verif.sh</command>
+    <nodes> 1:ppn=1 </nodes>
+    <join><cyclestr offset="-02:12:00:00">&LOG_DIR;/transfer_verif_@Y@m@d@H.log</cyclestr></join>
+    <jobname>transfer_verif</jobname>
+
+    <envar><name>USER</name><value>&USER;</value></envar>
+    <envar><name>CDATE</name><value><cyclestr offset="-02:12:00:00">@Y@m@d@H</cyclestr></value></envar>
+    <envar><name>PDY</name><value><cyclestr>@Y@m@d</cyclestr></value></envar>
+    <envar><name>cyc</name><value><cyclestr>@H</cyclestr></value></envar>
+
+    <dependency>
+      <and>
+        <taskdep task="qpf_verif_f24"/>
+        <taskdep task="qpf_verif_f36"/>
+        <taskdep task="qpf_verif_f48"/>
+      </and>
+    </dependency>
+
+  </task>
 
 </workflow>

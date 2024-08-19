@@ -94,7 +94,7 @@ ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campa
 
 
 # Copy images from WCOSS to emcrzdm
-rsync -t RRFS_A*.png bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cyc/
+rsync -t RRFS*.png bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cyc/
 
 
 exit

@@ -29,6 +29,11 @@ scp main10.php bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/users/em
 
 # Move images into correct directories on emcrzdm
 # remove images from cycm5 directory
+ssh bblake@emcrzdm.ncep.noaa.gov "rm /home/people/emc/www/htdocs/users/emc.campara/rrfs/cycm5/hrrr/images/*f0*.gif"
+ssh bblake@emcrzdm.ncep.noaa.gov "rm /home/people/emc/www/htdocs/users/emc.campara/rrfs/cycm5/hrrr/images/*f1*.gif"
+ssh bblake@emcrzdm.ncep.noaa.gov "rm /home/people/emc/www/htdocs/users/emc.campara/rrfs/cycm5/hrrr/images/*f2*.gif"
+ssh bblake@emcrzdm.ncep.noaa.gov "rm /home/people/emc/www/htdocs/users/emc.campara/rrfs/cycm5/hrrr/images/*f3*.gif"
+ssh bblake@emcrzdm.ncep.noaa.gov "rm /home/people/emc/www/htdocs/users/emc.campara/rrfs/cycm5/hrrr/images/*f4*.gif"
 ssh bblake@emcrzdm.ncep.noaa.gov "rm /home/people/emc/www/htdocs/users/emc.campara/rrfs/cycm5/hrrr/images/*.gif"
 
 # move cycm4 images to cycm5 directory

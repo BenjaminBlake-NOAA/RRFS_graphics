@@ -1,0 +1,56 @@
+#!/bin/bash
+
+set -x
+
+date
+
+#USER=Benjamin.Blake
+#CDATE=2024080512	# This is for the valid ending time of the 24-hr period
+#fhr=24
+
+echo "into launch_qpf_verif"
+module load python/3.8.6
+module use /lfs/h1/mdl/nbm/save/apps/modulefiles
+module load python-modules/3.8.6
+module load proj/7.1.0
+module load geos/3.8.1
+module load libjpeg-turbo/2.1.0
+export PYTHONPATH="${PYTHONPATH}:/lfs/h2/emc/lam/noscrub/Benjamin.Blake/python:/lfs/h2/emc/lam/noscrub/Benjamin.Blake/rrfs_graphics/modulefiles"
+module load imagemagick/7.0.8-7
+
+module load prod_util	# for NDATE
+if [ $fhr -eq 24 ]; then
+  CDATEmodel=$($NDATE -24 $CDATE)
+  PDY=`echo $CDATEmodel | cut -c1-8`
+ cyc=12
+elif [ $fhr -eq 36 ]; then
+  CDATEmodel=$($NDATE -36 $CDATE)
+  PDY=`echo $CDATEmodel | cut -c1-8`
+  cyc=00
+elif [ $fhr -eq 48 ]; then
+  CDATEmodel=$($NDATE -48 $CDATE)
+  PDY=`echo $CDATEmodel | cut -c1-8`
+  cyc=12
+elif [ $fhr -eq 60 ]; then
+  CDATEmodel=$($NDATE -60 $CDATE)
+  PDY=`echo $CDATEmodel | cut -c1-8`
+  cyc=00
+fi
+
+module load wgrib2/2.0.8_wmo
+mkdir -p /lfs/h2/emc/ptmp/Benjamin.Blake/rrfs/na/prod/rrfs.${PDY}/${cyc}
+cd /lfs/h2/emc/ptmp/Benjamin.Blake/rrfs/na/prod/rrfs.${PDY}/${cyc}
+cp /lfs/h2/emc/ptmp/emc.lam/rrfs/na/prod/rrfs.${PDY}/${cyc}/rrfs.t${cyc}z.prslev.f0${fhr}.conus.grib2 rrfs.t${cyc}z.prslev.f0${fhr}.conus_bad.grib2
+wgrib2 rrfs.t${cyc}z.prslev.f0${fhr}.conus_bad.grib2 -match ave -not MASSDEN -grib rrfs_conus_piece1_f0${fhr}.grib2
+wgrib2 rrfs.t${cyc}z.prslev.f0${fhr}.conus_bad.grib2 -not ave -grib rrfs_conus_piece2_f0${fhr}.grib2
+cat rrfs_conus_piece1_f0${fhr}.grib2 rrfs_conus_piece2_f0${fhr}.grib2 > rrfs.t${cyc}z.prslev.f0${fhr}.conus.grib2
+
+mkdir -p /lfs/h2/emc/stmp/${USER}
+mkdir -p /lfs/h2/emc/stmp/${USER}/4panel_qpf/${CDATE}
+cd /lfs/h2/emc/stmp/${USER}/4panel_qpf/${CDATE}
+
+python /lfs/h2/emc/lam/noscrub/${USER}/rrfs_graphics/scripts/plot_qpf_verif.py $CDATE $CDATEmodel $fhr
+
+date
+
+exit

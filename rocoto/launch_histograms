@@ -8,7 +8,7 @@ date
 #CDATE=2023092600
 #PDY=`echo $CDATE | cut -c1-8`
 #cyc=`echo $CDATE | cut -c9-10`
-exp=RRFS_A
+exp=RRFS
 
 echo 'into launch_histograms'
 module load python/3.8.6

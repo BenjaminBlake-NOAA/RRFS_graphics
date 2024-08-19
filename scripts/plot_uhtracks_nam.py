@@ -36,7 +36,7 @@ hour = int(ymdh[8:10])
 cyc = str(hour).zfill(2)
 print(year, month, day, hour)
 
-# Runlength for NAM Nest and RRFS_A forecasts is 60 hours
+# Runlength for NAM Nest and RRFS forecasts is 60 hours
 runlength = 60
 
 # Forecast init and valid date/time
@@ -51,7 +51,7 @@ RRFS_DIR = '/lfs/h2/emc/ptmp/Benjamin.Blake/rrfs/na/prod/rrfs.'+ymd+'/'+cyc
 
 # Define prod and para strings
 prod_str = 'NAM Nest'
-para_str = 'RRFS_A'
+para_str = 'RRFS'
 
 # Paths to image files
 im = image.imread('/lfs/h2/emc/lam/noscrub/Benjamin.Blake/rrfs_graphics/noaa.png')

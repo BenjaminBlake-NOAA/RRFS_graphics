@@ -85,11 +85,11 @@ if member == 'HRRR':
 # RRFS deterministic forecast
 elif member == 'Control':
   if timelag == 'yes':
-    DATA_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/na/prod/rrfs.'+ymdm1+'/'+cycm1
+    DATA_DIR = '/lfs/h2/emc/ptmp/Benjamin.Blake/rrfs/na/prod/rrfs.'+ymdm1+'/'+cycm1
     data1 = grib2io.open(DATA_DIR+'/rrfs.t'+cycm1+'z.prslev.f0'+fhour+'.conus.grib2')
     memstr = 'Control TL'
   else:
-    DATA_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/na/prod/rrfs.'+ymd+'/'+cyc
+    DATA_DIR = '/lfs/h2/emc/ptmp/Benjamin.Blake/rrfs/na/prod/rrfs.'+ymd+'/'+cyc
     data1 = grib2io.open(DATA_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.conus.grib2')
     memstr = 'Control'
 # RRFS ensemble member forecasts
@@ -792,9 +792,9 @@ def create_figure(domain):
     cbar1.ax.tick_params(labelsize=6)
   if (member == 'Control') or (member == '1'):
     if timelag == 'yes':
-      ax1.text(.5,1.03,'RRFS_A Snow Depth ('+units+') \n initialized: '+itimem1+' valid: '+vtimem1 + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+      ax1.text(.5,1.03,'Snow Depth ('+units+') \n initialized: '+itimem1+' valid: '+vtimem1 + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     else:
-      ax1.text(.5,1.03,'RRFS_A Snow Depth ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+      ax1.text(.5,1.03,'Snow Depth ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.text(.5,0.95,memstr,horizontalalignment='center',fontsize=7,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   if (member != 'HRRR'):
     ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
@@ -808,46 +808,46 @@ def create_figure(domain):
 #################################
   # Plot Snowfall
 #################################
-  t1 = time.perf_counter()
-  print(('Working on snowfall for '+dom))
+  if (fhr > 0):
+    t1 = time.perf_counter()
+    print(('Working on snowfall for '+dom))
 
   # Clear off old plottables but keep all the map info
-  if (member == '4') or (member == '5'):
-    cbar1.remove()
-  rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
+    if (member == '4') or (member == '5'):
+      cbar1.remove()
+    rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
 
-  units = 'in'
-  clevs = [0.5,1,2,3,4,6,8,12,18,24,30,36]
-  cm = matplotlib.colors.ListedColormap(colorlist)
-  norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
+    units = 'in'
+    clevs = [0.5,1,2,3,4,6,8,12,18,24,30,36]
+    cm = matplotlib.colors.ListedColormap(colorlist)
+    norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,asnow_1,transform=transform,cmap=cm,norm=norm)
-  cs_1.cmap.set_under('white')
-  cs_1.cmap.set_over('#CA7AF5')
-  if (member == '4') or (member == '5'):
-    cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='both')
-    cbar1.set_label(units,fontsize=6)
-    cbar1.ax.set_xticklabels(clevs)
-    cbar1.ax.tick_params(labelsize=6)
-  if (member == 'Control') or (member == '1'):
-    if timelag == 'yes':
-      ax1.text(.5,1.03,'RRFS_A Snowfall (variable density) ('+units+') \n initialized: '+itimem1+' valid: '+vtimem1 + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-    else:
-      ax1.text(.5,1.03,'RRFS_A Snowfall (variable density) ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax1.text(.5,0.95,memstr,horizontalalignment='center',fontsize=7,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  if (member != 'HRRR'):
-    ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+    cs_1 = ax1.pcolormesh(lon_shift,lat_shift,asnow_1,transform=transform,cmap=cm,norm=norm)
+    cs_1.cmap.set_under('white')
+    cs_1.cmap.set_over('#CA7AF5')
+    if (member == '4') or (member == '5'):
+      cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='both')
+      cbar1.set_label(units,fontsize=6)
+      cbar1.ax.set_xticklabels(clevs)
+      cbar1.ax.tick_params(labelsize=6)
+    if (member == 'Control') or (member == '1'):
+      if timelag == 'yes':
+        ax1.text(.5,1.03,'Snowfall (variable density) ('+units+') \n initialized: '+itimem1+' valid: '+vtimem1 + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+      else:
+        ax1.text(.5,1.03,'Snowfall (variable density) ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax1.text(.5,0.95,memstr,horizontalalignment='center',fontsize=7,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    if (member != 'HRRR'):
+      ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  rrfs_plot_utils.convert_and_save(member+'_'+timelag+'_asnow_'+dom+'_f'+fhour)
-  t2 = time.perf_counter()
-  t3 = round(t2-t1, 3)
-  print(('%.3f seconds to plot snowfall for: '+dom) % t3)
+    rrfs_plot_utils.convert_and_save(member+'_'+timelag+'_asnow_'+dom+'_f'+fhour)
+    t2 = time.perf_counter()
+    t3 = round(t2-t1, 3)
+    print(('%.3f seconds to plot snowfall for: '+dom) % t3)
 
 #################################
   # Plot Max/Min Hourly 2-5 km UH
 #################################
-  if (fhr > 0):
     t1 = time.perf_counter()
     print(('Working on Max/Min Hourly 2-5 km UH for '+dom))
 
