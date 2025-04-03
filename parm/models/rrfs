@@ -1,0 +1,58 @@
+whichpdys           PDY
+dir                 /lfs/h2/emc/stmp/Benjamin.Blake
+
+###
+
+runjobs             jrunhistory00
+
+storetypes          5yr
+files               ./3panel_hrrr/%thepdy%/00/compare*.gif
+tarmod              _rrfs-vs-hrrr.%thepdy%00
+dotransfer
+
+storetypes          5yr
+files               ./3panel_nam/%thepdy%/00/compare*.gif
+tarmod              _rrfs-vs-namnest.%thepdy%00
+dotransfer
+
+###
+
+runjobs             jrunhistory06
+
+storetypes          5yr
+files               ./3panel_hrrr/%thepdy%/06/compare*.gif
+tarmod              _rrfs-vs-hrrr.%thepdy%06
+dotransfer
+
+storetypes          5yr
+files               ./3panel_nam/%thepdy%/06/compare*.gif
+tarmod              _rrfs-vs-namnest.%thepdy%06
+dotransfer
+
+###
+
+runjobs             jrunhistory12
+
+storetypes          5yr
+files               ./3panel_hrrr/%thepdy%/12/compare*.gif
+tarmod              _rrfs-vs-hrrr.%thepdy%12
+dotransfer
+
+storetypes          5yr
+files               ./3panel_nam/%thepdy%/12/compare*.gif
+tarmod              _rrfs-vs-namnest.%thepdy%12
+dotransfer
+
+###
+
+runjobs             jrunhistory18
+
+storetypes          5yr
+files               ./3panel_hrrr/%thepdy%/18/compare*.gif
+tarmod              _rrfs-vs-hrrr.%thepdy%18
+dotransfer
+
+storetypes          5yr
+files               ./3panel_nam/%thepdy%/18/compare*.gif
+tarmod              _rrfs-vs-namnest.%thepdy%18
+dotransfer

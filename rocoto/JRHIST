@@ -1,0 +1,51 @@
+#!/bin/sh
+
+export PS4=' $SECONDS + '
+date
+set -x
+
+export DATA=/lfs/h2/emc/stmp/Benjamin.Blake/testrunhist
+mkdir -p $DATA
+cd $DATA
+
+mkdir -p $DATA/parm/models
+
+export SENDECF=NO
+export NET=runhistory
+export RUN=runhistory
+export envir=dev
+
+if [ ${envir} = "prod" ]
+then
+    export HPSSOUT=${HPSSOUT:-/NCEPPROD/hpssprod/runhistory}
+    export HPSSOUT_OBS=${HPSSOUT_OBS:-/NCEPOBSERV/hpssprod/runhistory}
+else
+    export HPSSOUT=/NCEPDEV/emc-meso/5year/Benjamin.Blake
+    export HPSSOUT_OBS=/NCEPDEV/emc-meso/5year/Benjamin.Blake
+fi
+
+# Set TMPDIR, which is needed by htar
+export TMPDIR=$DATA
+
+export cycle=t${cyc}z
+export CYCLE=T${cyc}Z
+
+setpdy.sh 10
+. ./PDY
+
+export outid="LL$job"
+export pgmout="OUTPUT.${pid}"
+
+export USHrunhistory=${USHrunhistory:-$HOMErunhistory/ush}
+export PARMrunhistory=${PARMrunhistory:-$HOMErunhistory/parm}
+export LOGrunhistory=/lfs/h2/emc/ptmp/Benjamin.Blake/logs_rrfs_graphics_realtime
+mkdir -p $LOGrunhistory
+
+env
+
+#############################################################
+${HOMErunhistory}/scripts/exrhist.sh
+#############################################################
+date
+cd $DATAROOT
+if [ "$KEEPDATA" != YES ]; then rm -rf $DATA; fi

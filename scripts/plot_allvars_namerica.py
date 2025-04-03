@@ -47,7 +47,7 @@ vtime = rrfs_plot_utils.ndate(itime,int(fhr))
 RRFS_DIR = '/lfs/h2/emc/ptmp/Benjamin.Blake/rrfs/na/prod/rrfs.'+ymd+'/'+cyc
 
 # Define the input files
-data1 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.grib2')
+data1 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.3km.f0'+fhour+'.na.grib2')
 
 # Get the lats and lons
 msg = data1.select(shortName='HGT', level='500 mb')[0]	# msg is a Grib2Message object

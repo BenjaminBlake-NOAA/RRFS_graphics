@@ -43,12 +43,13 @@ itime = ymdh
 vtime = rrfs_plot_utils.ndate(itime,int(fhr))
 
 # Define the directory paths to the output files
+user = str(sys.argv[3])
 NAM_DIR = '/lfs/h1/ops/prod/com/nam/v4.2/nam.'+ymd
 RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/na/prod/rrfs.'+ymd+'/'+cyc
 RRFS_DIR_2 = '/lfs/h2/emc/ptmp/Benjamin.Blake/rrfs/na/prod/rrfs.'+ymd+'/'+cyc
 
 # Specify plotting domains
-domset = str(sys.argv[3])
+domset = str(sys.argv[4])
 if domset == 'conus':
   domains = ['conus','boston_nyc','central','colorado','la_vegas','mid_atlantic','north_central','northeast','northwest','ohio_valley','south_central','southeast','south_florida','sf_bay_area','seattle_portland','southwest','upper_midwest']
 elif domset == 'oconus':
@@ -105,28 +106,28 @@ def vars_figure(domain):
 # Define the input files
   if dom == 'alaska':
     data1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.alaskanest.hiresf'+fhour+'.tm00.grib2')
-    data2 = grib2io.open(RRFS_DIR_2+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.ak.grib2')
+    data2 = grib2io.open(RRFS_DIR_2+'/rrfs.t'+cyc+'z.prslev.3km.f0'+fhour+'.ak.grib2')
     if (fhr >= 1):
       data1_f00 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.alaskanest.hiresf00.tm00.grib2')
-      data2_f00 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f000.ak.grib2')
+      data2_f00 = grib2io.open(RRFS_DIR_2+'/rrfs.t'+cyc+'z.prslev.3km.f000.ak.grib2')
   elif dom == 'hawaii':
     data1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.hawaiinest.hiresf'+fhour+'.tm00.grib2')
-    data2 = grib2io.open(RRFS_DIR_2+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.hi.grib2')
+    data2 = grib2io.open(RRFS_DIR_2+'/rrfs.t'+cyc+'z.prslev.2p5km.f0'+fhour+'.hi.grib2')
     if (fhr >= 1):
       data1_f00 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.hawaiinest.hiresf00.tm00.grib2')
-      data2_f00 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f000.hi.grib2')
+      data2_f00 = grib2io.open(RRFS_DIR_2+'/rrfs.t'+cyc+'z.prslev.2p5km.f000.hi.grib2')
   elif dom == 'puerto_rico':
     data1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.priconest.hiresf'+fhour+'.tm00.grib2')
-    data2 = grib2io.open(RRFS_DIR_2+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.pr.grib2')
+    data2 = grib2io.open(RRFS_DIR_2+'/rrfs.t'+cyc+'z.prslev.2p5km.f0'+fhour+'.pr.grib2')
     if (fhr >= 1):
       data1_f00 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.priconest.hiresf00.tm00.grib2')
-      data2_f00 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f000.pr.grib2')
+      data2_f00 = grib2io.open(RRFS_DIR_2+'/rrfs.t'+cyc+'z.prslev.2p5km.f000.pr.grib2')
   else:
     data1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.conusnest.hiresf'+fhour+'.tm00.grib2')
-    data2 = grib2io.open(RRFS_DIR_2+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.conus.grib2')
+    data2 = grib2io.open(RRFS_DIR_2+'/rrfs.t'+cyc+'z.prslev.3km.f0'+fhour+'.conus.grib2')
     if (fhr >= 1):
       data1_f00 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.conusnest.hiresf00.tm00.grib2')
-      data2_f00 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f000.conus.grib2')
+      data2_f00 = grib2io.open(RRFS_DIR_2+'/rrfs.t'+cyc+'z.prslev.3km.f000.conus.grib2')
 
 
 # Get the lats and lons

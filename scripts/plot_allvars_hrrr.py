@@ -43,13 +43,14 @@ itime = ymdh
 vtime = rrfs_plot_utils.ndate(itime,int(fhr))
 
 # Define the directory paths to the output files
+user = str(sys.argv[3])
 HRRR_DIR = '/lfs/h1/ops/prod/com/hrrr/v4.1/hrrr.'+ymd+'/conus'
 HRRR_AK_DIR = '/lfs/h2/emc/stmp/Benjamin.Blake/3panel_hrrr/'+ymd+'/'+cyc
 RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/na/prod/rrfs.'+ymd+'/'+cyc
 RRFS_DIR_2 = '/lfs/h2/emc/ptmp/Benjamin.Blake/rrfs/na/prod/rrfs.'+ymd+'/'+cyc
 
 # Specify plotting domains
-domset = str(sys.argv[3])
+domset = str(sys.argv[4])
 if domset == 'conus':
   domains = ['conus','boston_nyc','central','colorado','la_vegas','mid_atlantic','north_central','northeast','northwest','ohio_valley','south_central','southeast','south_florida','sf_bay_area','seattle_portland','southwest','upper_midwest']
 elif domset == 'oconus':
@@ -107,18 +108,18 @@ def vars_figure(domain):
     data1 = grib2io.open(HRRR_AK_DIR+'/hrrr.t'+cyc+'z.wrfprsf'+fhour+'.ak.grib2')
     data1nat = grib2io.open(HRRR_AK_DIR+'/hrrr.t'+cyc+'z.wrfnatf'+fhour+'.ak.grib2')
     data1sfc = grib2io.open(HRRR_AK_DIR+'/hrrr.t'+cyc+'z.wrfsfcf'+fhour+'.ak.grib2')
-    data2 = grib2io.open(RRFS_DIR_2+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.ak.grib2')
+    data2 = grib2io.open(RRFS_DIR_2+'/rrfs.t'+cyc+'z.prslev.3km.f0'+fhour+'.ak.grib2')
     if (fhr >= 1):
       data1_f00 = grib2io.open(HRRR_AK_DIR+'/hrrr.t'+cyc+'z.wrfprsf00.ak.grib2')
-      data2_f00 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f000.ak.grib2')
+      data2_f00 = grib2io.open(RRFS_DIR_2+'/rrfs.t'+cyc+'z.prslev.3km.f000.ak.grib2')
   else:
     data1 = grib2io.open(HRRR_DIR+'/hrrr.t'+cyc+'z.wrfprsf'+fhour+'.grib2')
     data1nat = grib2io.open(HRRR_DIR+'/hrrr.t'+cyc+'z.wrfnatf'+fhour+'.grib2')
     data1sfc = grib2io.open(HRRR_DIR+'/hrrr.t'+cyc+'z.wrfsfcf'+fhour+'.grib2')
-    data2 = grib2io.open(RRFS_DIR_2+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.conus.grib2')
+    data2 = grib2io.open(RRFS_DIR_2+'/rrfs.t'+cyc+'z.prslev.3km.f0'+fhour+'.conus.grib2')
     if (fhr >= 1):
       data1_f00 = grib2io.open(HRRR_DIR+'/hrrr.t'+cyc+'z.wrfprsf00.grib2')
-      data2_f00 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f000.conus.grib2')
+      data2_f00 = grib2io.open(RRFS_DIR_2+'/rrfs.t'+cyc+'z.prslev.3km.f000.conus.grib2')
 
 
 # Get the lats and lons

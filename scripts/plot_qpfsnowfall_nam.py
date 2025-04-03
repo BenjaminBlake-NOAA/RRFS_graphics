@@ -146,19 +146,19 @@ for j in range(len(date_list)):
   if dom == 'alaska':
     data1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.alaskanest.hiresf'+fhour+'.tm00.grib2')
     data1_m1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.alaskanest.hiresf'+fhour1+'.tm00.grib2')
-    data2 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.ak.grib2')
+    data2 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.3km.f0'+fhour+'.ak.grib2')
   elif dom == 'hawaii':
     data1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.hawaiinest.hiresf'+fhour+'.tm00.grib2')
     data1_m1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.hawaiinest.hiresf'+fhour1+'.tm00.grib2')
-    data2 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.hi.grib2')
+    data2 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.2p5km.f0'+fhour+'.hi.grib2')
   elif dom == 'puerto_rico':
     data1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.priconest.hiresf'+fhour+'.tm00.grib2')
     data1_m1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.priconest.hiresf'+fhour1+'.tm00.grib2')
-    data2 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.pr.grib2')
+    data2 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.2p5km.f0'+fhour+'.pr.grib2')
   else:
     data1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.conusnest.hiresf'+fhour+'.tm00.grib2')
     data1_m1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.conusnest.hiresf'+fhour1+'.tm00.grib2')
-    data2 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.conus.grib2')
+    data2 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.3km.f0'+fhour+'.conus.grib2')
 
   if (fhr <= 3):
     qpf = data1.select(shortName='APCP',timeRangeOfStatisticalProcess=fhr)[0].data * 0.0393701
