@@ -13,6 +13,7 @@ from subprocess import call
 import matplotlib.pyplot as plt
 from matplotlib import colors
 
+
 ####################################
 #  Time and date
 ####################################
@@ -48,6 +49,104 @@ def ndate(cdate,hours):
 #  Functions
 ####################################
 
+def get_panel_spacing(dom, type='4panel'):
+    if type in ['4panel']:
+        if dom in ['conus']:
+            wspace=0.1
+            hspace=-0.7    
+        elif dom in ['puerto_rico']:
+            wspace=0.1
+            hspace=-0.65    
+        elif dom in ['sf_bay_area']:
+            wspace=0.1
+            hspace=-0.6    
+        elif dom in ['south_central']:
+            wspace=0.1
+            hspace=-0.55    
+        elif dom in ['boston_nyc']:
+            wspace=0.1
+            hspace=-0.5    
+        elif dom in ['north_central','south_florida']:
+            wspace=0.1
+            hspace=-0.3    
+        elif dom in ['southwest','northeast']:
+            wspace=0.1
+            hspace=-0.1    
+        elif dom in [
+                'alaska','hawaii','central','colorado','la_vegas','mid_atlantic',
+                'northwest','ohio_valley','southeast','seattle_portland']:
+            wspace=0.1
+            hspace=0.1
+        else:
+            wspace=0.1
+            hspace=0.0
+    elif type in ['3panel']:
+        if dom in ['conus']:
+            wspace=0.1
+            hspace=-0.3    
+        elif dom in ['puerto_rico']:
+            wspace=0.1
+            hspace=-0.3    
+        elif dom in ['sf_bay_area']:
+            wspace=0.1
+            hspace=-0.3    
+        elif dom in ['south_central']:
+            wspace=0.1
+            hspace=-0.3    
+        elif dom in ['boston_nyc']:
+            wspace=0.1
+            hspace=-0.3    
+        elif dom in ['north_central','south_florida']:
+            wspace=0.1
+            hspace=-0.3    
+        elif dom in ['southwest','northeast']:
+            wspace=0.1
+            hspace=-0.3    
+        elif dom in [
+                'alaska','hawaii','central','colorado','la_vegas','mid_atlantic',
+                'northwest','ohio_valley','southeast','seattle_portland']:
+            wspace=0.1
+            hspace=-0.3
+        elif dom in ['alaska']:
+            wspace=0.1
+            hspace=-0.3
+        else:
+            wspace=0.1
+            hspace=0.0
+    elif type in ['2panel']:
+        if dom in ['conus']:
+            wspace=0.1
+            hspace=-0.7    
+        elif dom in ['puerto_rico']:
+            wspace=0.1
+            hspace=-0.65    
+        elif dom in ['sf_bay_area']:
+            wspace=0.1
+            hspace=-0.6    
+        elif dom in ['south_central']:
+            wspace=0.1
+            hspace=-0.55    
+        elif dom in ['boston_nyc']:
+            wspace=0.1
+            hspace=-0.5    
+        elif dom in ['north_central','south_florida']:
+            wspace=0.1
+            hspace=-0.3    
+        elif dom in ['southwest','northeast']:
+            wspace=0.1
+            hspace=-0.1    
+        elif dom in [
+                'alaska','hawaii','central','colorado','la_vegas','mid_atlantic',
+                'northwest','ohio_valley','southeast','seattle_portland']:
+            wspace=0.1
+            hspace=0.1
+        else:
+            wspace=0.1
+            hspace=0.0
+    else:
+        ValueError(f"Type \"{type}\" is not a valid plot type.")
+    return wspace, hspace
+
 def clear_plotables(ax,keep_ax_lst,fig):
   #### - step to clear off old plottables but leave the map info - ####
   if len(keep_ax_lst) == 0 :
@@ -62,7 +161,9 @@ def clear_plotables(ax,keep_ax_lst,fig):
 def convert_and_save(filename):
   #### - convert and save the image - ####
   plt.savefig(filename+'.png', bbox_inches='tight',dpi=150)
-  os.system('convert '+filename+'.png '+filename+'.gif')
+  #os.system('convert '+filename+'.png '+filename+'.gif')
+  img = Image.open(filename + '.png')
+  img.save(filename + '.gif', format='GIF')
   os.remove(filename+'.png')
 
 def convert_and_save_2(filename):
@@ -98,7 +199,8 @@ def plt_highs_and_lows(x,y,mat,xmin,xmax,ymin,ymax,offset,ax,transform,mode='wra
   yoffset = offset
   dmin = yoffset
   for x,y,p in zip(xlows, ylows, lowvals):
-#    if x < xmax and x > xmin and y < ymax and y > ymin:
+    x_proj, y_proj = ax.projection.transform_point(x, y, ccrs.PlateCarree())
+    if x_proj < xmax and x_proj > xmin and y_proj < ymax and y_proj > ymin:
 #        dist = [np.sqrt((x-x0)**2+(y-y0)**2) for x0,y0 in xyplotted]
 #        if not dist or min(dist) > dmin:
             ax.text(x,y,'L',fontsize=14,fontweight='bold',
@@ -112,7 +214,8 @@ def plt_highs_and_lows(x,y,mat,xmin,xmax,ymin,ymax,offset,ax,transform,mode='wra
   # plot highs as blue H's, with max pressure value underneath.
   xyplotted = []
   for x,y,p in zip(xhighs, yhighs, highvals):
-#    if x < xmax and x > xmin and y < ymax and y > ymin:
+    x_proj, y_proj = ax.projection.transform_point(x, y, ccrs.PlateCarree())
+    if x_proj < xmax and x_proj > xmin and y_proj < ymax and y_proj > ymin:
 #        dist = [np.sqrt((x-x0)**2+(y-y0)**2) for x0,y0 in xyplotted]
 #        if not dist or min(dist) > dmin:
             ax.text(x,y,'H',fontsize=14,fontweight='bold',
