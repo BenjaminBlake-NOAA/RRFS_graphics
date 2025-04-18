@@ -187,16 +187,6 @@ refc_1 = data1.select(shortName='REFC')[0].data
 # PBL height
 hpbl_1 = data1.select(shortName='HGT',level='planetary boundary layer')[0].data
 
-# Total column integrated liquid (cloud water + rain)
-#tqw_1 = data1.select(shortName='TCOLW')[0].data
-#tqr_1 = data1.select(shortName='TCOLR')[0].data
-#tcolw_1 = tqw_1 + tqr_1
-
-# Total column integrated ice (cloud ice + snow)
-#tqi_1 = data1.select(shortName='TCOLI')[0].data
-#tqs_1 = data1.select(shortName='TCOLS')[0].data
-#tcoli_1 = tqi_1 + tqs_1
-
 # 0-3 km Storm Relative Helicity
 hel3km_1 = data1.select(shortName='HLCY',scaledValueOfFirstFixedSurface=3000)[0].data
 
@@ -224,7 +214,7 @@ if (fhr > 0):
   maxwind_1 = data1.select(shortName='WIND')[0].data * 1.94384
 
 # Total cloud cover
-tcdc_1 = data1.select(shortName='TCDC',level='entire atmosphere (considered as a single layer)')[0].data
+#tcdc_1 = data1.select(shortName='TCDC',level='entire atmosphere (considered as a single layer)')[0].data
 
 # Echo top height
 retop_1 = data1.select(shortName='RETOP')[0].data * (3.28084/1000)
@@ -595,47 +585,6 @@ def plot_set_5():
     print(('%.3f seconds to plot Max Hourly 10-m Wind Speed for: '+dom) % t3)
 
   plt.clf()
-
-################################################################################
-
-#def plot_set_6():
-#  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
-
-#  xmin, xmax = ax1.get_xlim()
-#  ymin, ymax = ax1.get_ylim()
-#  xmax = int(round(xmax))
-#  ymax = int(round(ymax))
-#  x1 = xmin + ((xmax-xmin)*0.03)
-#  y1 = ymin + ((ymax-ymin)*0.03)
-
-#################################
-  # Plot total column liquid
-#################################
-#  t1 = time.perf_counter()
-#  print(('Working on Total column liquid for '+dom))
-
-#  units = 'kg m${^{-2}}$'
-#  clevs = [0.001,0.005,0.01,0.05,0.1,0.25,0.5,1,2,4,6,10,15,20,25]
-#  q_color_list = plt.cm.gist_stern_r(np.linspace(0, 1, len(clevs)+1))
-#  cm = matplotlib.colors.ListedColormap(q_color_list)
-#  norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
-
-#  cs_1 = ax1.contourf(lon,lat,tcolw_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
-#  cs_1.cmap.set_under('white')
-#  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,extend='both')
-#  cbar1.set_label(units,fontsize=6)
-##  cbar1.ax.set_xticklabels([0.001,0.01,0.1,0.5,2,6,15,25])
-#  cbar1.ax.tick_params(labelsize=6)
-#  ax1.text(.5,1.03,'RRFS Total Column Cloud Water + Rain ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-#  ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
-#  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
-
-#  rrfs_plot_utils.convert_and_save_2('comparetcolw_'+dom+'_f'+fhour)
-#  t2 = time.perf_counter()
-#  t3 = round(t2-t1, 3)
-#  print(('%.3f seconds to plot Total column liquid for: '+dom) % t3)
-
-#  plt.clf()
 
 ################################################################################
 
@@ -1133,37 +1082,6 @@ def plot_set_8():
     print(('%.3f seconds to plot snowfall for: '+dom) % t3)
 
 #################################
-  # Plot total column ice
-#################################
-#  t1 = time.perf_counter()
-#  print(('Working on Tcoli for '+dom))
-
-  # Clear off old plottables but keep all the map info
-#  cbar1.remove()
-#  rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
-
-#  units = 'kg m${^{-2}}$'
-#  clevs = [0.001,0.005,0.01,0.05,0.1,0.25,0.5,1,2,4,6,10,15,20,25]
-#  q_color_list = plt.cm.gist_stern_r(np.linspace(0, 1, len(clevs)+1))
-#  cm = matplotlib.colors.ListedColormap(q_color_list)
-#  norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
-
-#  cs_1 = ax1.contourf(lon,lat,tcoli_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
-#  cs_1.cmap.set_under('white')
-#  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,extend='both')
-#  cbar1.set_label(units,fontsize=6)
-#  cbar1.ax.set_xticklabels([0.001,0.01,0.1,0.5,2,6,15,25])
-#  cbar1.ax.tick_params(labelsize=6)
-#  ax1.text(.5,1.03,'RRFS Total Column Cloud Ice + Snow ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-#  ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
-#  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
-
-#  rrfs_plot_utils.convert_and_save_2('comparetcoli_'+dom+'_f'+fhour)
-#  t2 = time.perf_counter()
-#  t3 = round(t2-t1, 3)
-#  print(('%.3f seconds to plot Tcoli for: '+dom) % t3)
-
-#################################
   # Plot 0-3 km Storm Relative Helicity
 #################################
   t1 = time.perf_counter()
@@ -1420,31 +1338,31 @@ def plot_set_9():
 #################################
   # Plot Total Cloud Cover
 #################################
-  t1 = time.perf_counter()
-  print(('Working on Total Cloud Cover for '+dom))
+#  t1 = time.perf_counter()
+#  print(('Working on Total Cloud Cover for '+dom))
 
-  if (fhr > 0):
-  # Clear off old plottables but keep all the map info
-    cbar1.remove()
-    rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
+#  if (fhr > 0):
+#  # Clear off old plottables but keep all the map info
+#    cbar1.remove()
+#    rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
 
-  units = '%'
-  clevs = [0,10,20,30,40,50,60,70,80,90,100]
-  cm = plt.cm.BuGn
-  norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
+#  units = '%'
+#  clevs = [0,10,20,30,40,50,60,70,80,90,100]
+#  cm = plt.cm.BuGn
+#  norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cs_1 = ax1.contourf(lon,lat,tcdc_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
-  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0)
-  cbar1.set_label(units,fontsize=6)
-  cbar1.ax.tick_params(labelsize=6)
-  ax1.text(.5,1.03,'RRFS Total Cloud Cover ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
+#  cs_1 = ax1.contourf(lon,lat,tcdc_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+#  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0)
+#  cbar1.set_label(units,fontsize=6)
+#  cbar1.ax.tick_params(labelsize=6)
+#  ax1.text(.5,1.03,'RRFS Total Cloud Cover ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+#  ax1.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax1.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+#  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(x1,xextent,y1,yextent),zorder=4)
 
-  rrfs_plot_utils.convert_and_save_2('comparetcdc_'+dom+'_f'+fhour)
-  t2 = time.perf_counter()
-  t3 = round(t2-t1, 3)
-  print(('%.3f seconds to plot Total Cloud Cover for: '+dom) % t3)
+#  rrfs_plot_utils.convert_and_save_2('comparetcdc_'+dom+'_f'+fhour)
+#  t2 = time.perf_counter()
+#  t3 = round(t2-t1, 3)
+#  print(('%.3f seconds to plot Total Cloud Cover for: '+dom) % t3)
 
 #################################
   # Plot Echo Top Height
@@ -1512,7 +1430,7 @@ def plot_set_9():
 ######################################################
 
   t3dom = round(t2-t1dom, 3)
-  print(("%.3f seconds to plot all set 10 variables for: "+dom) % t3dom)
+  print(("%.3f seconds to plot all set 9 variables for: "+dom) % t3dom)
   plt.clf()
 
 ######################################################

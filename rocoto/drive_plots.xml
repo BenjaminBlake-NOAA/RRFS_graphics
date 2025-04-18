@@ -496,8 +496,8 @@
 
 <!-- ****** North America, Caribbean plots (RRFS only) ****** -->
 
-<!--  <metatask>
-    <var name="fhr">00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60</var>
+  <metatask>
+    <var name="fhr">00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 51 54 57 60 63 66 69 72 75 78 81 84</var>
     <task name="allvars_namerica_f#fhr#" maxtries="2" cycledefs="prod">
       &RESERVATION;
       &PLOT2_RESOURCES;
@@ -521,7 +521,7 @@
         </and>
       </dependency>
     </task>
-  </metatask> -->
+  </metatask>
 
 
 <!-- ****** NAM vs RRFS Fire Weather Nest ****** -->
@@ -765,7 +765,7 @@
 
   </task> -->
 
-<!--  <task name="transfer_namerica" maxtries="1" cycledefs="prod">
+  <task name="transfer_namerica" maxtries="1" cycledefs="prod">
     &RESERVATION_TRANSFER;
     &TRANSFER_RESOURCES;
 
@@ -782,16 +782,16 @@
     <dependency>
       <or>
         <and>
-          <taskdep task="allvars_namerica_f60"/>
+          <taskdep task="allvars_namerica_f84"/>
         </and>
         <and>
-          <taskdep task="allvars_namerica_f00"/>
+          <taskdep task="allvars_namerica_f48"/>
           <timedep><cyclestr offset="11:00:00">@Y@m@d@H@M@S</cyclestr></timedep>
         </and>
       </or>
     </dependency>
 
-  </task> -->
+  </task>
 
   <task name="transfer_hrrr" maxtries="1" cycledefs="prod">
     &RESERVATION_TRANSFER;
