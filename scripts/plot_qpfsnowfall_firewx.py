@@ -41,8 +41,7 @@ date_list = [dtime + datetime.timedelta(hours=x) for x in fhours]
 
 # Define the directory paths to the input files
 NAM_DIR = '/lfs/h1/ops/prod/com/nam/v4.2/nam.'+ymd
-#RRFSFW_DIR = '/lfs/h2/emc/ptmp/emc.lam/para/com/rrfsfw/v1.0.0/rrfsfw.'+ymd+'/'+cyc
-RRFSFW_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.9.1/prod/rrfs.'+ymd+'/'+cyc
+RRFSFW_DIR = '/lfs/h2/emc/ptmp/emc.lam/com/rrfs/v1.0/firewx.'+ymd+'/'+cyc
 
 # Specify plotting domains
 domain='firewx'
@@ -133,6 +132,8 @@ ax2.add_feature(coastline)
 keep_ax_lst_1 = ax1.get_children()[:]
 keep_ax_lst_2 = ax2.get_children()[:]
 
+cenlat = str(cen_lat)
+cenlon = str(cen_lon)
 xmin, xmax = ax1.get_xlim()
 ymin, ymax = ax1.get_ylim()
 xmax = int(round(xmax))
@@ -158,16 +159,20 @@ for j in range(len(date_list)):
 
 # Define the input files
   data1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.firewxnest.hiresf'+fhour+'.tm00.grib2')
-  data1_m1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.firewxnest.hiresf'+fhour1+'.tm00.grib2')
-  data2 = grib2io.open(RRFSFW_DIR+'/rrfs.t'+cyc+'z.prslev.f0'+fhour+'.firewx_lcc.grib2')
+  data2 = grib2io.open(RRFSFW_DIR+'/rrfs.t'+cyc+'z.prslev.1p5km.f0'+fhour+'.firewx_lcc.grib2')
 
   qpf = data1.select(shortName='APCP',timeRangeOfStatisticalProcess=1)[0].data * 0.0393701
+  asnow = data1.select(shortName='WEASD')[1].data / 2.54
   if (fhr == 1):
     qpf_1 = qpf
     qpf_2 = data2.select(shortName='APCP')[0].data * 0.0393701
+    asnow_1 = asnow
   else:
     qpf_1 += qpf  
     qpf_2 = data2.select(shortName='APCP')[1].data * 0.0393701
+    asnow_1 += asnow
+
+  asnow_2 = data2.select(shortName='ASNOW')[0].data * 39.3701
 
 ###################################################
 
@@ -193,13 +198,11 @@ for j in range(len(date_list)):
 
   units = 'in'
   clevs = [0.01,0.1,0.25,0.5,0.75,1,1.25,1.5,1.75,2,2.5,3,4,5,7,10,15,20]
-  clevsdif = [-3,-2.5,-2,-1.5,-1,-0.5,0,0.5,1,1.5,2,2.5,3]
   colorlist = ['chartreuse','limegreen','green','blue','dodgerblue','deepskyblue','cyan','mediumpurple','mediumorchid','darkmagenta','darkred','crimson','orangered','darkorange','goldenrod','gold','yellow']
   difcolors = ['blue','#1874CD','dodgerblue','deepskyblue','turquoise','white','white','#EEEE00','#EEC900','darkorange','orangered','red']
   cm = matplotlib.colors.ListedColormap(colorlist)
   cmdif = matplotlib.colors.ListedColormap(difcolors)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
-  normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N)
 
   cs_1 = ax1.pcolormesh(lon_shift,lat_shift,qpf_1,transform=transform,cmap=cm,vmin=0.01,norm=norm)
   cs_1.cmap.set_under('white',alpha=0.)
@@ -208,7 +211,7 @@ for j in range(len(date_list)):
   cbar1.set_label(units,fontsize=6)
   cbar1.ax.set_xticklabels([0.1,0.5,1,1.5,2,3,5,10,20])
   cbar1.ax.tick_params(labelsize=6)
-  ax1.text(.5,1.03,'NAMFW '+fhour+'-hr Accumulated Precipitation ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax1.text(.5,1.03,'NAMFW '+fhour+'-hr Accumulated Precipitation ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_2 = ax2.pcolormesh(lon2_shift,lat2_shift,qpf_2,transform=transform,cmap=cm,vmin=0.01,norm=norm)
@@ -218,7 +221,7 @@ for j in range(len(date_list)):
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.set_xticklabels([0.1,0.5,1,1.5,2,3,5,10,20])
   cbar2.ax.tick_params(labelsize=6)
-  ax2.text(.5,1.03,'RRFSFW '+fhour+'-hr Accumulated Precipitation ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,1.03,'RRFSFW '+fhour+'-hr Accumulated Precipitation ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
@@ -227,8 +230,52 @@ for j in range(len(date_list)):
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot Total QPF for: forecast hour '+fhour) % t3)
 
+#################################
+  # Plot snowfall
+#################################
+  t1 = time.perf_counter()
+  print(('Working on snowfall for forecast hour '+fhour))
+
+  # Clear off old plottables but keep all the map info
+  cbar1.remove()
+  cbar2.remove()
+  rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
+  rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
+
+  units = 'in'
+  clevs = [0.5,1,2,3,4,6,8,12,18,24,30,36]
+  colorlist = ['#adc4d9','#73bdff','#0f69db','#004da8','#002673','#ffff73','#ffaa00','#e64c00','#e60000','#730000','#e8beff']
+  cm = matplotlib.colors.ListedColormap(colorlist)
+  norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
+
+  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,asnow_1,transform=transform,cmap=cm,vmin=0.5,norm=norm)
+  cs_1.cmap.set_under('white',alpha=0.)
+  cs_1.cmap.set_over('#CA7AF5')
+  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='max')
+  cbar1.set_label(units,fontsize=6)
+  cbar1.ax.set_xticklabels(clevs)
+  cbar1.ax.tick_params(labelsize=6)
+  ax1.text(.5,1.03,'NAMFW Snowfall (10:1) ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+
+  cs_2 = ax2.pcolormesh(lon2_shift,lat2_shift,asnow_2,transform=transform,cmap=cm,vmin=0.5,norm=norm)
+  cs_2.cmap.set_under('white',alpha=0.)
+  cs_2.cmap.set_over('#CA7AF5')
+  cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='max')
+  cbar2.set_label(units,fontsize=6)
+  cbar2.ax.set_xticklabels(clevs)
+  cbar2.ax.tick_params(labelsize=6)
+  ax2.text(.5,1.03,'RRFSFW Snowfall (variable density) ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
+
+  rrfs_plot_utils.convert_and_save('compareasnow_'+domain+'_f'+fhour)
+  t2 = time.perf_counter()
+  t3 = round(t2-t1, 3)
+  print(('%.3f seconds to plot snowfall for: forecast hour '+fhour) % t3)
+
 
 t3dom = round(t2-t1dom, 3)
-print(("%.3f seconds to plot Total QPF for: "+domain) % t3dom)
+print(("%.3f seconds to plot Total QPF and Snowfall for: "+domain) % t3dom)
 plt.clf()
 

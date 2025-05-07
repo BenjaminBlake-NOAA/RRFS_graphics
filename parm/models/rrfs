@@ -15,6 +15,16 @@ files               ./3panel_nam/%thepdy%/00/compare*.gif
 tarmod              _rrfs-vs-namnest.%thepdy%00
 dotransfer
 
+storetypes          5yr
+files               ./2panel_hiresw/%thepdy%/00/compare*.gif
+tarmod              _rrfs-vs-hiresw.%thepdy%00
+dotransfer
+
+storetypes          5yr
+files               ./namerica/%thepdy%/00/compare*.gif
+tarmod              _rrfs-namerica.%thepdy%00
+dotransfer
+
 ###
 
 runjobs             jrunhistory06
@@ -27,6 +37,16 @@ dotransfer
 storetypes          5yr
 files               ./3panel_nam/%thepdy%/06/compare*.gif
 tarmod              _rrfs-vs-namnest.%thepdy%06
+dotransfer
+
+storetypes          5yr
+files               ./2panel_hiresw/%thepdy%/06/compare*.gif
+tarmod              _rrfs-vs-hiresw.%thepdy%06
+dotransfer
+
+storetypes          5yr
+files               ./namerica/%thepdy%/06/compare*.gif
+tarmod              _rrfs-namerica.%thepdy%06
 dotransfer
 
 ###
@@ -43,6 +63,16 @@ files               ./3panel_nam/%thepdy%/12/compare*.gif
 tarmod              _rrfs-vs-namnest.%thepdy%12
 dotransfer
 
+storetypes          5yr
+files               ./2panel_hiresw/%thepdy%/12/compare*.gif
+tarmod              _rrfs-vs-hiresw.%thepdy%12
+dotransfer
+
+storetypes          5yr
+files               ./namerica/%thepdy%/12/compare*.gif
+tarmod              _rrfs-namerica.%thepdy%12
+dotransfer
+
 ###
 
 runjobs             jrunhistory18
@@ -55,4 +85,14 @@ dotransfer
 storetypes          5yr
 files               ./3panel_nam/%thepdy%/18/compare*.gif
 tarmod              _rrfs-vs-namnest.%thepdy%18
+dotransfer
+
+storetypes          5yr
+files               ./2panel_hiresw/%thepdy%/18/compare*.gif
+tarmod              _rrfs-vs-hiresw.%thepdy%18
+dotransfer
+
+storetypes          5yr
+files               ./namerica/%thepdy%/18/compare*.gif
+tarmod              _rrfs-namerica.%thepdy%18
 dotransfer
