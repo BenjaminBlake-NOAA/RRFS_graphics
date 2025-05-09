@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #USER=Benjamin.Blake
-#CDATE=2019051700
+#CDATE=2019151700
 #cyc=00
 
 cd /lfs/h2/emc/stmp/${USER}/damonitor/${PDY}/${cyc}
@@ -9,30 +9,30 @@ cd /lfs/h2/emc/stmp/${USER}/damonitor/${PDY}/${cyc}
 # Retrieve main7.php to update cycle dates
 scp bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/users/emc.campara/rrfs/main7.php .
 
-DATE=$(sed -n "190p" main7.php | cut -c 15-24)
-DATEm1=$(sed -n "190p" main7.php | cut -c 28-37)
-DATEm2=$(sed -n "190p" main7.php | cut -c 41-50)
-DATEm3=$(sed -n "190p" main7.php | cut -c 54-63)
-DATEm4=$(sed -n "190p" main7.php | cut -c 67-76)
-DATEm5=$(sed -n "190p" main7.php | cut -c 80-89)
-DATEm6=$(sed -n "190p" main7.php | cut -c 93-102)
-DATEm7=$(sed -n "190p" main7.php | cut -c 106-115)
-DATEm8=$(sed -n "190p" main7.php | cut -c 119-128)
-DATEm9=$(sed -n "190p" main7.php | cut -c 132-141)
-DATEm10=$(sed -n "190p" main7.php | cut -c 145-154)
-DATEm11=$(sed -n "190p" main7.php | cut -c 158-167)
-DATEm12=$(sed -n "190p" main7.php | cut -c 171-180)
-DATEm13=$(sed -n "190p" main7.php | cut -c 184-193)
-DATEm14=$(sed -n "190p" main7.php | cut -c 197-206)
-DATEm15=$(sed -n "190p" main7.php | cut -c 210-219)
-DATEm16=$(sed -n "190p" main7.php | cut -c 223-232)
-DATEm17=$(sed -n "190p" main7.php | cut -c 236-245)
-DATEm18=$(sed -n "190p" main7.php | cut -c 249-258)
-DATEm19=$(sed -n "190p" main7.php | cut -c 262-271)
-DATEm20=$(sed -n "190p" main7.php | cut -c 275-284)
-DATEm21=$(sed -n "190p" main7.php | cut -c 288-297)
-DATEm22=$(sed -n "190p" main7.php | cut -c 301-310)
-DATEm23=$(sed -n "190p" main7.php | cut -c 314-323)
+DATE=$(sed -n "191p" main7.php | cut -c 15-24)
+DATEm1=$(sed -n "191p" main7.php | cut -c 28-37)
+DATEm2=$(sed -n "191p" main7.php | cut -c 41-50)
+DATEm3=$(sed -n "191p" main7.php | cut -c 54-63)
+DATEm4=$(sed -n "191p" main7.php | cut -c 67-76)
+DATEm5=$(sed -n "191p" main7.php | cut -c 80-89)
+DATEm6=$(sed -n "191p" main7.php | cut -c 93-102)
+DATEm7=$(sed -n "191p" main7.php | cut -c 106-115)
+DATEm8=$(sed -n "191p" main7.php | cut -c 119-128)
+DATEm9=$(sed -n "191p" main7.php | cut -c 132-141)
+DATEm10=$(sed -n "191p" main7.php | cut -c 145-154)
+DATEm11=$(sed -n "191p" main7.php | cut -c 158-167)
+DATEm12=$(sed -n "191p" main7.php | cut -c 171-180)
+DATEm13=$(sed -n "191p" main7.php | cut -c 184-193)
+DATEm14=$(sed -n "191p" main7.php | cut -c 197-206)
+DATEm15=$(sed -n "191p" main7.php | cut -c 210-219)
+DATEm16=$(sed -n "191p" main7.php | cut -c 223-232)
+DATEm17=$(sed -n "191p" main7.php | cut -c 236-245)
+DATEm18=$(sed -n "191p" main7.php | cut -c 249-258)
+DATEm19=$(sed -n "191p" main7.php | cut -c 262-271)
+DATEm20=$(sed -n "191p" main7.php | cut -c 275-284)
+DATEm21=$(sed -n "191p" main7.php | cut -c 288-297)
+DATEm22=$(sed -n "191p" main7.php | cut -c 301-310)
+DATEm23=$(sed -n "191p" main7.php | cut -c 314-323)
 echo $DATE
 echo $DATEm1
 echo $DATEm2
@@ -58,7 +58,7 @@ echo $DATEm21
 echo $DATEm22
 echo $DATEm23
 
-sed '190s/var cyclist=\["'${DATE}'","'${DATEm1}'","'${DATEm2}'","'${DATEm3}'","'${DATEm4}'","'${DATEm5}'","'${DATEm6}'","'${DATEm7}'","'${DATEm8}'","'${DATEm9}'","'${DATEm10}'","'${DATEm11}'","'${DATEm12}'","'${DATEm13}'","'${DATEm14}'","'${DATEm15}'","'${DATEm16}'","'${DATEm17}'","'${DATEm18}'","'${DATEm19}'","'${DATEm20}'","'${DATEm21}'","'${DATEm22}'","'${DATEm23}'"\]/var cyclist=\["'${CDATE}'","'${DATE}'","'${DATEm1}'","'${DATEm2}'","'${DATEm3}'","'${DATEm4}'","'${DATEm5}'","'${DATEm6}'","'${DATEm7}'","'${DATEm8}'","'${DATEm9}'","'${DATEm10}'","'${DATEm11}'","'${DATEm12}'","'${DATEm13}'","'${DATEm14}'","'${DATEm15}'","'${DATEm16}'","'${DATEm17}'","'${DATEm18}'","'${DATEm19}'","'${DATEm20}'","'${DATEm21}'","'${DATEm22}'"\]/' main7.php > tmpfile ; mv tmpfile main7.php
+sed '191s/var cyclist=\["'${DATE}'","'${DATEm1}'","'${DATEm2}'","'${DATEm3}'","'${DATEm4}'","'${DATEm5}'","'${DATEm6}'","'${DATEm7}'","'${DATEm8}'","'${DATEm9}'","'${DATEm10}'","'${DATEm11}'","'${DATEm12}'","'${DATEm13}'","'${DATEm14}'","'${DATEm15}'","'${DATEm16}'","'${DATEm17}'","'${DATEm18}'","'${DATEm19}'","'${DATEm20}'","'${DATEm21}'","'${DATEm22}'","'${DATEm23}'"\]/var cyclist=\["'${CDATE}'","'${DATE}'","'${DATEm1}'","'${DATEm2}'","'${DATEm3}'","'${DATEm4}'","'${DATEm5}'","'${DATEm6}'","'${DATEm7}'","'${DATEm8}'","'${DATEm9}'","'${DATEm10}'","'${DATEm11}'","'${DATEm12}'","'${DATEm13}'","'${DATEm14}'","'${DATEm15}'","'${DATEm16}'","'${DATEm17}'","'${DATEm18}'","'${DATEm19}'","'${DATEm20}'","'${DATEm21}'","'${DATEm22}'"\]/' main7.php > tmpfile ; mv tmpfile main7.php
 
 scp main7.php bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/users/emc.campara/rrfs
 

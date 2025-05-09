@@ -9,12 +9,12 @@ cd /lfs/h2/emc/stmp/${USER}/2panel_hiresw/${PDY}/${cyc}
 # Retrieve main4.php to update cycle dates
 scp bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/users/emc.campara/rrfs/main4.php .
 
-DATE=$(sed -n "306p" main4.php | cut -c 15-24)
-DATEm1=$(sed -n "306p" main4.php | cut -c 28-37)
-DATEm2=$(sed -n "306p" main4.php | cut -c 41-50)
-DATEm3=$(sed -n "306p" main4.php | cut -c 54-63)
-DATEm4=$(sed -n "306p" main4.php | cut -c 67-76)
-DATEm5=$(sed -n "306p" main4.php | cut -c 80-89)
+DATE=$(sed -n "307p" main4.php | cut -c 15-24)
+DATEm1=$(sed -n "307p" main4.php | cut -c 28-37)
+DATEm2=$(sed -n "307p" main4.php | cut -c 41-50)
+DATEm3=$(sed -n "307p" main4.php | cut -c 54-63)
+DATEm4=$(sed -n "307p" main4.php | cut -c 67-76)
+DATEm5=$(sed -n "307p" main4.php | cut -c 80-89)
 echo $DATE
 echo $DATEm1
 echo $DATEm2
@@ -22,7 +22,7 @@ echo $DATEm3
 echo $DATEm4
 echo $DATEm5
 
-sed '306s/var cyclist=\["'${DATE}'","'${DATEm1}'","'${DATEm2}'","'${DATEm3}'","'${DATEm4}'","'${DATEm5}'"\]/var cyclist=\["'${CDATE}'","'${DATE}'","'${DATEm1}'","'${DATEm2}'","'${DATEm3}'","'${DATEm4}'"\]/' main4.php > tmpfile ; mv tmpfile main4.php
+sed '307s/var cyclist=\["'${DATE}'","'${DATEm1}'","'${DATEm2}'","'${DATEm3}'","'${DATEm4}'","'${DATEm5}'"\]/var cyclist=\["'${CDATE}'","'${DATE}'","'${DATEm1}'","'${DATEm2}'","'${DATEm3}'","'${DATEm4}'"\]/' main4.php > tmpfile ; mv tmpfile main4.php
 
 scp main4.php bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/users/emc.campara/rrfs
 
