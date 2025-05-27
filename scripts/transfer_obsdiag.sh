@@ -57,12 +57,12 @@ echo $DATEm5
 # Change dates in php file
 sed '198s/var cyclist=\["'${DATE}'","'${DATEm1}'","'${DATEm2}'","'${DATEm3}'","'${DATEm4}'","'${DATEm5}'"\]/var cyclist=\["'${PDY}'","'${DATE}'","'${DATEm1}'","'${DATEm2}'","'${DATEm3}'","'${DATEm4}'"\]/' main19.php > tmpfile
 
-sed '182s/var cyc="'${YEAR}'\/'${MONTH}'\/'${DAY}'"/var cyc="'${yyyy}'\/'${mm}'\/'${dd}'"/' tmpfile > tmpfile2
-sed '183s/var cycm1="'${YEARm1}'\/'${MONTHm1}'\/'${DAYm1}'"/var cycm1="'${YEAR}'\/'${MONTH}'\/'${DAY}'"/' tmpfile2 > tmpfile3
-sed '184s/var cycm2="'${YEARm2}'\/'${MONTHm2}'\/'${DAYm2}'"/var cycm2="'${YEARm1}'\/'${MONTHm1}'\/'${DAYm1}'"/' tmpfile3 > tmpfile4
-sed '185s/var cycm3="'${YEARm3}'\/'${MONTHm3}'\/'${DAYm3}'"/var cycm3="'${YEARm2}'\/'${MONTHm2}'\/'${DAYm2}'"/' tmpfile4 > tmpfile5
-sed '186s/var cycm4="'${YEARm4}'\/'${MONTHm4}'\/'${DAYm4}'"/var cycm4="'${YEARm3}'\/'${MONTHm3}'\/'${DAYm3}'"/' tmpfile5 > tmpfile6
-sed '187s/var cycm5="'${YEARm5}'\/'${MONTHm5}'\/'${DAYm5}'"/var cycm5="'${YEARm4}'\/'${MONTHm4}'\/'${DAYm4}'"/' tmpfile6 > tmpfile7 ; mv tmpfile7 main19.php
+sed '183s/var cyc="'${YEAR}'\/'${MONTH}'\/'${DAY}'"/var cyc="'${yyyy}'\/'${mm}'\/'${dd}'"/' tmpfile > tmpfile2
+sed '184s/var cycm1="'${YEARm1}'\/'${MONTHm1}'\/'${DAYm1}'"/var cycm1="'${YEAR}'\/'${MONTH}'\/'${DAY}'"/' tmpfile2 > tmpfile3
+sed '185s/var cycm2="'${YEARm2}'\/'${MONTHm2}'\/'${DAYm2}'"/var cycm2="'${YEARm1}'\/'${MONTHm1}'\/'${DAYm1}'"/' tmpfile3 > tmpfile4
+sed '186s/var cycm3="'${YEARm3}'\/'${MONTHm3}'\/'${DAYm3}'"/var cycm3="'${YEARm2}'\/'${MONTHm2}'\/'${DAYm2}'"/' tmpfile4 > tmpfile5
+sed '187s/var cycm4="'${YEARm4}'\/'${MONTHm4}'\/'${DAYm4}'"/var cycm4="'${YEARm3}'\/'${MONTHm3}'\/'${DAYm3}'"/' tmpfile5 > tmpfile6
+sed '188s/var cycm5="'${YEARm5}'\/'${MONTHm5}'\/'${DAYm5}'"/var cycm5="'${YEARm4}'\/'${MONTHm4}'\/'${DAYm4}'"/' tmpfile6 > tmpfile7 ; mv tmpfile7 main19.php
 
 scp main19.php bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/users/emc.campara/rrfs
 
