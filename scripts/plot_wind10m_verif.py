@@ -226,30 +226,30 @@ def vars_figure(domain):
 
 # 10-m Winds
   if not plot_nodata_text[0]:
-      uwind_1a = data1a.select(shortName='UGRD',level='10 m above ground')[0].data
-      vwind_1a = data1a.select(shortName='VGRD',level='10 m above ground')[0].data
+      uwind_1a = data1a.select(shortName='UGRD',level='10 m above ground')[0].data * 1.94384
+      vwind_1a = data1a.select(shortName='VGRD',level='10 m above ground')[0].data * 1.94384
       wind_1a = np.sqrt(uwind_1a**2 + vwind_1a**2)
   if not plot_nodata_text[1]:
-      uwind_1b = data1b.select(shortName='UGRD',level='10 m above ground')[0].data
-      vwind_1b = data1b.select(shortName='VGRD',level='10 m above ground')[0].data
+      uwind_1b = data1b.select(shortName='UGRD',level='10 m above ground')[0].data * 1,94384
+      vwind_1b = data1b.select(shortName='VGRD',level='10 m above ground')[0].data * 1.94384
       wind_1b = np.sqrt(uwind_1b**2 + vwind_1b**2)
   if not plot_nodata_text[2]:
-      uwind_2 = data2.select(shortName='UGRD',level='10 m above ground')[0].data
-      vwind_2 = data2.select(shortName='VGRD',level='10 m above ground')[0].data
+      uwind_2 = data2.select(shortName='UGRD',level='10 m above ground')[0].data * 1.94384
+      vwind_2 = data2.select(shortName='VGRD',level='10 m above ground')[0].data * 1.94384
       wind_2 = np.sqrt(uwind_2**2 + vwind_2**2)
   if not plot_nodata_text[3]:
-      uwind_3 = data3.select(shortName='UGRD',level='10 m above ground')[0].data
-      vwind_3 = data3.select(shortName='VGRD',level='10 m above ground')[0].data
+      uwind_3 = data3.select(shortName='UGRD',level='10 m above ground')[0].data * 1.94384
+      vwind_3 = data3.select(shortName='VGRD',level='10 m above ground')[0].data * 1.94384
       wind_3 = np.sqrt(uwind_3**2 + vwind_3**2)
   if not plot_nodata_text[4]:
     # URMA
-      uwind_4a = data4a.select(shortName='UGRD',level='10 m above ground')[0].data
-      vwind_4a = data4a.select(shortName='VGRD',level='10 m above ground')[0].data
+      uwind_4a = data4a.select(shortName='UGRD',level='10 m above ground')[0].data * 1.94384
+      vwind_4a = data4a.select(shortName='VGRD',level='10 m above ground')[0].data * 1.94384
       wind_4a = np.sqrt(uwind_4a**2 + vwind_4a**2)
   if not plot_nodata_text[5]:
     # RTMA
-      uwind_4b = data4b.select(shortName='UGRD',level='10 m above ground')[0].data
-      vwind_4b = data4b.select(shortName='VGRD',level='10 m above ground')[0].data
+      uwind_4b = data4b.select(shortName='UGRD',level='10 m above ground')[0].data * 1.94384
+      vwind_4b = data4b.select(shortName='VGRD',level='10 m above ground')[0].data * 1.94384
       wind_4b = np.sqrt(uwind_4b**2 + vwind_4b**2)
 
 
