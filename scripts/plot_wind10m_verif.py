@@ -230,7 +230,7 @@ def vars_figure(domain):
       vwind_1a = data1a.select(shortName='VGRD',level='10 m above ground')[0].data * 1.94384
       wind_1a = np.sqrt(uwind_1a**2 + vwind_1a**2)
   if not plot_nodata_text[1]:
-      uwind_1b = data1b.select(shortName='UGRD',level='10 m above ground')[0].data * 1,94384
+      uwind_1b = data1b.select(shortName='UGRD',level='10 m above ground')[0].data * 1.94384
       vwind_1b = data1b.select(shortName='VGRD',level='10 m above ground')[0].data * 1.94384
       wind_1b = np.sqrt(uwind_1b**2 + vwind_1b**2)
   if not plot_nodata_text[2]:
