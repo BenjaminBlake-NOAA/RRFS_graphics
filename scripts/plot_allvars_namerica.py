@@ -284,7 +284,7 @@ def create_figure(domain):
   axes = [ax1]
 
   fline_wd = 0.5  # line width
-  fline_wd_lakes = 0.35  # line width
+  fline_wd_lakes = 0.25  # line width
   falpha = 0.5    # transparency
 
   # natural_earth
@@ -309,8 +309,9 @@ def create_figure(domain):
     img = plt.imread('/lfs/h2/emc/lam/noscrub/Benjamin.Blake/python/NaturalEarth/raster_files/NE1_50M_SR_W.tif')
     ax1.imshow(img, origin='upper', transform=myproj)
 
-  ax1.add_feature(cfeature.LAND, linewidth=0, facecolor='lightgray')
-#  ax1.add_feature(cfeature.OCEAN,linewidth=0)
+  ax1.add_feature(cfeature.LAND, linewidth=0, facecolor='white')
+  ax1.add_feature(cfeature.OCEAN,linewidth=0, facecolor='lightgray')
+  ax1.add_feature(cfeature.LAKES, edgecolor='black', linewidth=fline_wd_lakes, facecolor='lightgray',zorder=0)
   ax1.add_feature(lakes)
   ax1.add_feature(states)
   ax1.add_feature(coastlines)
