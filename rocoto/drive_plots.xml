@@ -6,7 +6,7 @@
  <!ENTITY COMnam "/lfs/h1/ops/prod/com/nam/v4.2">
  <!ENTITY COMhrrr "/lfs/h1/ops/prod/com/hrrr/v4.1">
  <!ENTITY COMhiresw "/lfs/h1/ops/prod/com/hiresw/v8.1">
- <!ENTITY COMrrfs "/lfs/h2/emc/ptmp/emc.lam/com/rrfs/v1.0">
+ <!ENTITY COMrrfs "/lfs/h1/ops/para/com/rrfs/v1.0">
  <!ENTITY COMevs "/lfs/h1/ops/prod/com/evs/v1.0/stats/cam">
  <!ENTITY COMpcpanl "/lfs/h1/ops/prod/com/pcpanl/v4.1">
  <!ENTITY COMrrfs_FW "/lfs/h2/emc/ptmp/emc.lam/com/rrfs/v1.0">

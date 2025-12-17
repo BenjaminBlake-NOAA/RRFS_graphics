@@ -3,7 +3,7 @@
 [
  <!ENTITY HOMEDIR "/lfs/h2/emc/lam/noscrub/Benjamin.Blake/rrfs_graphics">
  <!ENTITY LOG_DIR "/lfs/h2/emc/ptmp/Benjamin.Blake/logs_monitor">
- <!ENTITY COMrrfs "/lfs/h2/emc/ptmp/emc.lam/com/rrfs/v1.0">
+ <!ENTITY COMrrfs "/lfs/h1/ops/para/com/rrfs/v1.0">
 
  <!ENTITY USER "Benjamin.Blake">
  <!ENTITY ACCOUNT "RRFS-DEV">

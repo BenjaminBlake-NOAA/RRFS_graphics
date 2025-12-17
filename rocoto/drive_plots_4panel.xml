@@ -8,7 +8,7 @@
  <!ENTITY LOG_DIR "/lfs/h2/emc/ptmp/&USER;/logs_4panel_graphics">
  <!ENTITY COMnam "/lfs/h1/ops/prod/com/nam/v4.2">
  <!ENTITY COMhrrr "/lfs/h1/ops/prod/com/hrrr/v4.1"> 
- <!ENTITY COMrrfs "/lfs/h2/emc/ptmp/emc.lam/com/rrfs/v1.0">
+ <!ENTITY COMrrfs "/lfs/h1/ops/para/com/rrfs/v1.0">
  <!ENTITY COMrap "/lfs/h1/ops/prod/com/rap/v5.1"> 
  <!ENTITY COMrtma "/lfs/h1/ops/prod/com/rtma/v2.10"> 
  <!ENTITY COMurma "/lfs/h1/ops/prod/com/urma/v2.10"> 

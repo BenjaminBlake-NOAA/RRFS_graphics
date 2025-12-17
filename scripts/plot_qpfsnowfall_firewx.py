@@ -41,7 +41,7 @@ date_list = [dtime + datetime.timedelta(hours=x) for x in fhours]
 
 # Define the directory paths to the input files
 NAM_DIR = '/lfs/h1/ops/prod/com/nam/v4.2/nam.'+ymd
-RRFSFW_DIR = '/lfs/h2/emc/ptmp/emc.lam/com/rrfs/v1.0/firewx.'+ymd+'/'+cyc
+RRFSFW_DIR = '/lfs/h1/ops/para/com/rrfs/v1.0/firewx.'+ymd+'/'+cyc
 
 # Specify plotting domains
 domain='firewx'
