@@ -176,14 +176,14 @@ for j in range(len(date_list)):
     qpf_1 += (qpf-qpfm1)
     asnow = data1.select(shortName='WEASD')[1].data / 2.54
     asnowm1 = data1_m1.select(shortName='WEASD')[1].data /2.54
-    asnow_1 += asnow
+    asnow_1 += (asnow-asnowm1)
   elif (fhr > 3) and (fhr % 3 == 0):
     qpf = data1.select(shortName='APCP',timeRangeOfStatisticalProcess=3)[0].data * 0.0393701
     qpfm1 = data1_m1.select(shortName='APCP',timeRangeOfStatisticalProcess=2)[0].data * 0.0393701
     qpf_1 += (qpf-qpfm1)
     asnow = data1.select(shortName='WEASD')[1].data / 2.54
     asnowm1 = data1_m1.select(shortName='WEASD')[1].data /2.54
-    asnow_1 += asnow
+    asnow_1 += (asnow-asnowm1)
 #  qpf_2 = data2.select(shortName='APCP',timeRangeOfStatisticalProcess=fhr)[0].data * 0.0393701
   if (fhr == 1):
     qpf_2 = data2.select(shortName='APCP')[0].data * 0.0393701
