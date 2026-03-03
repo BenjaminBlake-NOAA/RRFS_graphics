@@ -29,7 +29,7 @@ mkdir -p /lfs/h2/emc/stmp/${USER}/cnvstat/${CDATE}
 cd /lfs/h2/emc/stmp/${USER}/cnvstat/${CDATE}
 
 # Retrieve diag_conv files
-cp ${COMrrfs}/rrfs.${PDY}/${cyc}/diag_conv_*${CDATE}.nc4.gz .
+cp ${COMrrfs}/rrfs.${PDY}/${cyc}/analysis/diag_conv_*${CDATE}.nc4.gz .
 gunzip diag*gz
 
 # Modify yaml files for the date of interest

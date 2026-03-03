@@ -48,14 +48,14 @@
 
     <dependency>
       <and>
-        <datadep age="10:00"><cyclestr>&COMrrfs;/rrfs.@Y@m@d/@H/diag_conv_ps_anl.@Y@m@d@H.nc4.gz</cyclestr></datadep>
-        <datadep age="10:00"><cyclestr>&COMrrfs;/rrfs.@Y@m@d/@H/diag_conv_ps_ges.@Y@m@d@H.nc4.gz</cyclestr></datadep>
-        <datadep age="10:00"><cyclestr>&COMrrfs;/rrfs.@Y@m@d/@H/diag_conv_q_anl.@Y@m@d@H.nc4.gz</cyclestr></datadep>
-        <datadep age="10:00"><cyclestr>&COMrrfs;/rrfs.@Y@m@d/@H/diag_conv_q_ges.@Y@m@d@H.nc4.gz</cyclestr></datadep>
-        <datadep age="10:00"><cyclestr>&COMrrfs;/rrfs.@Y@m@d/@H/diag_conv_t_anl.@Y@m@d@H.nc4.gz</cyclestr></datadep>
-        <datadep age="10:00"><cyclestr>&COMrrfs;/rrfs.@Y@m@d/@H/diag_conv_t_ges.@Y@m@d@H.nc4.gz</cyclestr></datadep>
-        <datadep age="10:00"><cyclestr>&COMrrfs;/rrfs.@Y@m@d/@H/diag_conv_uv_anl.@Y@m@d@H.nc4.gz</cyclestr></datadep>
-        <datadep age="10:00"><cyclestr>&COMrrfs;/rrfs.@Y@m@d/@H/diag_conv_uv_ges.@Y@m@d@H.nc4.gz</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr>&COMrrfs;/rrfs.@Y@m@d/@H/analysis/diag_conv_ps_anl.@Y@m@d@H.nc4.gz</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr>&COMrrfs;/rrfs.@Y@m@d/@H/analysis/diag_conv_ps_ges.@Y@m@d@H.nc4.gz</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr>&COMrrfs;/rrfs.@Y@m@d/@H/analysis/diag_conv_q_anl.@Y@m@d@H.nc4.gz</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr>&COMrrfs;/rrfs.@Y@m@d/@H/analysis/diag_conv_q_ges.@Y@m@d@H.nc4.gz</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr>&COMrrfs;/rrfs.@Y@m@d/@H/analysis/diag_conv_t_anl.@Y@m@d@H.nc4.gz</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr>&COMrrfs;/rrfs.@Y@m@d/@H/analysis/diag_conv_t_ges.@Y@m@d@H.nc4.gz</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr>&COMrrfs;/rrfs.@Y@m@d/@H/analysis/diag_conv_uv_anl.@Y@m@d@H.nc4.gz</cyclestr></datadep>
+        <datadep age="10:00"><cyclestr>&COMrrfs;/rrfs.@Y@m@d/@H/analysis/diag_conv_uv_ges.@Y@m@d@H.nc4.gz</cyclestr></datadep>
       </and>
     </dependency>
 
