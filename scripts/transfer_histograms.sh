@@ -7,7 +7,7 @@
 cd /lfs/h2/emc/stmp/${USER}/damonitor/${PDY}/${cyc}
 
 # Retrieve main7.php to update cycle dates
-scp bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/users/emc.campara/rrfs/main7.php .
+scp bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/regional/restricted/rrfs/main7.php .
 
 DATE=$(sed -n "191p" main7.php | cut -c 15-24)
 DATEm1=$(sed -n "191p" main7.php | cut -c 28-37)
@@ -60,41 +60,41 @@ echo $DATEm23
 
 sed '191s/var cyclist=\["'${DATE}'","'${DATEm1}'","'${DATEm2}'","'${DATEm3}'","'${DATEm4}'","'${DATEm5}'","'${DATEm6}'","'${DATEm7}'","'${DATEm8}'","'${DATEm9}'","'${DATEm10}'","'${DATEm11}'","'${DATEm12}'","'${DATEm13}'","'${DATEm14}'","'${DATEm15}'","'${DATEm16}'","'${DATEm17}'","'${DATEm18}'","'${DATEm19}'","'${DATEm20}'","'${DATEm21}'","'${DATEm22}'","'${DATEm23}'"\]/var cyclist=\["'${CDATE}'","'${DATE}'","'${DATEm1}'","'${DATEm2}'","'${DATEm3}'","'${DATEm4}'","'${DATEm5}'","'${DATEm6}'","'${DATEm7}'","'${DATEm8}'","'${DATEm9}'","'${DATEm10}'","'${DATEm11}'","'${DATEm12}'","'${DATEm13}'","'${DATEm14}'","'${DATEm15}'","'${DATEm16}'","'${DATEm17}'","'${DATEm18}'","'${DATEm19}'","'${DATEm20}'","'${DATEm21}'","'${DATEm22}'"\]/' main7.php > tmpfile ; mv tmpfile main7.php
 
-scp main7.php bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/users/emc.campara/rrfs
+scp main7.php bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/regional/restricted/rrfs
 
 
 # Move images into correct directories on emcrzdm
 # remove images from cycm23 directory
-ssh bblake@emcrzdm.ncep.noaa.gov "rm /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm23/*.png"
+ssh bblake@emcrzdm.ncep.noaa.gov "rm /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm23/*.png"
 
 # move cycm10 images to cycm11 directory, cycm9 to cycm10, etc.
-ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campara/rrfs/mnitor/cycm22/*.png /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm23/"
-ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm21/*.png /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm22/"
-ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm20/*.png /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm21/"
-ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm19/*.png /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm20/"
-ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm18/*.png /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm19/"
-ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm17/*.png /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm18/"
-ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm16/*.png /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm17/"
-ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm15/*.png /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm16/"
-ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm14/*.png /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm15/"
-ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm13/*.png /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm14/"
-ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm12/*.png /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm13/"
-ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm11/*.png /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm12/"
-ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm10/*.png /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm11/"
-ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm9/*.png /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm10/"
-ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm8/*.png /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm9/"
-ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm7/*.png /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm8/"
-ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm6/*.png /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm7/"
-ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm5/*.png /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm6/"
-ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm4/*.png /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm5/"
-ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm3/*.png /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm4/"
-ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm2/*.png /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm3/"
-ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm1/*.png /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm2/"
-ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cyc/*.png /home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cycm1/"
+ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/regional/restricted/rrfs/mnitor/cycm22/*.png /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm23/"
+ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm21/*.png /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm22/"
+ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm20/*.png /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm21/"
+ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm19/*.png /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm20/"
+ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm18/*.png /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm19/"
+ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm17/*.png /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm18/"
+ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm16/*.png /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm17/"
+ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm15/*.png /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm16/"
+ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm14/*.png /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm15/"
+ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm13/*.png /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm14/"
+ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm12/*.png /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm13/"
+ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm11/*.png /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm12/"
+ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm10/*.png /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm11/"
+ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm9/*.png /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm10/"
+ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm8/*.png /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm9/"
+ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm7/*.png /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm8/"
+ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm6/*.png /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm7/"
+ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm5/*.png /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm6/"
+ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm4/*.png /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm5/"
+ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm3/*.png /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm4/"
+ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm2/*.png /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm3/"
+ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm1/*.png /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm2/"
+ssh bblake@emcrzdm.ncep.noaa.gov "mv /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cyc/*.png /home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cycm1/"
 
 
 # Copy images from WCOSS to emcrzdm
-rsync -t RRFS*.png bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/users/emc.campara/rrfs/monitor/cyc/
+rsync -t RRFS*.png bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/regional/restricted/rrfs/monitor/cyc/
 
 
 exit

@@ -13,7 +13,7 @@ date
 cd /lfs/h2/emc/stmp/${USER}
 
 # Retrieve main19.php to update cycle dates
-scp bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/users/emc.campara/rrfs/main19.php .
+scp bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/regional/restricted/rrfs/main19.php .
 
 # Read in PDY, yyyy, mm, dd from Rocoto xml
 
@@ -64,7 +64,7 @@ sed '186s/var cycm3="'${YEARm3}'\/'${MONTHm3}'\/'${DAYm3}'"/var cycm3="'${YEARm2
 sed '187s/var cycm4="'${YEARm4}'\/'${MONTHm4}'\/'${DAYm4}'"/var cycm4="'${YEARm3}'\/'${MONTHm3}'\/'${DAYm3}'"/' tmpfile5 > tmpfile6
 sed '188s/var cycm5="'${YEARm5}'\/'${MONTHm5}'\/'${DAYm5}'"/var cycm5="'${YEARm4}'\/'${MONTHm4}'\/'${DAYm4}'"/' tmpfile6 > tmpfile7 ; mv tmpfile7 main19.php
 
-scp main19.php bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/users/emc.campara/rrfs
+scp main19.php bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/regional/restricted/rrfs
 
 
 date
