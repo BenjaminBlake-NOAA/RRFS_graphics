@@ -57,7 +57,7 @@ vtime_end = ymd
 HRRR_DIR = os.path.join(os.environ['COMhrrr'],'hrrr.'+ymd_model)
 NAM_DIR = os.path.join(os.environ['COMnam'],'nam.'+ymd_model)
 RRFS_DIR = os.path.join(
-    '/','lfs','h2','emc','ptmp',os.environ['USER'],'rrfs','na','prod',
+    '/','lfs','h1','ops','para','com','rrfs','v1.0',
     'rrfs.'+ymd_model, cyc_model
 )
 URMA_DIR = os.environ['COMurma']
@@ -154,7 +154,7 @@ def vars_figure(domain):
   fname1a = HRRR_DIR+f'/{dom1a_string2}/hrrr.t'+cyc_model+'z.wrfprsf'+fhour+f'.{dom1a_string}grib2'
   fname1b = NAM_DIR+'/nam.t'+cyc_model+f'z.{dom1b_string}'+fhour+'.tm00.grib2'
   fname2 = NAM_DIR+'/nam.t'+cyc_model+f'z.{dom2_string}nest.hiresf'+fhour+'.tm00.grib2'
-  fname3 = RRFS_DIR+'/rrfs.t'+cyc_model+f'z.prslev.{dom3_gridspacing}.f0'+fhour+f'.{dom3_string}.grib2'
+  fname3 = RRFS_DIR+'/rrfs.t'+cyc_model+f'z.2dfld.{dom3_gridspacing}.f0'+fhour+f'.{dom3_string}.grib2'
   if dom in ['puerto_rico']:
       fname4a = URMA_DIR+f'/prurma.{ymd}/{dom4a_string}.t{cyc}z.2dvaranl_ndfd.grb2_allflds'
       fname4b = RTMA_DIR+f'/prrtma.{ymd}/{dom4b_string}.t{cyc}z.2dvaranl_ndfd.grb2_allflds'
@@ -206,7 +206,7 @@ def vars_figure(domain):
       msg = data2.select(shortName='HGT', level='500 mb')[0]
       lat2,lon2,lat2_shift,lon2_shift = rrfs_plot_utils.get_latlons_pcolormesh(msg)
   if not plot_nodata_text[3]:
-      msg = data3.select(shortName='HGT', level='500 mb')[0]
+      msg = data3.select(shortName='HGT', level='surface')[0]
       lat3,lon3,lat3_shift,lon3_shift = rrfs_plot_utils.get_latlons_pcolormesh(msg)
   if not plot_nodata_text[4]:
       # URMA
@@ -442,7 +442,7 @@ def vars_figure(domain):
             ax1.text(.5,1.02,mod1_name,horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
             ax1.text(.5,0.95,itime+' '+cyc_model+'z cycle (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
             if use_mod1 == 'a' and plot_nodata_text[0]:
-              cs_1 = ax1.pcolormesh([[0]],[[0]],[[np.nan]],transform=transform,cmap=cm,vmin=5,norm=norm)
+              cs_1 = ax1.pcolormesh([[0]],[[0]],[[np.nan]],transform=transform,cmap=cm,norm=norm)
               ax1.text(
                   0.5, 0.5, 'Not Available', transform=ax1.transAxes, 
                   fontsize=12, color='black', 
@@ -452,7 +452,7 @@ def vars_figure(domain):
                   )
               )
             elif use_mod1 == 'b' and plot_nodata_text[1]:
-              cs_1 = ax1.pcolormesh([[0]],[[0]],[[np.nan]],transform=transform,cmap=cm,vmin=5,norm=norm)
+              cs_1 = ax1.pcolormesh([[0]],[[0]],[[np.nan]],transform=transform,cmap=cm,norm=norm)
               ax1.text(
                   0.5, 0.5, 'Not Available', transform=ax1.transAxes, 
                   fontsize=12, color='black', 
@@ -478,7 +478,7 @@ def vars_figure(domain):
             ax2.text(.5,1.02,'NAM Nest',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
             ax2.text(.5,0.95,itime+' '+cyc_model+'z cycle (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
             if plot_nodata_text[2]:
-              cs_2 = ax2.pcolormesh([[0]],[[0]],[[np.nan]],transform=transform,cmap=cm,vmin=5,norm=norm)
+              cs_2 = ax2.pcolormesh([[0]],[[0]],[[np.nan]],transform=transform,cmap=cm,norm=norm)
               ax2.text(
                   0.5, 0.5, 'Not Available', transform=ax2.transAxes, 
                   fontsize=12, color='black', 
@@ -488,7 +488,7 @@ def vars_figure(domain):
                   )
               )
             else:
-              cs_2 = ax2.pcolormesh(lon2_shift,lat2_shift,wind_2,transform=transform,cmap=cm,vmin=5,norm=norm)
+              cs_2 = ax2.pcolormesh(lon2_shift,lat2_shift,wind_2,transform=transform,cmap=cm,norm=norm)
               ax2.barbs(lon2_shift[::skip,::skip], lat2_shift[::skip,::skip], uwind_2[::skip,::skip], vwind_2[::skip,::skip], length=barblength, linewidth=0.5, color='black', transform=transform)
             cs_2.cmap.set_under('white')
             cs_2.cmap.set_over('black')
@@ -502,7 +502,7 @@ def vars_figure(domain):
             ax3.text(.5,0.95,itime+' '+cyc_model+'z cycle (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
             ax3.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
             if plot_nodata_text[3]:
-              cs_3 = ax3.pcolormesh([[0]],[[0]],[[np.nan]],transform=transform,cmap=cm,vmin=5,norm=norm)
+              cs_3 = ax3.pcolormesh([[0]],[[0]],[[np.nan]],transform=transform,cmap=cm,norm=norm)
               ax3.text(
                   0.5, 0.5, 'Not Available', transform=ax3.transAxes, 
                   fontsize=12, color='black', 
@@ -512,7 +512,7 @@ def vars_figure(domain):
                   )
               )
             else:
-              cs_3 = ax3.pcolormesh(lon3_shift,lat3_shift,wind_3,transform=transform,cmap=cm,vmin=5,norm=norm)
+              cs_3 = ax3.pcolormesh(lon3_shift,lat3_shift,wind_3,transform=transform,cmap=cm,norm=norm)
               ax3.barbs(lon3_shift[::skip,::skip], lat3_shift[::skip,::skip], uwind_3[::skip,::skip], vwind_3[::skip,::skip], length=barblength, linewidth=0.5, color='black', transform=transform)
             cs_3.cmap.set_under('white')
             cs_3.cmap.set_over('black')
@@ -525,7 +525,7 @@ def vars_figure(domain):
             ax4.text(.5,1.02,'URMA',horizontalalignment='center',fontsize=6,transform=ax4.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
             ax4.text(.5,0.95,vtime_end+f' {cyc}z',horizontalalignment='center',fontsize=6,transform=ax4.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
             if plot_nodata_text[4]:
-              cs_4 = ax4.pcolormesh([[0]],[[0]],[[np.nan]],transform=transform,cmap=cm,vmin=5,norm=norm)
+              cs_4 = ax4.pcolormesh([[0]],[[0]],[[np.nan]],transform=transform,cmap=cm,norm=norm)
               ax4.text(
                   0.5, 0.5, 'Not Available', transform=ax4.transAxes, 
                   fontsize=12, color='black', 
@@ -535,7 +535,7 @@ def vars_figure(domain):
                   )
               )
             else:
-              cs_4 = ax4.pcolormesh(lon4a_shift,lat4a_shift,wind_4a,transform=transform,cmap=cm,vmin=5,norm=norm)
+              cs_4 = ax4.pcolormesh(lon4a_shift,lat4a_shift,wind_4a,transform=transform,cmap=cm,norm=norm)
               ax4.barbs(lon4a_shift[::skip_4,::skip_4], lat4a_shift[::skip_4,::skip_4], uwind_4a[::skip_4,::skip_4], vwind_4a[::skip_4,::skip_4], length=barblength, linewidth=0.5, color='black', transform=transform)
             cs_4.cmap.set_under('white')
             cs_4.cmap.set_over('black')
@@ -554,7 +554,7 @@ def vars_figure(domain):
             ax4.text(.5,1.02,'RTMA',horizontalalignment='center',fontsize=6,transform=ax4.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
             ax4.text(.5,0.95,vtime_end+f' {cyc}z',horizontalalignment='center',fontsize=6,transform=ax4.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
             if plot_nodata_text[5]:
-              cs_4 = ax4.pcolormesh([[0]],[[0]],[[np.nan]],transform=transform,cmap=cm,vmin=5,norm=norm)
+              cs_4 = ax4.pcolormesh([[0]],[[0]],[[np.nan]],transform=transform,cmap=cm,norm=norm)
               ax4.text(
                   0.5, 0.5, 'Not Available', transform=ax4.transAxes, 
                   fontsize=12, color='black', 
@@ -564,7 +564,7 @@ def vars_figure(domain):
                   )
               )
             else:
-              cs_4 = ax4.pcolormesh(lon4b_shift,lat4b_shift,wind_4b,transform=transform,cmap=cm,vmin=5,norm=norm)
+              cs_4 = ax4.pcolormesh(lon4b_shift,lat4b_shift,wind_4b,transform=transform,cmap=cm,norm=norm)
               ax4.barbs(lon4b_shift[::skip_4,::skip_4], lat4b_shift[::skip_4,::skip_4], uwind_4b[::skip_4,::skip_4], vwind_4b[::skip_4,::skip_4], length=barblength, linewidth=0.5, color='black', transform=transform)
             cs_4.cmap.set_under('white')
             cs_4.cmap.set_over('black')

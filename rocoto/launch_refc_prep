@@ -12,19 +12,6 @@ PDY=`echo $CDATE | cut -c1-8`
 cyc=`echo $CDATE | cut -c9-10`
 set +x
 
-module load wgrib2/2.0.8_wmo
-mkdir -p /lfs/h2/emc/ptmp/${USER}/rrfs/na/prod/rrfs.${PDY}/${cyc}
-cd /lfs/h2/emc/ptmp/${USER}/rrfs/na/prod/rrfs.${PDY}/${cyc}
-echo $COMrrfs
-for dom in conus ak; do
-    if ! [ -f "/lfs/h2/emc/ptmp/${USER}/rrfs/na/prod/rrfs.${PDY}/${cyc}/rrfs.t${cyc}z.prslev.3km.f0${fhr}.${dom}.grib2" ] ; then
-        cp ${COMrrfs}/rrfs.${PDY}/${cyc}/rrfs.t${cyc}z.prslev.3km.f0${fhr}.${dom}.grib2 rrfs.t${cyc}z.prslev.3km.f0${fhr}.${dom}_bad.grib2
-        wgrib2 rrfs.t${cyc}z.prslev.3km.f0${fhr}.${dom}_bad.grib2 -match ave -not MASSDEN -grib rrfs_${dom}_piece1_f0${fhr}.grib2
-        wgrib2 rrfs.t${cyc}z.prslev.3km.f0${fhr}.${dom}_bad.grib2 -not ave -grib rrfs_${dom}_piece2_f0${fhr}.grib2
-        cat rrfs_${dom}_piece1_f0${fhr}.grib2 rrfs_${dom}_piece2_f0${fhr}.grib2 > rrfs.t${cyc}z.prslev.3km.f0${fhr}.${dom}.grib2
-    fi
-done
-
 echo "Running METplus prep (METplus env)"
 module reset
 module load prod_envir/2.0.6

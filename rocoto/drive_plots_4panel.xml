@@ -29,7 +29,7 @@
 
 <workflow realtime="T" scheduler="pbspro" cyclelifespan="00:12:00:00" cyclethrottle="2" taskthrottle="50">
 
-  <cycledef group="verif" activation_offset="04:00:00:00">202505101200 202512311800 06:00:00</cycledef>
+  <cycledef group="verif" activation_offset="04:00:00:00">202604161800 202607311800 06:00:00</cycledef>
  
   <log verbosity="10"><cyclestr>&LOG_DIR;/workflow_@Y@m@d@H.log</cyclestr></log> 
 
@@ -64,7 +64,7 @@
 
       <dependency>
         <and>
-          <datadep age="10:00"><cyclestr>&COMrrfs;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.3km.f0#fhr#.conus.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMrrfs;/rrfs.@Y@m@d/@H/rrfs.t@Hz.2dfld.3km.f0#fhr#.conus.grib2</cyclestr></datadep>
           <datadep age="10:00"><cyclestr>&COMccpa;/ccpa.@Y@m@d/@H/ccpa.t@Hz.06h.hrap.conus.gb2</cyclestr></datadep>
 
         </and>
@@ -96,7 +96,7 @@
         <and>
           <datadep age="10:00"><cyclestr>&COMhrrr;/hrrr.@Y@m@d/conus/hrrr.t@Hz.wrfprsf#fhr#.grib2</cyclestr></datadep>
           <datadep age="10:00"><cyclestr>&COMnam;/nam.@Y@m@d/nam.t@Hz.conusnest.hiresf#fhr#.tm00.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr>&COMrrfs;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.3km.f0#fhr#.conus.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMrrfs;/rrfs.@Y@m@d/@H/rrfs.t@Hz.2dfld.3km.f0#fhr#.conus.grib2</cyclestr></datadep>
         </and>
       </dependency>
 
@@ -157,7 +157,7 @@
         <and>
           <datadep age="10:00"><cyclestr>&COMhrrr;/hrrr.@Y@m@d/conus/hrrr.t@Hz.wrfprsf#fhr#.grib2</cyclestr></datadep>
           <datadep age="10:00"><cyclestr>&COMnam;/nam.@Y@m@d/nam.t@Hz.conusnest.hiresf#fhr#.tm00.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr>&COMrrfs;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.3km.f0#fhr#.conus.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMrrfs;/rrfs.@Y@m@d/@H/rrfs.t@Hz.2dfld.3km.f0#fhr#.conus.grib2</cyclestr></datadep>
         </and>
       </dependency>
 
@@ -190,7 +190,7 @@
         <and>
           <datadep age="10:00"><cyclestr>&COMhrrr;/hrrr.@Y@m@d/conus/hrrr.t@Hz.wrfprsf#fhr#.grib2</cyclestr></datadep>
           <datadep age="10:00"><cyclestr>&COMnam;/nam.@Y@m@d/nam.t@Hz.conusnest.hiresf#fhr#.tm00.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr>&COMrrfs;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.3km.f0#fhr#.conus.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMrrfs;/rrfs.@Y@m@d/@H/rrfs.t@Hz.2dfld.3km.f0#fhr#.conus.grib2</cyclestr></datadep>
         </and>
       </dependency>
 
@@ -223,7 +223,7 @@
         <and>
           <datadep age="10:00"><cyclestr>&COMhrrr;/hrrr.@Y@m@d/conus/hrrr.t@Hz.wrfprsf#fhr#.grib2</cyclestr></datadep>
           <datadep age="10:00"><cyclestr>&COMnam;/nam.@Y@m@d/nam.t@Hz.conusnest.hiresf#fhr#.tm00.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr>&COMrrfs;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.3km.f0#fhr#.conus.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMrrfs;/rrfs.@Y@m@d/@H/rrfs.t@Hz.2dfld.3km.f0#fhr#.conus.grib2</cyclestr></datadep>
         </and>
       </dependency>
 
@@ -257,7 +257,7 @@
         <and>
           <datadep age="10:00"><cyclestr>&COMhrrr;/hrrr.@Y@m@d/conus/hrrr.t@Hz.wrfprsf#fhr#.grib2</cyclestr></datadep>
           <datadep age="10:00"><cyclestr>&COMnam;/nam.@Y@m@d/nam.t@Hz.conusnest.hiresf#fhr#.tm00.grib2</cyclestr></datadep>
-          <datadep age="10:00"><cyclestr>&COMrrfs;/rrfs.@Y@m@d/@H/rrfs.t@Hz.prslev.3km.f0#fhr#.conus.grib2</cyclestr></datadep>
+          <datadep age="10:00"><cyclestr>&COMrrfs;/rrfs.@Y@m@d/@H/rrfs.t@Hz.2dfld.3km.f0#fhr#.conus.grib2</cyclestr></datadep>
         </and>
       </dependency>
 

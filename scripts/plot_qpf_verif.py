@@ -64,7 +64,7 @@ DCOMmrms = os.environ['DCOMmrms']
 HRRR_DIR = os.path.join(os.environ['COMhrrr'],'hrrr.'+ymd_model)
 NAM_DIR = os.path.join(os.environ['COMnam'],'nam.'+ymd_model)
 RRFS_DIR = os.path.join(
-    '/','lfs','h2','emc','ptmp','Benjamin.Blake','rrfs','na','prod',
+    '/','lfs','h1','ops','para','com','rrfs','v1.0',
     'rrfs.'+ymd_model, cyc_model
 )
 CCPA_DIR = os.path.join(STAGE_DIR)
@@ -192,11 +192,11 @@ def vars_figure(domain):
   fname2_21 = NAM_DIR+'/nam.t'+cyc_model+f'z.{dom2_string}nest.hiresf'+fhour_21+'.tm00.grib2'
   fname2_24 = NAM_DIR+'/nam.t'+cyc_model+f'z.{dom2_string}nest.hiresf'+fhour+'.tm00.grib2'
   if (dom3_string == 'hi') or (dom3_string == 'pr'):
-    fname3 = RRFS_DIR+'/rrfs.t'+cyc_model+'z.prslev.2p5km.f0'+fhour+f'.{dom3_string}.grib2'
-    fname3_fm24 = RRFS_DIR+'/rrfs.t'+cyc_model+'z.prslev.2p5km.f0'+fhourm24+f'.{dom3_string}.grib2'
+    fname3 = RRFS_DIR+'/rrfs.t'+cyc_model+'z.2dfld.2p5km.f0'+fhour+f'.{dom3_string}.grib2'
+    fname3_fm24 = RRFS_DIR+'/rrfs.t'+cyc_model+'z.2dfld.2p5km.f0'+fhourm24+f'.{dom3_string}.grib2'
   else:
-    fname3 = RRFS_DIR+'/rrfs.t'+cyc_model+'z.prslev.3km.f0'+fhour+f'.{dom3_string}.grib2'
-    fname3_fm24 = RRFS_DIR+'/rrfs.t'+cyc_model+'z.prslev.3km.f0'+fhourm24+f'.{dom3_string}.grib2'
+    fname3 = RRFS_DIR+'/rrfs.t'+cyc_model+'z.2dfld.3km.f0'+fhour+f'.{dom3_string}.grib2'
+    fname3_fm24 = RRFS_DIR+'/rrfs.t'+cyc_model+'z.2dfld.3km.f0'+fhourm24+f'.{dom3_string}.grib2'
   if use_ccpa:
       fname5 = CCPA_DIR+f'/ccpa.{ymd}/ccpa.t'+cyc+f'z.a24h.{dom5_string}.nc'
   else:
@@ -287,7 +287,7 @@ def vars_figure(domain):
     msg = data2_24.select(shortName='HGT', level='500 mb')[0]  # msg is a Grib2Message object
     lat2,lon2,lat2_shift,lon2_shift = rrfs_plot_utils.get_latlons_pcolormesh(msg)
   if not plot_nodata_text[3]:
-    msg = data3.select(shortName='HGT', level='500 mb')[0]  # msg is a Grib2Message object
+    msg = data3.select(shortName='HGT', level='surface')[0]  # msg is a Grib2Message object
     lat3,lon3,lat3_shift,lon3_shift = rrfs_plot_utils.get_latlons_pcolormesh(msg)
 # CCPA/MRMS
   if not plot_nodata_text[5]:
@@ -500,7 +500,7 @@ def vars_figure(domain):
               not_avail_text1a = "Not available\nat this forecast hour"
           else:
               not_avail_text1a = "Not Available"
-          cs_1 = ax1.pcolormesh([[0]],[[0]],[[np.nan]],transform=transform,cmap=cm,vmin=0.01,norm=norm)
+          cs_1 = ax1.pcolormesh([[0]],[[0]],[[np.nan]],transform=transform,cmap=cm,norm=norm)
           ax1.text(
               0.5, 0.5, not_avail_text1a, transform=ax1.transAxes, 
               fontsize=12, color='black',
@@ -510,7 +510,7 @@ def vars_figure(domain):
               )
           )
         elif use_mod1 == 'b' and plot_nodata_text[1]:
-          cs_1 = ax1.pcolormesh([[0]],[[0]],[[np.nan]],transform=transform,cmap=cm,vmin=0.01,norm=norm)
+          cs_1 = ax1.pcolormesh([[0]],[[0]],[[np.nan]],transform=transform,cmap=cm,norm=norm)
           ax1.text(
               0.5, 0.5, 'Not Available', transform=ax1.transAxes, 
               fontsize=12, color='black',
@@ -520,7 +520,7 @@ def vars_figure(domain):
               )
           )
         else:
-            cs_1 = ax1.pcolormesh(use_lon1_shift,use_lat1_shift,use_qpf1,transform=transform,cmap=cm,vmin=0.01,norm=norm)
+            cs_1 = ax1.pcolormesh(use_lon1_shift,use_lat1_shift,use_qpf1,transform=transform,cmap=cm,norm=norm)
         cs_1.cmap.set_under('white',alpha=0.)
         cs_1.cmap.set_over('pink')
         cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.85,ticks=[0.1,0.5,1,1.5,2,3,5,10,20],extend='max')
@@ -537,7 +537,7 @@ def vars_figure(domain):
               not_avail_text2 = "Not available\nat this forecast hour"
           else:
               not_avail_text2 = "Not Available"
-          cs_2 = ax2.pcolormesh([[0]],[[0]],[[np.nan]],transform=transform,cmap=cm,vmin=0.01,norm=norm)
+          cs_2 = ax2.pcolormesh([[0]],[[0]],[[np.nan]],transform=transform,cmap=cm,norm=norm)
           ax2.text(
               0.5, 0.5, not_avail_text2, transform=ax2.transAxes, 
               fontsize=12, color='black',
@@ -547,7 +547,7 @@ def vars_figure(domain):
               )
           )
         else:
-            cs_2 = ax2.pcolormesh(lon2_shift,lat2_shift,qpf_2,transform=transform,cmap=cm,vmin=0.01,norm=norm)
+            cs_2 = ax2.pcolormesh(lon2_shift,lat2_shift,qpf_2,transform=transform,cmap=cm,norm=norm)
         cs_2.cmap.set_under('white',alpha=0.)
         cs_2.cmap.set_over('pink')
         cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.85,ticks=[0.1,0.5,1,1.5,2,3,5,10,20],extend='max')
@@ -561,7 +561,7 @@ def vars_figure(domain):
         ax3.text(.5,0.95,itime+' '+cyc_model+'z cycle (f'+fhourm24+'-f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
         ax3.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
         if plot_nodata_text[3]:
-          cs_3 = ax3.pcolormesh([[0]],[[0]],[[np.nan]],transform=transform,cmap=cm,vmin=0.01,norm=norm)
+          cs_3 = ax3.pcolormesh([[0]],[[0]],[[np.nan]],transform=transform,cmap=cm,norm=norm)
           ax3.text(
               0.5, 0.5, 'Not Available', transform=ax3.transAxes, 
               fontsize=12, color='black',
@@ -571,7 +571,7 @@ def vars_figure(domain):
               )
           )
         else:
-            cs_3 = ax3.pcolormesh(lon3_shift,lat3_shift,qpf_3,transform=transform,cmap=cm,vmin=0.01,norm=norm)
+            cs_3 = ax3.pcolormesh(lon3_shift,lat3_shift,qpf_3,transform=transform,cmap=cm,norm=norm)
         cs_3.cmap.set_under('white',alpha=0.)
         cs_3.cmap.set_over('pink')
         cbar3 = fig.colorbar(cs_3,ax=ax3,orientation='horizontal',pad=0.01,shrink=0.85,ticks=[0.1,0.5,1,1.5,2,3,5,10,20],extend='max')
@@ -587,7 +587,7 @@ def vars_figure(domain):
           ax4.text(.5,1.02,'CCPA',horizontalalignment='center',fontsize=6,transform=ax4.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
         ax4.text(.5,0.95,vtime_start+f' {cyc}z - '+vtime_end+f' {cyc}z',horizontalalignment='center',fontsize=6,transform=ax4.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
         if plot_nodata_text[5]:
-          cs_4 = ax4.pcolormesh([[0]],[[0]],[[np.nan]],transform=transform,cmap=cm,vmin=0.01,norm=norm)
+          cs_4 = ax4.pcolormesh([[0]],[[0]],[[np.nan]],transform=transform,cmap=cm,norm=norm)
           ax4.text(
               0.5, 0.5, 'Not Available', transform=ax4.transAxes, 
               fontsize=12, color='black',
@@ -597,7 +597,7 @@ def vars_figure(domain):
               )
           )
         else:
-            cs_4 = ax4.pcolormesh(lon5,lat5,qpf_5,transform=transform,cmap=cm,vmin=0.01,norm=norm)
+            cs_4 = ax4.pcolormesh(lon5,lat5,qpf_5,transform=transform,cmap=cm,norm=norm)
         cs_4.cmap.set_under('white',alpha=0.)
         cs_4.cmap.set_over('pink')
         cbar4 = fig.colorbar(cs_4,ax=ax4,orientation='horizontal',pad=0.01,shrink=0.85,ticks=[0.1,0.5,1,1.5,2,3,5,10,20],extend='max')

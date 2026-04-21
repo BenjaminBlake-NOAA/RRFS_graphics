@@ -67,6 +67,22 @@ sed '188s/var cycm5="'${YEARm5}'\/'${MONTHm5}'\/'${DAYm5}'"/var cycm5="'${YEARm4
 scp main19.php bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/regional/restricted/rrfs
 
 
+# Retrieve main25.php to update cycle dates
+scp bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/regional/restricted/rrfs/main25.php .
+
+# Change dates in php file
+sed '154s/var cyclist=\["'${DATE}'","'${DATEm1}'","'${DATEm2}'","'${DATEm3}'","'${DATEm4}'","'${DATEm5}'"\]/var cyclist=\["'${PDY}'","'${DATE}'","'${DATEm1}'","'${DATEm2}'","'${DATEm3}'","'${DATEm4}'"\]/' main25.php > tmpfile
+
+sed '144s/var cyc="'${YEAR}'\/'${MONTH}'\/'${DAY}'"/var cyc="'${yyyy}'\/'${mm}'\/'${dd}'"/' tmpfile > tmpfile2
+sed '145s/var cycm1="'${YEARm1}'\/'${MONTHm1}'\/'${DAYm1}'"/var cycm1="'${YEAR}'\/'${MONTH}'\/'${DAY}'"/' tmpfile2 > tmpfile3
+sed '146s/var cycm2="'${YEARm2}'\/'${MONTHm2}'\/'${DAYm2}'"/var cycm2="'${YEARm1}'\/'${MONTHm1}'\/'${DAYm1}'"/' tmpfile3 > tmpfile4
+sed '147s/var cycm3="'${YEARm3}'\/'${MONTHm3}'\/'${DAYm3}'"/var cycm3="'${YEARm2}'\/'${MONTHm2}'\/'${DAYm2}'"/' tmpfile4 > tmpfile5
+sed '148s/var cycm4="'${YEARm4}'\/'${MONTHm4}'\/'${DAYm4}'"/var cycm4="'${YEARm3}'\/'${MONTHm3}'\/'${DAYm3}'"/' tmpfile5 > tmpfile6
+sed '149s/var cycm5="'${YEARm5}'\/'${MONTHm5}'\/'${DAYm5}'"/var cycm5="'${YEARm4}'\/'${MONTHm4}'\/'${DAYm4}'"/' tmpfile6 > tmpfile7 ; mv tmpfile7 main25.php
+
+scp main25.php bblake@emcrzdm.ncep.noaa.gov:/home/people/emc/www/htdocs/regional/restricted/rrfs
+
+
 date
 
 exit

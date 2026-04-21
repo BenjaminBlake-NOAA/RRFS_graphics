@@ -45,9 +45,8 @@ vtime = rrfs_plot_utils.ndate(itime,int(fhr))
 # Define the directory paths to the output files
 user = str(sys.argv[3])
 HRRR_DIR = '/lfs/h1/ops/prod/com/hrrr/v4.1/hrrr.'+ymd+'/conus'
-HRRR_AK_DIR = '/lfs/h2/emc/stmp/Benjamin.Blake/3panel_hrrr/'+ymd+'/'+cyc
-RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/na/prod/rrfs.'+ymd+'/'+cyc
-RRFS_DIR_2 = '/lfs/h2/emc/ptmp/Benjamin.Blake/rrfs/na/prod/rrfs.'+ymd+'/'+cyc
+HRRR_AK_DIR = '/lfs/h2/emc/ptmp/Benjamin.Blake/hrrr/hrrr.'+ymd+'/'+cyc+'/alaska'
+RRFS_DIR = '/lfs/h1/ops/para/com/rrfs/v1.0/rrfs.'+ymd+'/'+cyc
 
 # Specify plotting domains
 domset = str(sys.argv[4])
@@ -108,18 +107,22 @@ def vars_figure(domain):
     data1 = grib2io.open(HRRR_AK_DIR+'/hrrr.t'+cyc+'z.wrfprsf'+fhour+'.ak.grib2')
     data1nat = grib2io.open(HRRR_AK_DIR+'/hrrr.t'+cyc+'z.wrfnatf'+fhour+'.ak.grib2')
     data1sfc = grib2io.open(HRRR_AK_DIR+'/hrrr.t'+cyc+'z.wrfsfcf'+fhour+'.ak.grib2')
-    data2 = grib2io.open(RRFS_DIR_2+'/rrfs.t'+cyc+'z.prslev.3km.f0'+fhour+'.ak.grib2')
+    data2_prslev = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.3km.f0'+fhour+'.ak.grib2')
+    data2_fld2d = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.2dfld.3km.f0'+fhour+'.ak.grib2')
     if (fhr >= 1):
       data1_f00 = grib2io.open(HRRR_AK_DIR+'/hrrr.t'+cyc+'z.wrfprsf00.ak.grib2')
-      data2_f00 = grib2io.open(RRFS_DIR_2+'/rrfs.t'+cyc+'z.prslev.3km.f000.ak.grib2')
+      data2_f00_prslev = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.3km.f000.ak.grib2')
+      data2_f00_fld2d = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.2dfld.3km.f000.ak.grib2')
   else:
     data1 = grib2io.open(HRRR_DIR+'/hrrr.t'+cyc+'z.wrfprsf'+fhour+'.grib2')
     data1nat = grib2io.open(HRRR_DIR+'/hrrr.t'+cyc+'z.wrfnatf'+fhour+'.grib2')
     data1sfc = grib2io.open(HRRR_DIR+'/hrrr.t'+cyc+'z.wrfsfcf'+fhour+'.grib2')
-    data2 = grib2io.open(RRFS_DIR_2+'/rrfs.t'+cyc+'z.prslev.3km.f0'+fhour+'.conus.grib2')
+    data2_prslev = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.3km.f0'+fhour+'.conus.grib2')
+    data2_fld2d = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.2dfld.3km.f0'+fhour+'.conus.grib2')
     if (fhr >= 1):
       data1_f00 = grib2io.open(HRRR_DIR+'/hrrr.t'+cyc+'z.wrfprsf00.grib2')
-      data2_f00 = grib2io.open(RRFS_DIR_2+'/rrfs.t'+cyc+'z.prslev.3km.f000.conus.grib2')
+      data2_f00_prslev = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.3km.f000.conus.grib2')
+      data2_f00_fld2d = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.2dfld.3km.f000.conus.grib2')
 
 
 # Get the lats and lons
@@ -132,70 +135,70 @@ def vars_figure(domain):
 ###################################################
   t1a = time.perf_counter()
 
-  global slp_1,tmp2m_1,tmpsfc_1,dew2m_1,uwind_1,vwind_1,wspd10m_1,terra_1,gust_1,mucape_1,cape_1,mlcape_1,thetae_1,u850_1,v850_1,omg700_1,rh700_1,z500_1,vort500_1,u500_1,v500_1,u250_1,v250_1,wspd250_1,vis_1,zbase_1,zceil_1,ztop_1,pw_1,pofp_1,qpf_1,snow_1,snow0_1,asnow_1,clwmr_1,icmr_1,rwmr_1,snmr_1,tmphyb_1,swdown_1,swup_1,lwdown_1,lwup_1,gdhfx_1,lhfx_1,snhfx_1,hpbl_1,veg_1,hel3km_1,hel1km_1,ref1km_1,refc_1,uh25_1,uh03_1,maxuvv_1,maxdvv_1,maxref1km_1,maxwind_1,tcdc_1,retop_1,prate_1,smoke_1,colsmoke_1,rain1,fr1,pl1,sn1,mix1,pbase_1,ptop_1,tsoil_0_1,tsoil_001_1,tsoil_004_1,tsoil_01_1,tsoil_03_1,tsoil_06_1,tsoil_1_1,tsoil_16_1,tsoil_3_1,soilw_0_1,soilw_001_1,soilw_004_1,soilw_01_1,soilw_03_1,soilw_06_1,soilw_1_1,soilw_16_1,soilw_3_1,frzr_1,frozr_1
+  global slp_1,tmp2m_1,tmpsfc_1,dew2m_1,uwind_1,vwind_1,wspd10m_1,terra_1,gust_1,mucape_1,cape_1,mlcape_1,thetae_1,u850_1,v850_1,omg700_1,rh700_1,z500_1,vort500_1,u500_1,v500_1,u250_1,v250_1,wspd250_1,vis_1,zbase_1,zceil_1,ztop_1,pw_1,pofp_1,qpf_1,snow_1,snow0_1,asnow_1,swdown_1,swup_1,lwdown_1,lwup_1,gdhfx_1,lhfx_1,snhfx_1,hpbl_1,veg_1,hel3km_1,hel1km_1,ref1km_1,refc_1,uh25_1,uh03_1,maxuvv_1,maxdvv_1,maxref1km_1,maxwind_1,tcdc_1,retop_1,prate_1,smoke_1,colsmoke_1,rain1,fr1,pl1,sn1,mix1,pbase_1,ptop_1,tsoil_0_1,tsoil_001_1,tsoil_004_1,tsoil_01_1,tsoil_03_1,tsoil_06_1,tsoil_1_1,tsoil_16_1,tsoil_3_1,soilw_0_1,soilw_001_1,soilw_004_1,soilw_01_1,soilw_03_1,soilw_06_1,soilw_1_1,soilw_16_1,soilw_3_1,frzr_1,frozr_1
 
-  global slp_2,tmp2m_2,tmpsfc_2,dew2m_2,uwind_2,vwind_2,wspd10m_2,terra_2,gust_2,mucape_2,cape_2,mlcape_2,thetae_2,u850_2,v850_2,omg700_2,rh700_2,z500_2,vort500_2,u500_2,v500_2,u250_2,v250_2,wspd250_2,vis_2,zbase_2,zceil_2,ztop_2,pw_2,pofp_2,qpf_2,snow_2,snow0_2,asnow_2,clwmr_2,icmr_2,rwmr_2,snmr_2,refd_2,tmphyb_2,swdown_2,swup_2,lwdown_2,lwup_2,gdhfx_2,lhfx_2,snhfx_2,hpbl_2,veg_2,hel3km_2,hel1km_2,ref1km_2,refc_2,uh25_2,uh03_2,maxuvv_2,maxdvv_2,maxref1km_2,maxwind_2,tcdc_2,retop_2,prate_2,smoke_2,colsmoke_2,dust_2,coldust_2,rain2,fr2,pl2,sn2,mix2,pbase_2,ptop_2,tsoil_0_2,tsoil_001_2,tsoil_004_2,tsoil_01_2,tsoil_03_2,tsoil_06_2,tsoil_1_2,tsoil_16_2,tsoil_3_2,soilw_0_2,soilw_001_2,soilw_004_2,soilw_01_2,soilw_03_2,soilw_06_2,soilw_1_2,soilw_16_2,soilw_3_2,frzr_2,frozr_2,tsnowp_2
+  global slp_2,tmp2m_2,tmpsfc_2,dew2m_2,uwind_2,vwind_2,wspd10m_2,terra_2,gust_2,mucape_2,cape_2,mlcape_2,thetae_2,u850_2,v850_2,omg700_2,rh700_2,z500_2,vort500_2,u500_2,v500_2,u250_2,v250_2,wspd250_2,vis_2,zbase_2,zceil_2,ztop_2,pw_2,pofp_2,qpf_2,snow_2,snow0_2,asnow_2,swdown_2,swup_2,lwdown_2,lwup_2,gdhfx_2,lhfx_2,snhfx_2,hpbl_2,veg_2,hel3km_2,hel1km_2,ref1km_2,refc_2,uh25_2,uh03_2,maxuvv_2,maxdvv_2,maxref1km_2,maxwind_2,tcdc_2,retop_2,prate_2,smoke_2,colsmoke_2,dust_2,coldust_2,rain2,fr2,pl2,sn2,mix2,pbase_2,ptop_2,tsoil_0_2,tsoil_001_2,tsoil_004_2,tsoil_01_2,tsoil_03_2,tsoil_06_2,tsoil_1_2,tsoil_16_2,tsoil_3_2,soilw_0_2,soilw_001_2,soilw_004_2,soilw_01_2,soilw_03_2,soilw_06_2,soilw_1_2,soilw_16_2,soilw_3_2,frzr_2,frozr_2,tsnowp_2
 
-  global slp_dif,tmp2m_dif,tmpsfc_dif,dew2m_dif,wspd10m_dif,terra_dif,gust_dif,mucape_dif,cape_dif,mlcape_dif,thetae_dif,rh700_dif,z500_dif,vort500_dif,wspd250_dif,vis_dif,zbase_dif,zceil_dif,ztop_dif,pw_dif,pofp_dif,qpf_dif,snow_dif,snow0_dif,asnow_dif,clwmr_dif,icmr_dif,rwmr_dif,snmr_dif,swdown_dif,swup_dif,lwdown_dif,lwup_dif,gdhfx_dif,lhfx_dif,snhfx_dif,hpbl_dif,veg_dif,hel3km_dif,hel1km_dif,uh25_dif,uh03_dif,maxuvv_dif,maxdvv_dif,maxwind_dif,tcdc_dif,retop_dif,prate_dif,smoke_dif,colsmoke_dif,pbase_dif,ptop_dif,tsoil_0_dif,tsoil_001_dif,tsoil_004_dif,tsoil_01_dif,tsoil_03_dif,tsoil_06_dif,tsoil_1_dif,tsoil_16_dif,tsoil_3_dif,soilw_0_dif,soilw_001_dif,soilw_004_dif,soilw_01_dif,soilw_03_dif,soilw_06_dif,soilw_1_dif,soilw_16_dif,soilw_3_dif,frzr_dif,frozr_dif,ref1km_both,refc_both,maxref1km_both
+  global slp_dif,tmp2m_dif,tmpsfc_dif,dew2m_dif,wspd10m_dif,terra_dif,gust_dif,mucape_dif,cape_dif,mlcape_dif,thetae_dif,rh700_dif,z500_dif,vort500_dif,wspd250_dif,vis_dif,zbase_dif,zceil_dif,ztop_dif,pw_dif,pofp_dif,qpf_dif,snow_dif,snow0_dif,asnow_dif,swdown_dif,swup_dif,lwdown_dif,lwup_dif,gdhfx_dif,lhfx_dif,snhfx_dif,hpbl_dif,veg_dif,hel3km_dif,hel1km_dif,uh25_dif,uh03_dif,maxuvv_dif,maxdvv_dif,maxwind_dif,tcdc_dif,retop_dif,prate_dif,smoke_dif,colsmoke_dif,pbase_dif,ptop_dif,tsoil_0_dif,tsoil_001_dif,tsoil_004_dif,tsoil_01_dif,tsoil_03_dif,tsoil_06_dif,tsoil_1_dif,tsoil_16_dif,tsoil_3_dif,soilw_0_dif,soilw_001_dif,soilw_004_dif,soilw_01_dif,soilw_03_dif,soilw_06_dif,soilw_1_dif,soilw_16_dif,soilw_3_dif,frzr_dif,frozr_dif,ref1km_both,refc_both,maxref1km_both
 
 # Sea level pressure
   slp_1 = data1.select(shortName='MSLMA',level='mean sea level')[0].data * 0.01
-  slp_2 = data2.select(shortName='MSLET',level='mean sea level')[0].data * 0.01
+  slp_2 = data2_fld2d.select(shortName='MSLET',level='mean sea level')[0].data * 0.01
   slp_dif = slp_2 - slp_1
 
 # 2-m temperature
   tmp2m_1 = data1.select(shortName='TMP',level='2 m above ground')[0].data
   tmp2m_1 = (tmp2m_1 - 273.15)*1.8 + 32.0
-  tmp2m_2 = data2.select(shortName='TMP',level='2 m above ground')[0].data
+  tmp2m_2 = data2_fld2d.select(shortName='TMP',level='2 m above ground')[0].data
   tmp2m_2 = (tmp2m_2 - 273.15)*1.8 + 32.0
   tmp2m_dif = tmp2m_2 - tmp2m_1
 
 # Surface temperature
   tmpsfc_1 = data1.select(shortName='TMP',level='surface')[0].data
   tmpsfc_1 = (tmpsfc_1 - 273.15)*1.8 + 32.0
-  tmpsfc_2 = data2.select(shortName='TMP',level='surface')[0].data
+  tmpsfc_2 = data2_fld2d.select(shortName='TMP',level='surface')[0].data
   tmpsfc_2 = (tmpsfc_2 - 273.15)*1.8 + 32.0
   tmpsfc_dif = tmpsfc_2 - tmpsfc_1
 
 # 2-m dew point temperature
   dew2m_1 = data1.select(shortName='DPT',level='2 m above ground')[0].data
   dew2m_1 = (dew2m_1 - 273.15)*1.8 + 32.0
-  dew2m_2 = data2.select(shortName='DPT',level='2 m above ground')[0].data
+  dew2m_2 = data2_fld2d.select(shortName='DPT',level='2 m above ground')[0].data
   dew2m_2 = (dew2m_2 - 273.15)*1.8 + 32.0
   dew2m_dif = dew2m_2 - dew2m_1
 
 # 10-m wind speed
   uwind_1 = data1.select(shortName='UGRD',level='10 m above ground')[0].data * 1.94384
-  uwind_2 = data2.select(shortName='UGRD',level='10 m above ground')[0].data * 1.94384
+  uwind_2 = data2_fld2d.select(shortName='UGRD',level='10 m above ground')[0].data * 1.94384
   vwind_1 = data1.select(shortName='VGRD',level='10 m above ground')[0].data * 1.94384
-  vwind_2 = data2.select(shortName='VGRD',level='10 m above ground')[0].data * 1.94384
+  vwind_2 = data2_fld2d.select(shortName='VGRD',level='10 m above ground')[0].data * 1.94384
   wspd10m_1 = np.sqrt(uwind_1**2 + vwind_1**2)
   wspd10m_2 = np.sqrt(uwind_2**2 + vwind_2**2)
   wspd10m_dif = wspd10m_2 - wspd10m_1
 
 # Terrain height
   terra_1 = data1.select(shortName='HGT',level='surface')[0].data * 3.28084
-  terra_2 = data2.select(shortName='HGT',level='surface')[0].data * 3.28084
+  terra_2 = data2_fld2d.select(shortName='HGT',level='surface')[0].data * 3.28084
   terra_dif = terra_2 - terra_1
 
 # Surface wind gust
   gust_1 = data1.select(shortName='GUST',level='surface')[0].data * 1.94384
-  gust_2 = data2.select(shortName='GUST',level='surface')[0].data * 1.94384
+  gust_2 = data2_fld2d.select(shortName='GUST',level='surface')[0].data * 1.94384
   gust_dif = gust_2 - gust_1
 
 # Most unstable CAPE
   mucape_1 = data1.select(shortName='CAPE',level='180-0 mb above ground')[0].data
-  mucape_2 = data2.select(shortName='CAPE',level='180-0 mb above ground')[0].data
+  mucape_2 = data2_fld2d.select(shortName='CAPE',level='180-0 mb above ground')[0].data
   mucape_dif = mucape_2 - mucape_1
 
 # Surface-based CAPE
   cape_1 = data1.select(shortName='CAPE',level='surface')[0].data
-  cape_2 = data2.select(shortName='CAPE',level='surface')[0].data
+  cape_2 = data2_fld2d.select(shortName='CAPE',level='surface')[0].data
   cape_dif = cape_2 - cape_1
 
 # Mixed Layer CAPE
   mlcape_1 = data1.select(shortName='CAPE',level='90-0 mb above ground')[0].data
-  mlcape_2 = data2.select(shortName='CAPE',level='90-0 mb above ground')[0].data
+  mlcape_2 = data2_fld2d.select(shortName='CAPE',level='90-0 mb above ground')[0].data
   mlcape_dif = mlcape_2 - mlcape_1
 
 # 850-mb equivalent potential temperature
@@ -204,80 +207,80 @@ def vars_figure(domain):
   q850_1 = data1.select(shortName='SPFH',level='850 mb')[0].data
   tlcl_1 = 56.0 + (1.0/((1.0/(dpt850_1-56.0)) + 0.00125*np.log(t850_1/dpt850_1)))
   thetae_1 = t850_1*((1000.0/850.0)**(0.2854*(1.0-(0.28*q850_1))))*np.exp(((3376.0/tlcl_1)-2.54)*q850_1*(1.0+(0.81*q850_1)))
-  t850_2 = data2.select(shortName='TMP',level='850 mb')[0].data
-  dpt850_2 = data2.select(shortName='DPT',level='850 mb')[0].data
-  q850_2 = data2.select(shortName='SPFH',level='850 mb')[0].data
+  t850_2 = data2_prslev.select(shortName='TMP',level='850 mb')[0].data
+  dpt850_2 = data2_prslev.select(shortName='DPT',level='850 mb')[0].data
+  q850_2 = data2_prslev.select(shortName='SPFH',level='850 mb')[0].data
   tlcl_2 = 56.0 + (1.0/((1.0/(dpt850_2-56.0)) + 0.00125*np.log(t850_2/dpt850_2)))
   thetae_2 = t850_2*((1000.0/850.0)**(0.2854*(1.0-(0.28*q850_2))))*np.exp(((3376.0/tlcl_2)-2.54)*q850_2*(1.0+(0.81*q850_2)))
   thetae_dif = thetae_2 - thetae_1
 
 # 850-mb winds
   u850_1 = data1.select(shortName='UGRD',level='850 mb')[0].data * 1.94384
-  u850_2 = data2.select(shortName='UGRD',level='850 mb')[0].data * 1.94384
+  u850_2 = data2_prslev.select(shortName='UGRD',level='850 mb')[0].data * 1.94384
   v850_1 = data1.select(shortName='VGRD',level='850 mb')[0].data * 1.94384
-  v850_2 = data2.select(shortName='VGRD',level='850 mb')[0].data * 1.94384
+  v850_2 = data2_prslev.select(shortName='VGRD',level='850 mb')[0].data * 1.94384
 
 # 700-mb omega and relative humidity
   omg700_1 = data1.select(shortName='VVEL',level='700 mb')[0].data
 #  omg700_2 = data2.select(shortName='DZDT',level='700 mb')[0].data
   rh700_1 = data1.select(shortName='RH',level='700 mb')[0].data
-  rh700_2 = data2.select(shortName='RH',level='700 mb')[0].data
+  rh700_2 = data2_prslev.select(shortName='RH',level='700 mb')[0].data
   rh700_dif = rh700_2 - rh700_1
 
 # 500 mb height, wind, vorticity
   z500_1 = data1.select(shortName='HGT',level='500 mb')[0].data * 0.1
   z500_1 = ndimage.filters.gaussian_filter(z500_1, 6.89)
-  z500_2 = data2.select(shortName='HGT',level='500 mb')[0].data * 0.1
+  z500_2 = data2_prslev.select(shortName='HGT',level='500 mb')[0].data * 0.1
   z500_2 = ndimage.filters.gaussian_filter(z500_2, 6.89)
   z500_dif = z500_2 - z500_1
   vort500_1 = data1.select(shortName='ABSV',level='500 mb')[0].data * 100000
   vort500_1 = ndimage.filters.gaussian_filter(vort500_1,1.7225)
   vort500_1[vort500_1 > 1000] = 0 # Mask out undefined values on domain edge
-  vort500_2 = data2.select(shortName='ABSV',level='500 mb')[0].data * 100000
+  vort500_2 = data2_prslev.select(shortName='ABSV',level='500 mb')[0].data * 100000
   vort500_2 = ndimage.filters.gaussian_filter(vort500_2,1.7225)
   vort500_2[vort500_2 > 1000] = 0 # Mask out undefined values on domain edge
   u500_1 = data1.select(shortName='UGRD',level='500 mb')[0].data * 1.94384
-  u500_2 = data2.select(shortName='UGRD',level='500 mb')[0].data * 1.94384
+  u500_2 = data2_prslev.select(shortName='UGRD',level='500 mb')[0].data * 1.94384
   v500_1 = data1.select(shortName='VGRD',level='500 mb')[0].data * 1.94384
-  v500_2 = data2.select(shortName='VGRD',level='500 mb')[0].data * 1.94384
+  v500_2 = data2_prslev.select(shortName='VGRD',level='500 mb')[0].data * 1.94384
 
 # 250 mb winds
   u250_1 = data1.select(shortName='UGRD',level='250 mb')[0].data * 1.94384
-  u250_2 = data2.select(shortName='UGRD',level='250 mb')[0].data * 1.94384
+  u250_2 = data2_prslev.select(shortName='UGRD',level='250 mb')[0].data * 1.94384
   v250_1 = data1.select(shortName='VGRD',level='250 mb')[0].data * 1.94384
-  v250_2 = data2.select(shortName='VGRD',level='250 mb')[0].data * 1.94384
+  v250_2 = data2_prslev.select(shortName='VGRD',level='250 mb')[0].data * 1.94384
   wspd250_1 = np.sqrt(u250_1**2 + v250_1**2)
   wspd250_2 = np.sqrt(u250_2**2 + v250_2**2)
   wspd250_dif = wspd250_2 - wspd250_1
 
 # Visibility
   vis_1 = data1.select(shortName='VIS',level='surface')[0].data * 0.000621371
-  vis_2 = data2.select(shortName='VIS',level='surface')[0].data * 0.000621371
+  vis_2 = data2_fld2d.select(shortName='VIS',level='surface')[0].data * 0.000621371
   vis_dif = vis_2 - vis_1
 
 # Cloud Base Height
   zbase_1 = data1.select(shortName='HGT',level='cloud base')[0].data * (3.28084/1000)
-  zbase_2 = data2.select(shortName='HGT',level='cloud base')[0].data * (3.28084/1000)
+  zbase_2 = data2_fld2d.select(shortName='HGT',level='cloud base')[0].data * (3.28084/1000)
   zbase_dif = zbase_2 - zbase_1
 
 # Cloud Ceiling Height
   zceil_1 = data1.select(shortName='HGT',level='cloud ceiling')[0].data * (3.28084/1000)
-  zceil_2 = data2.select(shortName='HGT',level='cloud ceiling')[0].data * (3.28084/1000)
+  zceil_2 = data2_fld2d.select(shortName='HGT',level='cloud ceiling')[0].data * (3.28084/1000)
   zceil_dif = zceil_2 - zceil_1
 
 # Cloud Top Height
   ztop_1 = data1.select(shortName='HGT',level='cloud top')[0].data * (3.28084/1000)
-  ztop_2 = data2.select(shortName='HGT',level='cloud top')[0].data * (3.28084/1000)
+  ztop_2 = data2_fld2d.select(shortName='HGT',level='cloud top')[0].data * (3.28084/1000)
   ztop_dif = ztop_2 - ztop_1
 
 # Precipitable water
   pw_1 = data1.select(shortName='PWAT',level='entire atmosphere (considered as a single layer)')[0].data * 0.0393701
-  pw_2 = data2.select(shortName='PWAT',level='entire atmosphere (considered as a single layer)')[0].data * 0.0393701
+  pw_2 = data2_fld2d.select(shortName='PWAT',level='entire atmosphere (considered as a single layer)')[0].data * 0.0393701
   pw_dif = pw_2 - pw_1
 
 # Percent of frozen precipitation
   pofp_1 = data1.select(shortName='CPOFP')[0].data
-  pofp_2 = data2.select(shortName='CPOFP')[0].data
+  pofp_2 = data2_fld2d.select(shortName='CPOFP')[0].data
   pofp_1[pofp_1 < 0] = 0 # Mask out negative undefined values
   pofp_2[pofp_2 < 0] = 0 # Mask out negative undefined values
   pofp_dif = pofp_2 - pofp_1
@@ -286,110 +289,87 @@ def vars_figure(domain):
   if (fhr > 0):
     qpf_1 = data1.select(shortName='APCP',timeRangeOfStatisticalProcess=fhr)[0].data * 0.0393701
     if (fhr == 1):
-      qpf_2 = data2.select(shortName='APCP')[0].data * 0.0393701
+      qpf_2 = data2_fld2d.select(shortName='APCP')[0].data * 0.0393701
     else:
-      qpf_2 = data2.select(shortName='APCP')[1].data * 0.0393701
+      qpf_2 = data2_fld2d.select(shortName='APCP')[1].data * 0.0393701
     qpf_dif = qpf_2 - qpf_1
 
 # Snow depth
   snow_1 = data1.select(shortName='SNOD')[0].data * 39.3701
-  snow_2 = data2.select(shortName='SNOD')[0].data * 39.3701
+  snow_2 = data2_fld2d.select(shortName='SNOD')[0].data * 39.3701
   snow_dif = snow_2 - snow_1
 # Accumulated snow depth using SNOD
   if (fhr > 0):   # Do not make snow depth from f00 for forecast hour 0
     snowf00_1 = data1_f00.select(shortName='SNOD')[0].data * 39.3701
     snow0_1 = snow_1 - snowf00_1
-    snowf00_2 = data2_f00.select(shortName='SNOD')[0].data * 39.3701
+    snowf00_2 = data2_f00_fld2d.select(shortName='SNOD')[0].data * 39.3701
     snow0_2 = snow_2 - snowf00_2
     snow0_dif = snow0_2 - snow0_1
 
 # Snowfall
     asnow_1 = data1.select(shortName='ASNOW')[0].data * 39.3701
-    asnow_2 = data2.select(shortName='ASNOW')[0].data * 39.3701
+    asnow_2 = data2_fld2d.select(shortName='ASNOW')[0].data * 39.3701
     asnow_dif = asnow_2 - asnow_1
-
-# Hybrid level 1 fields
-  clwmr_1 = data1nat.select(shortName='CLMR',level='1 hybrid level')[0].data * 1000
-  clwmr_2 = data2.select(shortName='CLMR',level='1 hybrid level')[0].data * 1000
-  clwmr_dif = clwmr_2 - clwmr_1
-
-  icmr_1 = data1nat.select(shortName='CIMIXR',level='1 hybrid level')[0].data * 1000
-  icmr_2 = data2.select(shortName='ICMR',level='1 hybrid level')[0].data * 1000
-  icmr_dif = icmr_2 - icmr_1
-
-  rwmr_1 = data1nat.select(shortName='RWMR',level='1 hybrid level')[0].data * 1000
-  rwmr_2 = data2.select(shortName='RWMR',level='1 hybrid level')[0].data * 1000
-  rwmr_dif = rwmr_2 - rwmr_1
-
-  snmr_1 = data1nat.select(shortName='SNMR',level='1 hybrid level')[0].data * 1000
-  snmr_2 = data2.select(shortName='SNMR',level='1 hybrid level')[0].data * 1000
-  snmr_dif = snmr_2 - snmr_1
-
-  #refd_1 = data1.select(shortName='REFD',level='1 hybrid level')[0].data
-  refd_2 = data2.select(shortName='REFD',level='1 hybrid level')[0].data
-
-  tmphyb_1 = data1nat.select(shortName='TMP',level='1 hybrid level')[0].data - 273.15
-  tmphyb_2 = data2.select(shortName='TMP',level='1 hybrid level')[0].data - 273.15
 
 # Downward shortwave radiation
   swdown_1 = data1.select(shortName='DSWRF')[0].data
   if (fhr == 0):
-    swdown_2 = data2.select(shortName='DSWRF')[0].data
+    swdown_2 = data2_fld2d.select(shortName='DSWRF')[0].data
   else:
-    swdown_2 = data2.select(shortName='DSWRF')[1].data
+    swdown_2 = data2_fld2d.select(shortName='DSWRF')[1].data
   swdown_dif = swdown_2 - swdown_1
 
 # Upward shortwave radiation
   swup_1 = data1.select(shortName='USWRF')[0].data
   if (fhr == 0):
-    swup_2 = data2.select(shortName='USWRF')[0].data
+    swup_2 = data2_fld2d.select(shortName='USWRF')[0].data
   else:
-    swup_2 = data2.select(shortName='USWRF')[2].data
+    swup_2 = data2_fld2d.select(shortName='USWRF')[2].data
   swup_dif = swup_2 - swup_1
 
 # Downward longwave radiation
   lwdown_1 = data1.select(shortName='DLWRF')[0].data
   if (fhr == 0):
-    lwdown_2 = data2.select(shortName='DLWRF')[0].data
+    lwdown_2 = data2_fld2d.select(shortName='DLWRF')[0].data
   else:
-    lwdown_2 = data2.select(shortName='DLWRF')[1].data
+    lwdown_2 = data2_fld2d.select(shortName='DLWRF')[1].data
   lwdown_dif = lwdown_2 - lwdown_1
 
 # Upward longwave radiation
   lwup_1 = data1.select(shortName='ULWRF')[1].data
   if (fhr == 0):
-    lwup_2 = data2.select(shortName='ULWRF')[1].data
+    lwup_2 = data2_fld2d.select(shortName='ULWRF')[1].data
   else:
-    lwup_2 = data2.select(shortName='ULWRF')[3].data
+    lwup_2 = data2_fld2d.select(shortName='ULWRF')[3].data
   lwup_dif = lwup_2 - lwup_1
 
 # Ground heat flux
   gdhfx_1 = data1.select(shortName='GFLUX')[0].data
   if (fhr == 0):
-    gdhfx_2 = data2.select(shortName='GFLUX')[0].data
+    gdhfx_2 = data2_fld2d.select(shortName='GFLUX')[0].data
   else:
-    gdhfx_2 = data2.select(shortName='GFLUX')[1].data
+    gdhfx_2 = data2_fld2d.select(shortName='GFLUX')[1].data
   gdhfx_dif = gdhfx_2 - gdhfx_1
 
 # Latent heat flux
   lhfx_1 = data1.select(shortName='LHTFL')[0].data
   if (fhr == 0):
-    lhfx_2 = data2.select(shortName='LHTFL')[0].data
+    lhfx_2 = data2_fld2d.select(shortName='LHTFL')[0].data
   else:
-    lhfx_2 = data2.select(shortName='LHTFL')[1].data
+    lhfx_2 = data2_fld2d.select(shortName='LHTFL')[1].data
   lhfx_dif = lhfx_2 - lhfx_1
 
 # Sensible heat flux
   snhfx_1 = data1.select(shortName='SHTFL')[0].data
   if (fhr == 0):
-    snhfx_2 = data2.select(shortName='SHTFL')[0].data
+    snhfx_2 = data2_fld2d.select(shortName='SHTFL')[0].data
   else:
-    snhfx_2 = data2.select(shortName='SHTFL')[1].data
+    snhfx_2 = data2_fld2d.select(shortName='SHTFL')[1].data
   snhfx_dif = snhfx_2 - snhfx_1
 
 # PBL height
   hpbl_1 = data1.select(shortName='HPBL')[0].data
-  hpbl_2 = data2.select(shortName='HGT',level='planetary boundary layer')[0].data
+  hpbl_2 = data2_fld2d.select(shortName='HPBL')[0].data
   hpbl_dif = hpbl_2 - hpbl_1
 
 # Total column integrated liquid (cloud water + rain)
@@ -401,29 +381,29 @@ def vars_figure(domain):
 
 # Vegetation Fraction
   veg_1 = data1sfc.select(shortName='VEG')[0].data
-  veg_2 = data2.select(shortName='VEG')[0].data
+  veg_2 = data2_fld2d.select(shortName='VEG')[0].data
   veg_dif = veg_2 - veg_1
 
 # 0-3 km Storm Relative Helicity
   hel3km_1 = data1.select(shortName='HLCY',scaledValueOfFirstFixedSurface=3000)[0].data
-  hel3km_2 = data2.select(shortName='HLCY',scaledValueOfFirstFixedSurface=3000)[0].data
+  hel3km_2 = data2_fld2d.select(shortName='HLCY',scaledValueOfFirstFixedSurface=3000)[0].data
   hel3km_dif = hel3km_2 - hel3km_1
 
 # 0-1 km Storm Relative Helicity
   hel1km_1 = data1.select(shortName='HLCY',scaledValueOfFirstFixedSurface=1000)[0].data
-  hel1km_2 = data2.select(shortName='HLCY',scaledValueOfFirstFixedSurface=1000)[0].data
+  hel1km_2 = data2_fld2d.select(shortName='HLCY',scaledValueOfFirstFixedSurface=1000)[0].data
   hel1km_dif = hel1km_2 - hel1km_1
 
 # 1-km reflectivity
   ref1km_1 = data1.select(shortName='REFD',level='1000 m above ground')[0].data
-  ref1km_2 = data2.select(shortName='REFD',level='1000 m above ground')[0].data
+  ref1km_2 = data2_fld2d.select(shortName='REFD',level='1000 m above ground')[0].data
   ref1km_1b = np.where(ref1km_1 > 20, 1, 0)
   ref1km_2b = np.where(ref1km_2 > 20, 1, 0)
   ref1km_both = ref1km_1b + ref1km_2b
 
 # Composite reflectivity
   refc_1 = data1.select(shortName='REFC')[0].data
-  refc_2 = data2.select(shortName='REFC')[0].data
+  refc_2 = data2_fld2d.select(shortName='REFC')[0].data
   refc_1b = np.where(refc_1 > 20, 1, 0)
   refc_2b = np.where(refc_2 > 20, 1, 0)
   refc_both = refc_1b + refc_2b
@@ -431,9 +411,9 @@ def vars_figure(domain):
   if (fhr > 0):
 # Max/Min Hourly 2-5 km Updraft Helicity
     maxuh25_1 = data1.select(shortName='MXUPHL',level='5000-2000 m above ground')[0].data
-    maxuh25_2 = data2.select(shortName='MXUPHL',level='5000-2000 m above ground')[0].data
+    maxuh25_2 = data2_fld2d.select(shortName='MXUPHL',level='5000-2000 m above ground')[0].data
     minuh25_1 = data1.select(shortName='MNUPHL',level='5000-2000 m above ground')[0].data
-    minuh25_2 = data2.select(shortName='MNUPHL',level='5000-2000 m above ground')[0].data
+    minuh25_2 = data2_fld2d.select(shortName='MNUPHL',level='5000-2000 m above ground')[0].data
     maxuh25_1[maxuh25_1 < 10] = 0
     maxuh25_2[maxuh25_2 < 10] = 0
     minuh25_1[minuh25_1 > -10] = 0
@@ -444,9 +424,9 @@ def vars_figure(domain):
 
 # Max/Min Hourly 0-3 km Updraft Helicity
     maxuh03_1 = data1.select(shortName='MXUPHL',level='3000-0 m above ground')[0].data
-    maxuh03_2 = data2.select(shortName='MXUPHL',level='3000-0 m above ground')[0].data
+    maxuh03_2 = data2_fld2d.select(shortName='MXUPHL',level='3000-0 m above ground')[0].data
     minuh03_1 = data1.select(shortName='MNUPHL',level='3000-0 m above ground')[0].data
-    minuh03_2 = data2.select(shortName='MNUPHL',level='3000-0 m above ground')[0].data
+    minuh03_2 = data2_fld2d.select(shortName='MNUPHL',level='3000-0 m above ground')[0].data
     maxuh03_1[maxuh03_1 < 10] = 0
     maxuh03_2[maxuh03_2 < 10] = 0
     minuh03_1[minuh03_1 > -10] = 0
@@ -457,65 +437,65 @@ def vars_figure(domain):
 
 # Max Hourly Updraft Speed
     maxuvv_1 = data1.select(shortName='MAXUVV')[0].data
-    maxuvv_2 = data2.select(shortName='MAXUVV')[0].data
+    maxuvv_2 = data2_fld2d.select(shortName='MAXUVV')[0].data
     maxuvv_dif = maxuvv_2 - maxuvv_1
 
 # Max Hourly Downdraft Speed
     maxdvv_1 = data1.select(shortName='MAXDVV')[0].data * -1
-    maxdvv_2 = data2.select(shortName='MAXDVV')[0].data * -1
+    maxdvv_2 = data2_fld2d.select(shortName='MAXDVV')[0].data * -1
     maxdvv_dif = maxdvv_2 - maxdvv_1
 
 # Max Hourly 1-km AGL reflectivity
     maxref1km_1 = data1.select(shortName='MAXREF',level='1000 m above ground')[0].data
-    maxref1km_2 = data2.select(shortName='MAXREF',level='1000 m above ground')[0].data
+    maxref1km_2 = data2_fld2d.select(shortName='MAXREF',level='1000 m above ground')[0].data
     maxref1km_1b = np.where(maxref1km_1 > 20, 1, 0)
     maxref1km_2b = np.where(maxref1km_2 > 20, 1, 0)
     maxref1km_both = maxref1km_1b + maxref1km_2b
 
 # Max Hourly 10-m Wind
     maxwind_1 = data1.select(shortName='WIND')[0].data * 1.94384
-    maxwind_2 = data2.select(shortName='WIND')[0].data * 1.94384
+    maxwind_2 = data2_fld2d.select(shortName='WIND')[0].data * 1.94384
     maxwind_dif = maxwind_2 - maxwind_1
 
 # Total cloud cover
   tcdc_1 = data1.select(shortName='TCDC')[0].data
-  tcdc_2 = data2.select(shortName='TCDC',level='entire atmosphere (considered as a single layer)')[0].data
+  tcdc_2 = data2_fld2d.select(shortName='TCDC',level='entire atmosphere (considered as a single layer)')[0].data
   tcdc_dif = tcdc_2 - tcdc_1
 
 # Echo top height
   retop_1 = data1.select(shortName='RETOP')[0].data * (3.28084/1000)
-  retop_2 = data2.select(shortName='RETOP')[0].data * (3.28084/1000)
+  retop_2 = data2_fld2d.select(shortName='RETOP')[0].data * (3.28084/1000)
   retop_dif = retop_2 - retop_1
 
 # Precipitation rate
   prate_1 = data1.select(shortName='PRATE')[0].data * 3600
-  prate_2 = data2.select(shortName='PRATE')[0].data * 3600
+  prate_2 = data2_fld2d.select(shortName='PRATE')[0].data * 3600
   prate_dif = prate_2 - prate_1
 
 # 8-m mass density (near-surface smoke)
   smoke_1 = data1.select(shortName='MASSDEN',level='8 m above ground')[0].data * 1000000000
-  smoke_2 = data2.select(shortName='MASSDEN',level='8 m above ground')[0].data * 1000000000
+  smoke_2 = data2_fld2d.select(shortName='agl8_om_pm25_mr',level='8 m above ground')[0].data * 1000000000
   smoke_dif = smoke_2 - smoke_1
 
 # Total column integrated smoke
   colsmoke_1 = data1.select(shortName='COLMD',level='entire atmosphere (considered as a single layer)')[0].data * 1000000
-  colsmoke_2 = data2.select(shortName='COLMD',level='entire atmosphere (considered as a single layer)')[0].data * 1000000
+  colsmoke_2 = data2_fld2d.select(shortName='om_pm25_colmd',level='entire atmosphere (considered as a single layer)')[0].data * 1000000
   colsmoke_dif = colsmoke_2 - colsmoke_1
 
 # 8-m mass density (near-surface dust)
-  dust_2 = data2.select(shortName='MASSDEN',level='8 m above ground')[1].data * 1000000000
+  dust_2 = data2_fld2d.select(shortName='agl8_du_pm25_mr',level='8 m above ground')[0].data * 1000000000
   
 # Total column integrated dust
-  coldust_2 = data2.select(shortName='COLMD',level='entire atmosphere (considered as a single layer)')[1].data * 1000000
+  coldust_2 = data2_fld2d.select(shortName='du_pm25_colmd',level='entire atmosphere (considered as a single layer)')[1].data * 1000000
 
 # Cloud base pressure
   pbase_1 = data1.select(shortName='PRES',level='cloud base')[0].data * 0.01
-  pbase_2 = data2.select(shortName='PRES',level='cloud base')[0].data * 0.01
+  pbase_2 = data2_fld2d.select(shortName='PRES',level='cloud base')[0].data * 0.01
   pbase_dif = pbase_2 - pbase_1
 
 # Cloud top pressure
   ptop_1 = data1.select(shortName='PRES',level='cloud top')[0].data * 0.01
-  ptop_2 = data2.select(shortName='PRES',level='cloud top')[0].data * 0.01
+  ptop_2 = data2_fld2d.select(shortName='PRES',level='cloud top')[0].data * 0.01
   ptop_dif = ptop_2 - ptop_1
 
 # Precipitation type
@@ -524,10 +504,10 @@ def vars_figure(domain):
   pl1 = data1.select(shortName='CICEP')[0].data
   sn1 = data1.select(shortName='CSNOW')[0].data
 
-  rain2 = data2.select(shortName='CRAIN')[0].data
-  fr2 = data2.select(shortName='CFRZR')[0].data
-  pl2 = data2.select(shortName='CICEP')[0].data
-  sn2 = data2.select(shortName='CSNOW')[0].data
+  rain2 = data2_fld2d.select(shortName='CRAIN')[0].data
+  fr2 = data2_fld2d.select(shortName='CFRZR')[0].data
+  pl2 = data2_fld2d.select(shortName='CICEP')[0].data
+  sn2 = data2_fld2d.select(shortName='CSNOW')[0].data
 
   types1 = np.zeros(fr1.shape)
   types1[rain1==1]=types1[rain1==1]+1
@@ -572,92 +552,92 @@ def vars_figure(domain):
 # Soil temperature
 # 0 m below ground
   tsoil_0_1 = (data1.select(shortName='TSOIL',level='0-0 m underground')[0].data - 273.15)*1.8 + 32.0
-  tsoil_0_2 = (data2.select(shortName='TSOIL',level='0-0 m underground')[0].data - 273.15)*1.8 + 32.0
+  tsoil_0_2 = (data2_fld2d.select(shortName='TSOIL',level='0-0 m underground')[0].data - 273.15)*1.8 + 32.0
   tsoil_0_dif = tsoil_0_2 - tsoil_0_1
 # 0.01 m below ground
   tsoil_001_1 = (data1.select(shortName='TSOIL',level='0.01-0.01 m underground')[0].data - 273.15)*1.8 + 32.0
-  tsoil_001_2 = (data2.select(shortName='TSOIL',level='0.01-0.01 m underground')[0].data - 273.15)*1.8 + 32.0
+  tsoil_001_2 = (data2_fld2d.select(shortName='TSOIL',level='0.01-0.01 m underground')[0].data - 273.15)*1.8 + 32.0
   tsoil_001_dif = tsoil_001_2 - tsoil_001_1
 # 0.04 m below ground
   tsoil_004_1 = (data1.select(shortName='TSOIL',level='0.04-0.04 m underground')[0].data - 273.15)*1.8 + 32.0
-  tsoil_004_2 = (data2.select(shortName='TSOIL',level='0.04-0.04 m underground')[0].data - 273.15)*1.8 + 32.0
+  tsoil_004_2 = (data2_fld2d.select(shortName='TSOIL',level='0.04-0.04 m underground')[0].data - 273.15)*1.8 + 32.0
   tsoil_004_dif = tsoil_004_2 - tsoil_004_1
 # 0.1 m below ground
   tsoil_01_1 = (data1.select(shortName='TSOIL',level='0.1-0.1 m underground')[0].data - 273.15)*1.8 + 32.0
-  tsoil_01_2 = (data2.select(shortName='TSOIL',level='0.1-0.1 m underground')[0].data - 273.15)*1.8 + 32.0
+  tsoil_01_2 = (data2_fld2d.select(shortName='TSOIL',level='0.1-0.1 m underground')[0].data - 273.15)*1.8 + 32.0
   tsoil_01_dif = tsoil_01_2 - tsoil_01_1
 # 0.3 m below ground
   tsoil_03_1 = (data1.select(shortName='TSOIL',level='0.3-0.3 m underground')[0].data - 273.15)*1.8 + 32.0
-  tsoil_03_2 = (data2.select(shortName='TSOIL',level='0.3-0.3 m underground')[0].data - 273.15)*1.8 + 32.0
+  tsoil_03_2 = (data2_fld2d.select(shortName='TSOIL',level='0.3-0.3 m underground')[0].data - 273.15)*1.8 + 32.0
   tsoil_03_dif = tsoil_03_2 - tsoil_03_1
 # 0.6 m below ground
   tsoil_06_1 = (data1.select(shortName='TSOIL',level='0.6-0.6 m underground')[0].data - 273.15)*1.8 + 32.0
-  tsoil_06_2 = (data2.select(shortName='TSOIL',level='0.6-0.6 m underground')[0].data - 273.15)*1.8 + 32.0
+  tsoil_06_2 = (data2_fld2d.select(shortName='TSOIL',level='0.6-0.6 m underground')[0].data - 273.15)*1.8 + 32.0
   tsoil_06_dif = tsoil_06_2 - tsoil_06_1
 # 1 m below ground
   tsoil_1_1 = (data1.select(shortName='TSOIL',level='1-1 m underground')[0].data - 273.15)*1.8 + 32.0
-  tsoil_1_2 = (data2.select(shortName='TSOIL',level='1-1 m underground')[0].data - 273.15)*1.8 + 32.0
+  tsoil_1_2 = (data2_fld2d.select(shortName='TSOIL',level='1-1 m underground')[0].data - 273.15)*1.8 + 32.0
   tsoil_1_dif = tsoil_1_2 - tsoil_1_1
 # 1.6 m below ground
   tsoil_16_1 = (data1.select(shortName='TSOIL',level='1.6-1.6 m underground')[0].data - 273.15)*1.8 + 32.0
-  tsoil_16_2 = (data2.select(shortName='TSOIL',level='1.6-1.6 m underground')[0].data - 273.15)*1.8 + 32.0
+  tsoil_16_2 = (data2_fld2d.select(shortName='TSOIL',level='1.6-1.6 m underground')[0].data - 273.15)*1.8 + 32.0
   tsoil_16_dif = tsoil_16_2 - tsoil_16_1
 # 3 m below ground
   tsoil_3_1 = (data1.select(shortName='TSOIL',level='3-3 m underground')[0].data - 273.15)*1.8 + 32.0
-  tsoil_3_2 = (data2.select(shortName='TSOIL',level='3-3 m underground')[0].data - 273.15)*1.8 + 32.0
+  tsoil_3_2 = (data2_fld2d.select(shortName='TSOIL',level='3-3 m underground')[0].data - 273.15)*1.8 + 32.0
   tsoil_3_dif = tsoil_3_2 - tsoil_3_1
 
 # Soil moisture
 # 0 m below ground
   soilw_0_1 = data1.select(shortName='SOILW',level='0-0 m underground')[0].data
-  soilw_0_2 = data2.select(shortName='SOILW',level='0-0 m underground')[0].data
+  soilw_0_2 = data2_fld2d.select(shortName='SOILW',level='0-0 m underground')[0].data
   soilw_0_dif = soilw_0_2 - soilw_0_1
 # 0.01 m below ground
   soilw_001_1 = data1.select(shortName='SOILW',level='0.01-0.01 m underground')[0].data
-  soilw_001_2 = data2.select(shortName='SOILW',level='0.01-0.01 m underground')[0].data
+  soilw_001_2 = data2_fld2d.select(shortName='SOILW',level='0.01-0.01 m underground')[0].data
   soilw_001_dif = soilw_001_2 - soilw_001_1
 # 0.04 m below ground
   soilw_004_1 = data1.select(shortName='SOILW',level='0.04-0.04 m underground')[0].data
-  soilw_004_2 = data2.select(shortName='SOILW',level='0.04-0.04 m underground')[0].data
+  soilw_004_2 = data2_fld2d.select(shortName='SOILW',level='0.04-0.04 m underground')[0].data
   soilw_004_dif = soilw_004_2 - soilw_004_1
 # 0.1 m below ground
   soilw_01_1 = data1.select(shortName='SOILW',level='0.1-0.1 m underground')[0].data
-  soilw_01_2 = data2.select(shortName='SOILW',level='0.1-0.1 m underground')[0].data
+  soilw_01_2 = data2_fld2d.select(shortName='SOILW',level='0.1-0.1 m underground')[0].data
   soilw_01_dif = soilw_01_2 - soilw_01_1
 # 0.3 m below ground
   soilw_03_1 = data1.select(shortName='SOILW',level='0.3-0.3 m underground')[0].data
-  soilw_03_2 = data2.select(shortName='SOILW',level='0.3-0.3 m underground')[0].data
+  soilw_03_2 = data2_fld2d.select(shortName='SOILW',level='0.3-0.3 m underground')[0].data
   soilw_03_dif = soilw_03_2 - soilw_03_1
 # 0.6 m below ground
   soilw_06_1 = data1.select(shortName='SOILW',level='0.6-0.6 m underground')[0].data
-  soilw_06_2 = data2.select(shortName='SOILW',level='0.6-0.6 m underground')[0].data
+  soilw_06_2 = data2_fld2d.select(shortName='SOILW',level='0.6-0.6 m underground')[0].data
   soilw_06_dif = soilw_06_2 - soilw_06_1
 # 1 m below ground
   soilw_1_1 = data1.select(shortName='SOILW',level='1-1 m underground')[0].data
-  soilw_1_2 = data2.select(shortName='SOILW',level='1-1 m underground')[0].data
+  soilw_1_2 = data2_fld2d.select(shortName='SOILW',level='1-1 m underground')[0].data
   soilw_1_dif = soilw_1_2 - soilw_1_1
 # 1.6 m below ground
   soilw_16_1 = data1.select(shortName='SOILW',level='1.6-1.6 m underground')[0].data
-  soilw_16_2 = data2.select(shortName='SOILW',level='1.6-1.6 m underground')[0].data
+  soilw_16_2 = data2_fld2d.select(shortName='SOILW',level='1.6-1.6 m underground')[0].data
   soilw_16_dif = soilw_16_2 - soilw_16_1
 # 3 m below ground
   soilw_3_1 = data1.select(shortName='SOILW',level='3-3 m underground')[0].data
-  soilw_3_2 = data2.select(shortName='SOILW',level='3-3 m underground')[0].data
+  soilw_3_2 = data2_fld2d.select(shortName='SOILW',level='3-3 m underground')[0].data
   soilw_3_dif = soilw_3_2 - soilw_3_1
 
   if (fhr > 0):
 # Freezing Rain
     frzr_1 = data1.select(shortName='FRZR')[0].data * 0.0393701
-    frzr_2 = data2.select(shortName='FRZR')[0].data * 0.0393701
+    frzr_2 = data2_fld2d.select(shortName='FRZR')[0].data * 0.0393701
     frzr_dif = frzr_2 - frzr_1
 
 # Sleet
     frozr_1 = data1.select(shortName='FROZR')[0].data * 0.0393701
-    frozr_2 = data2.select(shortName='FROZR')[0].data * 0.0393701
+    frozr_2 = data2_fld2d.select(shortName='FROZR')[0].data * 0.0393701
     frozr_dif = frozr_2 - frozr_1
 
 # Total Snow Precipitation
-    tsnowp_2 = data2.select(shortName='TSNOWP')[0].data * 0.0393701
+    tsnowp_2 = data2_fld2d.select(shortName='TSNOWP')[0].data * 0.0393701
 
   t2a = time.perf_counter()
   t3a = round(t2a-t1a, 3)
@@ -825,7 +805,7 @@ def plot_set_1():
   rrfs_plot_utils.plt_highs_and_lows(lon_shift,lat_shift,slp_2,xmin,xmax,ymin,ymax,offset,ax2,transform,mode='reflect',window=400)
 
   ax2.text(.5,1.03,'RRFS SLP ('+units+') and 10-m Winds (kts) \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,slp_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -882,7 +862,7 @@ def plot_set_1():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=5)
   ax2.text(.5,1.03,'RRFS 2-m Temperature ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))       
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,tmp2m_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -929,7 +909,7 @@ def plot_set_1():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=5)
   ax2.text(.5,1.03,'RRFS Surface Temperature ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,tmpsfc_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -982,7 +962,7 @@ def plot_set_1():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS 2-m Dew Point Temperature ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,dew2m_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -1039,7 +1019,7 @@ def plot_set_1():
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
   normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N)
 
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,wspd10m_1,transform=transform,cmap=cm,vmin=5,norm=norm)
+  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,wspd10m_1,transform=transform,cmap=cm,norm=norm)
   cs_1.cmap.set_under('white',alpha=0.)
   cs_1.cmap.set_over('black')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,extend='max')
@@ -1049,7 +1029,7 @@ def plot_set_1():
   ax1.text(.5,1.03,'HRRR 10-m Winds ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
     
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,wspd10m_2,transform=transform,cmap=cm,vmin=5,norm=norm)
+  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,wspd10m_2,transform=transform,cmap=cm,norm=norm)
   cs_2.cmap.set_under('white',alpha=0.)
   cs_2.cmap.set_over('black')
   cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,extend='max')
@@ -1057,7 +1037,7 @@ def plot_set_1():
   cbar2.ax.tick_params(labelsize=6)
   ax2.barbs(lon_shift[::skip,::skip],lat_shift[::skip,::skip],uwind_2[::skip,::skip],vwind_2[::skip,::skip],length=barblength,linewidth=0.5,color='black',transform=transform)
   ax2.text(.5,1.03,'RRFS 10-m Winds ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,wspd10m_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -1096,7 +1076,7 @@ def plot_set_1():
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
   normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N)
 
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,terra_1,transform=transform,cmap=cm,vmin=1,norm=norm)
+  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,terra_1,transform=transform,cmap=cm,norm=norm)
   cs_1.cmap.set_under('white',alpha=0.)
   cs_1.cmap.set_over('ghostwhite')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,extend='max')
@@ -1106,7 +1086,7 @@ def plot_set_1():
   ax1.text(.5,1.03,'HRRR Terrain Height ('+units+') and 10-m Winds (kts) \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,terra_2,transform=transform,cmap=cm,vmin=1,norm=norm)
+  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,terra_2,transform=transform,cmap=cm,norm=norm)
   cs_2.cmap.set_under('white',alpha=0.)
   cs_2.cmap.set_over('ghostwhite')
   cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,extend='max')
@@ -1114,7 +1094,7 @@ def plot_set_1():
   cbar2.ax.tick_params(labelsize=5)
   ax2.barbs(lon_shift[::skip,::skip],lat_shift[::skip,::skip],uwind_2[::skip,::skip],vwind_2[::skip,::skip],length=barblength,linewidth=0.5,color='black',transform=transform)
   ax2.text(.5,1.03,'RRFS Terrain Height ('+units+') and 10-m Winds (kts) \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,terra_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -1169,7 +1149,7 @@ def plot_set_1():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.05,'RRFS Surface Wind Gust ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,gust_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -1209,7 +1189,7 @@ def plot_set_1():
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
   normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N)
 
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,mucape_1,transform=transform,cmap=cm,vmin=100,norm=norm)
+  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,mucape_1,transform=transform,cmap=cm,norm=norm)
   cs_1.cmap.set_under('white',alpha=0.)
   cs_1.cmap.set_over('black')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='max')
@@ -1219,7 +1199,7 @@ def plot_set_1():
   ax1.text(.5,1.05,'HRRR Most Unstable CAPE ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,mucape_2,transform=transform,cmap=cm,vmin=100,norm=norm)
+  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,mucape_2,transform=transform,cmap=cm,norm=norm)
   cs_2.cmap.set_under('white',alpha=0.)
   cs_2.cmap.set_over('black')
   cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='max')
@@ -1227,7 +1207,7 @@ def plot_set_1():
   cbar2.ax.tick_params(labelsize=4)
 #  cs_2b = ax2.contourf(lon_shift,lat_shift,mucin_2,clevs2,colors='none',hatches=['**','++','////','..'],transform=transform)
   ax2.text(.5,1.05,'RRFS Most Unstable CAPE ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,mucape_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -1258,7 +1238,7 @@ def plot_set_1():
   rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
   rrfs_plot_utils.clear_plotables(ax3,keep_ax_lst_3,fig)
 
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,cape_1,transform=transform,cmap=cm,vmin=100,norm=norm)
+  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,cape_1,transform=transform,cmap=cm,norm=norm)
   cs_1.cmap.set_under('white',alpha=0.)
   cs_1.cmap.set_over('black')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='max')
@@ -1268,7 +1248,7 @@ def plot_set_1():
   ax1.text(.5,1.05,'HRRR Surface-Based CAPE ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,cape_2,transform=transform,cmap=cm,vmin=100,norm=norm)
+  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,cape_2,transform=transform,cmap=cm,norm=norm)
   cs_2.cmap.set_under('white',alpha=0.)
   cs_2.cmap.set_over('black')
   cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,ticks=clevs,extend='max')
@@ -1276,7 +1256,7 @@ def plot_set_1():
   cbar2.ax.tick_params(labelsize=4)
 #  cs_2b = ax2.contourf(lon_shift,lat_shift,sfcin_2,clevs2,colors='none',hatches=['**','++','////','..'],transform=transform)
   ax2.text(.5,1.05,'RRFS Surface-Based CAPE ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,cape_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -1307,7 +1287,7 @@ def plot_set_1():
   rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
   rrfs_plot_utils.clear_plotables(ax3,keep_ax_lst_3,fig)
 
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,mlcape_1,transform=transform,cmap=cm,vmin=100,norm=norm)
+  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,mlcape_1,transform=transform,cmap=cm,norm=norm)
   cs_1.cmap.set_under('white',alpha=0.)
   cs_1.cmap.set_over('black')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='max')
@@ -1317,7 +1297,7 @@ def plot_set_1():
   ax1.text(.5,1.05,'HRRR Mixed Layer CAPE ('+units+') \n  initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,mlcape_2,transform=transform,cmap=cm,vmin=100,norm=norm)
+  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,mlcape_2,transform=transform,cmap=cm,norm=norm)
   cs_2.cmap.set_under('white',alpha=0.)
   cs_2.cmap.set_over('black')
   cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='max')
@@ -1325,7 +1305,7 @@ def plot_set_1():
   cbar2.ax.tick_params(labelsize=4)
 #  cs_2b = ax2.contourf(lon_shift,lat_shift,mlcin_2,clevs2,colors='none',hatches=['**','++','////','..'],transform=transform)
   ax2.text(.5,1.05,'RRFS Mixed Layer CAPE ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,mlcape_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -1401,7 +1381,7 @@ def plot_set_1():
   cbar2.ax.tick_params(labelsize=4)
   ax2.barbs(lon_shift[::skip,::skip],lat_shift[::skip,::skip],u850_2[::skip,::skip],v850_2[::skip,::skip],length=barblength,linewidth=0.5,color='black',transform=transform)
   ax2.text(.5,1.03,'RRFS 850 mb $\Theta$e ('+units+') and Winds (kts) \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
     
   cs = ax3.pcolormesh(lon_shift,lat_shift,thetae_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -1444,7 +1424,7 @@ def plot_set_1():
   normw = matplotlib.colors.BoundaryNorm(clevsw, cmw.N)
   normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N)
 
-  cs1_a = ax1.pcolormesh(lon_shift,lat_shift,rh700_1,transform=transform,cmap=cm,vmin=50,norm=norm)
+  cs1_a = ax1.pcolormesh(lon_shift,lat_shift,rh700_1,transform=transform,cmap=cm,norm=norm)
   cs1_a.cmap.set_under('white',alpha=0.)
   cbar1 = fig.colorbar(cs1_a,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs)
   cbar1.set_label(units,fontsize=6) 
@@ -1454,7 +1434,7 @@ def plot_set_1():
   ax1.text(.5,1.03,'HRRR 700 mb RH ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs2_a = ax2.pcolormesh(lon_shift,lat_shift,rh700_2,transform=transform,cmap=cm,vmin=50,norm=norm)
+  cs2_a = ax2.pcolormesh(lon_shift,lat_shift,rh700_2,transform=transform,cmap=cm,norm=norm)
   cs2_a.cmap.set_under('white',alpha=0.)
   cbar2 = fig.colorbar(cs2_a,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs)
   cbar2.set_label(units,fontsize=6) 
@@ -1462,7 +1442,7 @@ def plot_set_1():
 #  cs2_b = ax2.pcolormesh(lon_shift,lat_shift,omg700_2,transform=transform,cmap=cmw,vmax=-5,norm=normw)
 #  cs2_b.cmap.set_over('white',alpha=0.)
   ax2.text(.5,1.03,'RRFS 700 mb RH ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,rh700_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -1523,7 +1503,7 @@ def plot_set_1():
   cs2_b = ax2.contour(lon_shift,lat_shift,z500_2,np.arange(486,600,6),colors='black',linewidths=1,transform=transform)
   plt.clabel(cs2_b,np.arange(486,600,6),inline_spacing=1,fmt='%d',fontsize=5)
   ax2.text(.5,1.03,'RRFS 500 mb Heights (dam), Winds (kts), and $\zeta$ ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,z500_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -1562,7 +1542,7 @@ def plot_set_1():
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
   normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N)
 
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,wspd250_1,transform=transform,cmap=cm,vmin=50,norm=norm)
+  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,wspd250_1,transform=transform,cmap=cm,norm=norm)
   cs_1.cmap.set_under('white',alpha=0.)
   cs_1.cmap.set_over('red')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,extend='max')
@@ -1572,7 +1552,7 @@ def plot_set_1():
   ax1.text(.5,1.03,'HRRR 250 mb Winds ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,wspd250_2,transform=transform,cmap=cm,vmin=50,norm=norm)
+  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,wspd250_2,transform=transform,cmap=cm,norm=norm)
   cs_2.cmap.set_under('white',alpha=0.)
   cs_2.cmap.set_over('red')
   cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,extend='max')
@@ -1580,7 +1560,7 @@ def plot_set_1():
   cbar2.ax.tick_params(labelsize=6)
   ax2.barbs(lon_shift[::skip,::skip],lat_shift[::skip,::skip],u250_2[::skip,::skip],v250_2[::skip,::skip],length=barblength,linewidth=0.5,color='black',transform=transform)
   ax2.text(.5,1.03,'RRFS 250 mb Winds ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,wspd250_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -1619,7 +1599,7 @@ def plot_set_1():
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
   normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N)
 
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,vis_1,transform=transform,cmap=cm,vmax=10,norm=norm)
+  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,vis_1,transform=transform,cmap=cm,norm=norm)
   cs_1.cmap.set_under('firebrick')
   cs_1.cmap.set_over('white',alpha=0.)
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='min')
@@ -1629,7 +1609,7 @@ def plot_set_1():
   ax1.text(.5,1.03,'HRRR Surface Visibility ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,vis_2,transform=transform,cmap=cm,vmax=10,norm=norm)
+  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,vis_2,transform=transform,cmap=cm,norm=norm)
   cs_2.cmap.set_under('firebrick')
   cs_2.cmap.set_over('white',alpha=0.)
   cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='min')
@@ -1637,7 +1617,7 @@ def plot_set_1():
   cbar2.ax.set_xticklabels(clevs)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS Surface Visibility ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,vis_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -1676,7 +1656,7 @@ def plot_set_1():
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
   normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N)
 
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,zbase_1,transform=transform,cmap=cm,vmin=0,norm=norm)
+  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,zbase_1,transform=transform,cmap=cm,norm=norm)
   cs_1.cmap.set_under('white',alpha=0.)
   cs_1.cmap.set_over('darkgreen')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='max')
@@ -1686,7 +1666,7 @@ def plot_set_1():
   ax1.text(.5,1.03,'HRRR Cloud Base Height ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,zbase_2,transform=transform,cmap=cm,vmin=0,norm=norm)
+  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,zbase_2,transform=transform,cmap=cm,norm=norm)
   cs_2.cmap.set_under('white',alpha=0.)
   cs_2.cmap.set_over('darkgreen')
   cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='max')
@@ -1694,7 +1674,7 @@ def plot_set_1():
   cbar2.ax.set_xticklabels(clevs)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS Cloud Base Height ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,zbase_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -1749,7 +1729,7 @@ def plot_set_1():
   cbar2.ax.set_xticklabels(clevs)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS Cloud Ceiling Height ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,zceil_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -1788,7 +1768,7 @@ def plot_set_1():
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
   normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N)
 
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,ztop_1,transform=transform,cmap=cm,vmin=0,norm=norm)
+  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,ztop_1,transform=transform,cmap=cm,norm=norm)
   cs_1.cmap.set_under('white',alpha=0.)
   cs_1.cmap.set_over('darkgreen')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='max')
@@ -1797,14 +1777,14 @@ def plot_set_1():
   ax1.text(.5,1.03,'HRRR Cloud Top Height ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,ztop_2,transform=transform,cmap=cm,vmin=0,norm=norm)
+  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,ztop_2,transform=transform,cmap=cm,norm=norm)
   cs_2.cmap.set_under('white',alpha=0.)
   cs_2.cmap.set_over('darkgreen')
   cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='max')
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS Cloud Top Height ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,ztop_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -1859,7 +1839,7 @@ def plot_set_1():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=5)
   ax2.text(.5,1.03,'RRFS Precipitable Water ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,pw_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -1898,7 +1878,7 @@ def plot_set_1():
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
   normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N)
 
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,pofp_1,transform=transform,cmap=cm,vmin=10,norm=norm)
+  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,pofp_1,transform=transform,cmap=cm,norm=norm)
   cs_1.cmap.set_under('white',alpha=0.)
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs)
   cbar1.set_label(units,fontsize=6)
@@ -1906,13 +1886,13 @@ def plot_set_1():
   ax1.text(.5,1.03,'HRRR Percent of Frozen Precipitation ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,pofp_2,transform=transform,cmap=cm,vmin=10,norm=norm)
+  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,pofp_2,transform=transform,cmap=cm,norm=norm)
   cs_2.cmap.set_under('white',alpha=0.)
   cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs)
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS Percent of Frozen Precipitation ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,pofp_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -1952,7 +1932,7 @@ def plot_set_1():
     norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
     normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N)
    
-    cs_1 = ax1.pcolormesh(lon_shift,lat_shift,qpf_1,transform=transform,cmap=cm,vmin=0.01,norm=norm)
+    cs_1 = ax1.pcolormesh(lon_shift,lat_shift,qpf_1,transform=transform,cmap=cm,norm=norm)
     cs_1.cmap.set_under('white',alpha=0.)
     cs_1.cmap.set_over('pink')
     cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,ticks=[0.1,0.5,1,1.5,2,3,5,10,20],extend='max')
@@ -1962,7 +1942,7 @@ def plot_set_1():
     ax1.text(.5,1.03,'HRRR '+fhour+'-hr Accumulated Precipitation ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-    cs_2 = ax2.pcolormesh(lon_shift,lat_shift,qpf_2,transform=transform,cmap=cm,vmin=0.01,norm=norm)
+    cs_2 = ax2.pcolormesh(lon_shift,lat_shift,qpf_2,transform=transform,cmap=cm,norm=norm)
     cs_2.cmap.set_under('white',alpha=0.)
     cs_2.cmap.set_over('pink')
     cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=1.0,ticks=[0.1,0.5,1,1.5,2,3,5,10,20],extend='max')
@@ -1970,7 +1950,7 @@ def plot_set_1():
     cbar2.ax.set_xticklabels([0.1,0.5,1,1.5,2,3,5,10,20])
     cbar2.ax.tick_params(labelsize=6)
     ax2.text(.5,1.03,'RRFS '+fhour+'-hr Accumulated Precipitation ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-    ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
     cs = ax3.pcolormesh(lon_shift,lat_shift,qpf_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -2066,7 +2046,7 @@ def plot_set_1():
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N) 
   normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N) 
  
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,snow_1,transform=transform,cmap=cm,vmin=0.5,norm=norm)
+  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,snow_1,transform=transform,cmap=cm,norm=norm)
   cs_1.cmap.set_under('white',alpha=0.)
   cs_1.cmap.set_over('#CA7AF5')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='max')
@@ -2076,7 +2056,7 @@ def plot_set_1():
   ax1.text(.5,1.03,'HRRR Snow Depth ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,snow_2,transform=transform,cmap=cm,vmin=0.5,norm=norm)
+  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,snow_2,transform=transform,cmap=cm,norm=norm)
   cs_2.cmap.set_under('white')
   cs_2.cmap.set_over('#CA7AF5')
   cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='max')
@@ -2084,7 +2064,7 @@ def plot_set_1():
   cbar2.ax.set_xticklabels(clevs)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS Snow Depth ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,snow_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -2142,7 +2122,7 @@ def plot_set_1():
     cbar2.ax.set_xticklabels(clevs)
     cbar2.ax.tick_params(labelsize=5)
     ax2.text(.5,1.03,'RRFS Accumulated Snow Depth ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-    ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
     cs = ax3.pcolormesh(lon_shift,lat_shift,snow0_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -2181,7 +2161,7 @@ def plot_set_1():
     norm = matplotlib.colors.BoundaryNorm(clevs, cm.N) 
     normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N) 
  
-    cs_1 = ax1.pcolormesh(lon_shift,lat_shift,asnow_1,transform=transform,cmap=cm,vmin=0.5,norm=norm)
+    cs_1 = ax1.pcolormesh(lon_shift,lat_shift,asnow_1,transform=transform,cmap=cm,norm=norm)
     cs_1.cmap.set_under('white',alpha=0.)
     cs_1.cmap.set_over('#CA7AF5')
     cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='max')
@@ -2191,7 +2171,7 @@ def plot_set_1():
     ax1.text(.5,1.03,'HRRR Snowfall (variable density) ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-    cs_2 = ax2.pcolormesh(lon_shift,lat_shift,asnow_2,transform=transform,cmap=cm,vmin=0.5,norm=norm)
+    cs_2 = ax2.pcolormesh(lon_shift,lat_shift,asnow_2,transform=transform,cmap=cm,norm=norm)
     cs_2.cmap.set_under('white')
     cs_2.cmap.set_over('#CA7AF5')
     cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='both')
@@ -2199,7 +2179,7 @@ def plot_set_1():
     cbar2.ax.set_xticklabels(clevs)
     cbar2.ax.tick_params(labelsize=6)
     ax2.text(.5,1.03,'RRFS Snowfall (variable density) ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-    ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
     cs = ax3.pcolormesh(lon_shift,lat_shift,asnow_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -2233,243 +2213,10 @@ def plot_set_2():
   ymax = int(round(ymax))
 
 #################################
-  # Plot lowest model level cloud water
-#################################
-  t1 = time.perf_counter()
-  print(('Working on lowest model level cloud water for '+dom))
-
-  units = 'g/kg'
-  clevs = [0.01,0.025,0.05,0.075,0.1,0.25,0.5,0.75,1,2]
-  clevsref = [20,1000]
-  clevsdif = [-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0,0.1,0.2,0.3,0.4,0.5,0.6]
-  colorlist = ['blue','dodgerblue','deepskyblue','mediumspringgreen','khaki','sandybrown','salmon','crimson','maroon']
-  colorsref = ['Grey']
-  cm = matplotlib.colors.ListedColormap(colorlist)
-  cmref = matplotlib.colors.ListedColormap(colorsref)
-  cmdif = matplotlib.colors.ListedColormap(difcolors)
-  norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
-  normref = matplotlib.colors.BoundaryNorm(clevsref, cmref.N)
-  normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N)
-
-#  csref_1 = ax1.pcolormesh(lon_shift,lat_shift,refd_1,transform=transform,cmap=cmref,vmin=20,norm=normref)
-#  csref_1.cmap.set_under('white')
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,clwmr_1,transform=transform,cmap=cm,vmin=0.01,norm=norm)
-  cs_1.cmap.set_under('white',alpha=0.)
-  cs_1.cmap.set_over('hotpink')
-  cstmp_1 = ax1.contour(lon_shift,lat_shift,tmphyb_1,[0],colors='red',linewidths=0.5,transform=transform)
-  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='max')
-  cbar1.set_label(units,fontsize=6)
-  cbar1.ax.set_xticklabels(clevs)
-  cbar1.ax.tick_params(labelsize=5)
-  ax1.text(.5,1.03,'HRRR Lowest Mdl Lvl Cld Water ('+units+'), 0''\xb0''C line (red) \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=5,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
-
-  csref_2 = ax2.pcolormesh(lon_shift,lat_shift,refd_2,transform=transform,cmap=cmref,vmin=20,norm=normref)
-  csref_2.cmap.set_under('white')
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,clwmr_2,transform=transform,cmap=cm,vmin=0.01,norm=norm)
-  cs_2.cmap.set_under('white',alpha=0.)
-  cs_2.cmap.set_over('hotpink')
-  cstmp_2 = ax2.contour(lon_shift,lat_shift,tmphyb_2,[0],colors='red',linewidths=0.5,transform=transform)
-  cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='max')
-  cbar2.set_label(units,fontsize=6)
-  cbar2.ax.set_xticklabels(clevs)
-  cbar2.ax.tick_params(labelsize=5)
-  ax2.text(.5,1.03,'RRFS Lowest Mdl Lvl Cld Water ('+units+'), Reflectivity (gray), 0''\xb0''C line (red) \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=5,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
-
-  cs = ax3.pcolormesh(lon_shift,lat_shift,clwmr_dif,transform=transform,cmap=cmdif,norm=normdif)
-  cs.cmap.set_under('darkblue')
-  cs.cmap.set_over('darkred')
-  cbar3 = fig.colorbar(cs,ax=ax3,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
-  cbar3.set_label(units,fontsize=6)
-  cbar3.ax.tick_params(labelsize=5)
-  ax3.text(.5,1.03,'RRFS - HRRR Lowest Mdl Lvl Cld Water ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
-
-  rrfs_plot_utils.convert_and_save('compareclwmr_'+dom+'_f'+fhour)
-  t2 = time.perf_counter()
-  t3 = round(t2-t1, 3)
-  print(('%.3f seconds to plot lowest model level cloud water for: '+dom) % t3)
-
-#################################
-  # Plot lowest model level cloud ice
-#################################
-  t1 = time.perf_counter()
-  print(('Working on lowest model level cloud ice for '+dom))
-
-  # Clear off old plottables but keep all the map info
-  cbar1.remove()
-  cbar2.remove()
-  cbar3.remove()
-  rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
-  rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
-  rrfs_plot_utils.clear_plotables(ax3,keep_ax_lst_3,fig)
-
-#  csref_1 = ax1.pcolormesh(lon_shift,lat_shift,refd_1,transform=transform,cmap=cmref,vmin=20,norm=normref)
-#  csref_1.cmap.set_under('white')
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,icmr_1,transform=transform,cmap=cm,vmin=0.01,norm=norm)
-  cs_1.cmap.set_under('white',alpha=0.)
-  cs_1.cmap.set_over('hotpink')
-  cstmp_1 = ax1.contour(lon_shift,lat_shift,tmphyb_1,[0],colors='red',linewidths=0.5,transform=transform)
-  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='max')
-  cbar1.set_label(units,fontsize=6)
-  cbar1.ax.set_xticklabels(clevs)
-  cbar1.ax.tick_params(labelsize=4)
-  ax1.text(.5,1.03,'HRRR Lowest Mdl Lvl Cld Ice ('+units+'), 0''\xb0''C line (red) \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=5,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
-
-  csref_2 = ax2.pcolormesh(lon_shift,lat_shift,refd_2,transform=transform,cmap=cmref,vmin=20,norm=normref)
-  csref_2.cmap.set_under('white')
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,icmr_2,transform=transform,cmap=cm,vmin=0.01,norm=norm)
-  cs_2.cmap.set_under('white',alpha=0.)
-  cs_2.cmap.set_over('hotpink')
-  cstmp_2 = ax2.contour(lon_shift,lat_shift,tmphyb_2,[0],colors='red',linewidths=0.5,transform=transform)
-  cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='max')
-  cbar2.set_label(units,fontsize=6)
-  cbar2.ax.set_xticklabels(clevs)
-  cbar2.ax.tick_params(labelsize=4)
-  ax2.text(.5,1.03,'RRFS Lowest Mdl Lvl Cld Ice ('+units+'), Reflectivity (gray), 0''\xb0''C line (red) \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=5,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
-
-  cs = ax3.pcolormesh(lon_shift,lat_shift,icmr_dif,transform=transform,cmap=cmdif,norm=normdif)
-  cs.cmap.set_under('darkblue')
-  cs.cmap.set_over('darkred')
-  cbar3 = fig.colorbar(cs,ax=ax3,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
-  cbar3.set_label(units,fontsize=6)
-  cbar3.ax.tick_params(labelsize=6)
-  ax3.text(.5,1.03,'RRFS - HRRR Lowest Mdl Lvl Cld Ice ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
-
-  rrfs_plot_utils.convert_and_save('compareicmr_'+dom+'_f'+fhour)
-  t2 = time.perf_counter()
-  t3 = round(t2-t1, 3)
-  print(('%.3f seconds to plot lowest model level cloud ice for: '+dom) % t3)
-
-#################################
-  # Plot lowest model level rain
-#################################
-  t1 = time.perf_counter()
-  print(('Working on lowest model level rain for '+dom))
-
-  # Clear off old plottables but keep all the map info
-  cbar1.remove()
-  cbar2.remove()
-  cbar3.remove()
-  rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
-  rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
-  rrfs_plot_utils.clear_plotables(ax3,keep_ax_lst_3,fig)
-
-#  csref_1 = ax1.pcolormesh(lon_shift,lat_shift,refd_1,transform=transform,cmap=cmref,vmin=20,norm=normref)
-#  csref_1.cmap.set_under('white')
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,rwmr_1,transform=transform,cmap=cm,vmin=0.01,norm=norm)
-  cs_1.cmap.set_under('white',alpha=0.)
-  cs_1.cmap.set_over('hotpink')
-  cstmp_1 = ax1.contour(lon_shift,lat_shift,tmphyb_1,[0],colors='red',linewidths=0.5,transform=transform)
-  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='max')
-  cbar1.set_label(units,fontsize=6)
-  cbar1.ax.set_xticklabels(clevs)
-  cbar1.ax.tick_params(labelsize=5)
-  ax1.text(.5,1.03,'HRRR Lowest Mdl Lvl Rain ('+units+'), 0''\xb0''C line (red) \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=5,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
-
-  csref_2 = ax2.pcolormesh(lon_shift,lat_shift,refd_2,transform=transform,cmap=cmref,vmin=20,norm=normref)
-  csref_2.cmap.set_under('white')
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,rwmr_2,transform=transform,cmap=cm,vmin=0.01,norm=norm)
-  cs_2.cmap.set_under('white',alpha=0.)
-  cs_2.cmap.set_over('hotpink')
-  cstmp_2 = ax2.contour(lon_shift,lat_shift,tmphyb_2,[0],colors='red',linewidths=0.5,transform=transform)
-  cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='max')
-  cbar2.set_label(units,fontsize=6)
-  cbar2.ax.set_xticklabels(clevs)
-  cbar2.ax.tick_params(labelsize=5)
-  ax2.text(.5,1.03,'RRFS Lowest Mdl Lvl Rain ('+units+'), Reflectivity (gray), 0''\xb0''C line (red) \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=5,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
-
-  cs = ax3.pcolormesh(lon_shift,lat_shift,rwmr_dif,transform=transform,cmap=cmdif,norm=normdif)
-  cs.cmap.set_under('darkblue')
-  cs.cmap.set_over('darkred')
-  cbar3 = fig.colorbar(cs,ax=ax3,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
-  cbar3.set_label(units,fontsize=6)
-  cbar3.ax.tick_params(labelsize=6)
-  ax3.text(.5,1.03,'RRFS - HRRR Lowest Mdl Lvl Rain ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
-
-  rrfs_plot_utils.convert_and_save('comparerwmr_'+dom+'_f'+fhour)
-  t2 = time.perf_counter()
-  t3 = round(t2-t1, 3)
-  print(('%.3f seconds to plot lowest model level rain for: '+dom) % t3)
-
-#################################
-  # Plot lowest model level snow
-#################################
-  t1 = time.perf_counter()
-  print(('Working on lowest model level snow for '+dom))
-
-  # Clear off old plottables but keep all the map info
-  cbar1.remove()
-  cbar2.remove()
-  cbar3.remove()
-  rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
-  rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
-  rrfs_plot_utils.clear_plotables(ax3,keep_ax_lst_3,fig)
-
-#  csref_1 = ax1.pcolormesh(lon_shift,lat_shift,refd_1,transform=transform,cmap=cmref,vmin=20,norm=normref)
-#  csref_1.cmap.set_under('white')
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,snmr_1,transform=transform,cmap=cm,vmin=0.01,norm=norm)
-  cs_1.cmap.set_under('white',alpha=0.)
-  cs_1.cmap.set_over('hotpink')
-  cstmp_1 = ax1.contour(lon_shift,lat_shift,tmphyb_1,[0],colors='red',linewidths=0.5,transform=transform)
-  cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='max')
-  cbar1.set_label(units,fontsize=6)
-  cbar1.ax.set_xticklabels(clevs)
-  cbar1.ax.tick_params(labelsize=5)
-  ax1.text(.5,1.03,'HRRR Lowest Mdl Lvl Snow ('+units+'), 0''\xb0''C line (red) \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=5,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
-
-  csref_2 = ax2.pcolormesh(lon_shift,lat_shift,refd_2,transform=transform,cmap=cmref,vmin=20,norm=normref)
-  csref_2.cmap.set_under('white')
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,snmr_2,transform=transform,cmap=cm,vmin=0.01,norm=norm)
-  cs_2.cmap.set_under('white',alpha=0.)
-  cs_2.cmap.set_over('hotpink')
-  cstmp_2 = ax2.contour(lon_shift,lat_shift,tmphyb_2,[0],colors='red',linewidths=0.5,transform=transform)
-  cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='max')
-  cbar2.set_label(units,fontsize=6)
-  cbar2.ax.set_xticklabels(clevs)
-  cbar2.ax.tick_params(labelsize=5)
-  ax2.text(.5,1.03,'RRFS Lowest Mdl Lvl Snow ('+units+'), Reflectivity (gray), 0''\xb0''C line (red) \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=5,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
-
-  cs = ax3.pcolormesh(lon_shift,lat_shift,snmr_dif,transform=transform,cmap=cmdif,norm=normdif)
-  cs.cmap.set_under('darkblue')
-  cs.cmap.set_over('darkred')
-  cbar3 = fig.colorbar(cs,ax=ax3,orientation='horizontal',pad=0.01,shrink=0.8,extend='both')
-  cbar3.set_label(units,fontsize=6)
-  cbar3.ax.tick_params(labelsize=6)
-  ax3.text(.5,1.03,'RRFS - HRRR Lowest Mdl Lvl Snow ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax3.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax3.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
-
-  rrfs_plot_utils.convert_and_save('comparesnmr_'+dom+'_f'+fhour)
-  t2 = time.perf_counter()
-  t3 = round(t2-t1, 3)
-  print(('%.3f seconds to plot lowest model level snow for: '+dom) % t3)
-
-#################################
   # Plot downward shortwave
 #################################
   t1 = time.perf_counter()
   print(('Working on downward shortwave for '+dom))
-
-  # Clear off old plottables but keep all the map info
-  cbar1.remove()
-  cbar2.remove()
-  cbar3.remove()
-  rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
-  rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
-  rrfs_plot_utils.clear_plotables(ax3,keep_ax_lst_3,fig)
 
   units = 'W m${^{-2}}$'
   clevs = np.arange(0,1050,50)
@@ -2493,7 +2240,7 @@ def plot_set_2():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS Surface Downward Shortwave Flux ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=5,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,swdown_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -2544,7 +2291,7 @@ def plot_set_2():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS Surface Upward Shortwave Flux ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=5,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,swup_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -2595,7 +2342,7 @@ def plot_set_2():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS Surface Downward Longwave Flux ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,lwdown_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -2646,7 +2393,7 @@ def plot_set_2():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS Surface Upward Longwave Flux ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,lwup_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -2696,7 +2443,7 @@ def plot_set_2():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=4.5)
   ax2.text(.5,1.03,'RRFS Ground Heat Flux ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,gdhfx_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -2746,7 +2493,7 @@ def plot_set_2():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=5)
   ax2.text(.5,1.03,'RRFS Latent Heat Flux ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,lhfx_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -2796,7 +2543,7 @@ def plot_set_2():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=5)
   ax2.text(.5,1.03,'RRFS Sensible Heat Flux ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,snhfx_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -2851,7 +2598,7 @@ def plot_set_2():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=4)
   ax2.text(.5,1.03,'RRFS PBL Height ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,hpbl_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -2906,7 +2653,7 @@ def plot_set_2():
 #  cbar2.ax.set_xticklabels([0.001,0.01,0.1,0.5,2,6,15,25])
 #  cbar2.ax.tick_params(labelsize=6)
 #  ax2.text(.5,1.03,'RRFS Total Column Cloud Water + Rain ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-#  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+#  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
 #  ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
 #  cs = ax3.pcolormesh(lon_shift,lat_shift,tcolw_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -2946,7 +2693,7 @@ def plot_set_2():
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
   normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N)
 
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,veg_1,transform=transform,cmap=cm,vmax=100,norm=norm)
+  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,veg_1,transform=transform,cmap=cm,norm=norm)
   cs_1.cmap.set_under('white')
   cs_1.cmap.set_over('white',alpha=0.)
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,extend='min')
@@ -2955,14 +2702,14 @@ def plot_set_2():
   ax1.text(.5,1.03,'HRRR Vegetation Fraction ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,veg_2,transform=transform,cmap=cm,vmax=100,norm=norm)
+  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,veg_2,transform=transform,cmap=cm,norm=norm)
   cs_2.cmap.set_under('white')
   cs_2.cmap.set_over('white',alpha=0.)
   cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,extend='min')
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS Vegetation Fraction ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,veg_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -3017,7 +2764,7 @@ def plot_set_2():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS 0-3 km Storm Relative Helicity ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,hel3km_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -3065,7 +2812,7 @@ def plot_set_2():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS 0-1 km Storm Relative Helicity ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,hel1km_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -3104,7 +2851,7 @@ def plot_set_2():
   cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
   
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,ref1km_1,transform=transform,cmap=cm,vmin=5,norm=norm)
+  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,ref1km_1,transform=transform,cmap=cm,norm=norm)
   cs_1.cmap.set_under('white',alpha=0.)
   cs_1.cmap.set_over('black')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,ticks=clevs,extend='max')
@@ -3113,14 +2860,14 @@ def plot_set_2():
   ax1.text(.5,1.03,'HRRR 1-km Reflectivity ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,ref1km_2,transform=transform,cmap=cm,vmin=5,norm=norm)
+  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,ref1km_2,transform=transform,cmap=cm,norm=norm)
   cs_2.cmap.set_under('white',alpha=0.)
   cs_2.cmap.set_over('black')
   cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=1.0,ticks=clevs,extend='max')
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS 1-km Reflectivity ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   csdif = ax3.contourf(lon_shift,lat_shift,ref1km_1,clevsdif,colors='red',transform=transform)
@@ -3156,7 +2903,7 @@ def plot_set_2():
   cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
   
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,refc_1,transform=transform,cmap=cm,vmin=5,norm=norm)
+  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,refc_1,transform=transform,cmap=cm,norm=norm)
   cs_1.cmap.set_under('white',alpha=0.)
   cs_1.cmap.set_over('black')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,ticks=clevs,extend='max')
@@ -3165,14 +2912,14 @@ def plot_set_2():
   ax1.text(.5,1.03,'HRRR Composite Reflectivity ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,refc_2,transform=transform,cmap=cm,vmin=5,norm=norm)
+  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,refc_2,transform=transform,cmap=cm,norm=norm)
   cs_2.cmap.set_under('white',alpha=0.)
   cs_2.cmap.set_over('black')
   cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=1.0,ticks=clevs,extend='max')
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS Composite Reflectivity ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   csdif = ax3.contourf(lon_shift,lat_shift,refc_1,clevsdif,colors='red',transform=transform)
@@ -3237,7 +2984,7 @@ def plot_set_3():
     cbar2.set_label(units,fontsize=6)
     cbar2.ax.tick_params(labelsize=6)
     ax2.text(.5,1.03,'RRFS 1-h Max/Min 2-5 km Updraft Helicity ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-    ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
     cs = ax3.pcolormesh(lon_shift,lat_shift,uh25_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -3284,7 +3031,7 @@ def plot_set_3():
     cbar2.set_label(units,fontsize=6)
     cbar2.ax.tick_params(labelsize=6)
     ax2.text(.5,1.03,'RRFS 1-h Max/Min 0-3 km Updraft Helicity ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-    ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
     cs = ax3.pcolormesh(lon_shift,lat_shift,uh03_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -3341,7 +3088,7 @@ def plot_set_3():
     cbar2.ax.set_xticklabels(clevs)
     cbar2.ax.tick_params(labelsize=5)
     ax2.text(.5,1.03,'RRFS 1-h Max 100-1000 mb Updraft Speed ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-    ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
     cs = ax3.pcolormesh(lon_shift,lat_shift,maxuvv_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -3398,7 +3145,7 @@ def plot_set_3():
     cbar2.ax.set_xticklabels(clevs)
     cbar2.ax.tick_params(labelsize=5)
     ax2.text(.5,1.03,'RRFS 1-h Max 100-1000 mb Downdraft Speed ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-    ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
     cs = ax3.pcolormesh(lon_shift,lat_shift,maxdvv_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -3437,7 +3184,7 @@ def plot_set_3():
     cm = matplotlib.colors.ListedColormap(colorlist)
     norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-    cs_1 = ax1.pcolormesh(lon_shift,lat_shift,maxref1km_1,transform=transform,cmap=cm,vmin=5,norm=norm)
+    cs_1 = ax1.pcolormesh(lon_shift,lat_shift,maxref1km_1,transform=transform,cmap=cm,norm=norm)
     cs_1.cmap.set_under('white',alpha=0.)
     cs_1.cmap.set_over('black')
     cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,extend='max')
@@ -3446,14 +3193,14 @@ def plot_set_3():
     ax1.text(.5,1.03,'HRRR 1-h Max 1-km Reflectivity ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-    cs_2 = ax2.pcolormesh(lon_shift,lat_shift,maxref1km_2,transform=transform,cmap=cm,vmin=5,norm=norm)
+    cs_2 = ax2.pcolormesh(lon_shift,lat_shift,maxref1km_2,transform=transform,cmap=cm,norm=norm)
     cs_2.cmap.set_under('white',alpha=0.)
     cs_2.cmap.set_over('black')
     cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=1.0,extend='max')
     cbar2.set_label(units,fontsize=6)
     cbar2.ax.tick_params(labelsize=6)
     ax2.text(.5,1.03,'RRFS 1-h Max 1-km Reflectivity ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-    ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
     csdif = ax3.contourf(lon_shift,lat_shift,maxref1km_1,clevsdif,colors='red',transform=transform)
@@ -3489,7 +3236,7 @@ def plot_set_3():
     norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
     normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N)
 
-    cs_1 = ax1.pcolormesh(lon_shift,lat_shift,maxwind_1,transform=transform,cmap=cm,vmin=5,norm=norm)
+    cs_1 = ax1.pcolormesh(lon_shift,lat_shift,maxwind_1,transform=transform,cmap=cm,norm=norm)
     cs_1.cmap.set_under('white',alpha=0.)
     cs_1.cmap.set_over('black')
     cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,extend='max')
@@ -3498,14 +3245,14 @@ def plot_set_3():
     ax1.text(.5,1.03,'HRRR 1-h Max 10-m Winds ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-    cs_2 = ax2.pcolormesh(lon_shift,lat_shift,maxwind_2,transform=transform,cmap=cm,vmin=5,norm=norm)
+    cs_2 = ax2.pcolormesh(lon_shift,lat_shift,maxwind_2,transform=transform,cmap=cm,norm=norm)
     cs_2.cmap.set_under('white',alpha=0.)
     cs_2.cmap.set_over('black')
     cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,extend='max')
     cbar2.set_label(units,fontsize=6)
     cbar2.ax.tick_params(labelsize=6)
     ax2.text(.5,1.03,'RRFS 1-h Max 10-m Winds ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-    ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
     cs = ax3.pcolormesh(lon_shift,lat_shift,maxwind_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -3557,7 +3304,7 @@ def plot_set_3():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS Total Cloud Cover ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,tcdc_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -3596,7 +3343,7 @@ def plot_set_3():
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
   normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N)
 
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,retop_1,transform=transform,cmap=cm,vmin=1,norm=norm)
+  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,retop_1,transform=transform,cmap=cm,norm=norm)
   cs_1.cmap.set_under('white',alpha=0.)
   cs_1.cmap.set_over('darkgreen')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,extend='max')
@@ -3605,14 +3352,14 @@ def plot_set_3():
   ax1.text(.5,1.03,'HRRR Echo Top Height ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,retop_2,transform=transform,cmap=cm,vmin=1,norm=norm)
+  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,retop_2,transform=transform,cmap=cm,norm=norm)
   cs_2.cmap.set_under('white',alpha=0.)
   cs_2.cmap.set_over('darkgreen')
   cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,extend='max')
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS Echo Top Height ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,retop_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -3651,7 +3398,7 @@ def plot_set_3():
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
   normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N)
 
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,prate_1,transform=transform,cmap=cm,vmin=0.01,norm=norm)
+  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,prate_1,transform=transform,cmap=cm,norm=norm)
   cs_1.cmap.set_under('white',alpha=0.)
   cs_1.cmap.set_over('yellow')
   cbar1 = fig.colorbar(cs_1,ax=ax1,ticks=clevs,orientation='horizontal',pad=0.01,shrink=1.0,extend='max')
@@ -3661,7 +3408,7 @@ def plot_set_3():
   ax1.text(.5,1.03,'HRRR Precipitation Rate ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,prate_2,transform=transform,cmap=cm,vmin=0.01,norm=norm)
+  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,prate_2,transform=transform,cmap=cm,norm=norm)
   cs_2.cmap.set_under('white',alpha=0.)
   cs_2.cmap.set_over('yellow')
   cbar2 = fig.colorbar(cs_2,ax=ax2,ticks=clevs,orientation='horizontal',pad=0.01,shrink=1.0,extend='max')
@@ -3669,7 +3416,7 @@ def plot_set_3():
   cbar2.ax.set_xticklabels(clevs)
   cbar2.ax.tick_params(labelsize=5)
   ax2.text(.5,1.03,'RRFS Precipitation Rate ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,prate_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -3709,7 +3456,7 @@ def plot_set_3():
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
   normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N)
 
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,smoke_1,vmin=1,norm=norm,transform=transform,cmap=cm)
+  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,smoke_1,norm=norm,transform=transform,cmap=cm)
   cs_1.cmap.set_under('white')
   cs_1.cmap.set_over('black')
   cbar1 = plt.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='both')
@@ -3718,14 +3465,14 @@ def plot_set_3():
   ax1.text(.5,1.03,'HRRR Near-Surface Smoke ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,smoke_2,vmin=1,norm=norm,transform=transform,cmap=cm)
+  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,smoke_2,norm=norm,transform=transform,cmap=cm)
   cs_2.cmap.set_under('white')
   cs_2.cmap.set_over('black')
   cbar2 = plt.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='both')
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=4.5)
   ax2.text(.5,1.03,'RRFS Near-Surface Smoke ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,smoke_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -3762,7 +3509,7 @@ def plot_set_3():
   cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,colsmoke_1,vmin=1,norm=norm,transform=transform,cmap=cm)
+  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,colsmoke_1,norm=norm,transform=transform,cmap=cm)
   cs_1.cmap.set_under('white')
   cs_1.cmap.set_over('black')
   cbar1 = plt.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='both')
@@ -3771,14 +3518,14 @@ def plot_set_3():
   ax1.text(.5,1.03,'HRRR Vertically Integrated Smoke ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,colsmoke_2,vmin=1,norm=norm,transform=transform,cmap=cm)
+  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,colsmoke_2,norm=norm,transform=transform,cmap=cm)
   cs_2.cmap.set_under('white')
   cs_2.cmap.set_over('black')
   cbar2 = plt.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='both')
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=4.5)
   ax2.text(.5,1.03,'RRFS Vertically Integrated Smoke ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,colsmoke_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -3816,14 +3563,14 @@ def plot_set_3():
   cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,dust_2,transform=transform,cmap=cm,vmin=1,norm=norm)
+  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,dust_2,transform=transform,cmap=cm,norm=norm)
   cs_2.cmap.set_under('white')
   cs_2.cmap.set_over('black')
   cbar2 = plt.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.05,shrink=0.6,ticks=clevs,extend='both')
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=4.5)
   ax2.text(.5,1.03,'RRFS Near-Surface Dust ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   rrfs_plot_utils.convert_and_save('comparedust_'+dom+'_f'+fhour)
@@ -3847,14 +3594,14 @@ def plot_set_3():
   cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,coldust_2,vmin=1,norm=norm,transform=transform,cmap=cm)
+  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,coldust_2,norm=norm,transform=transform,cmap=cm)
   cs_2.cmap.set_under('white')
   cs_2.cmap.set_over('black')
   cbar2 = plt.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='both')
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=4.5)
   ax2.text(.5,1.03,'RRFS Vertically Integrated Dust ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   rrfs_plot_utils.convert_and_save('comparecoldust_'+dom+'_f'+fhour)
@@ -3893,7 +3640,7 @@ def plot_set_3():
   cssleet_2 = ax2.contourf(lon_shift,lat_shift,pl2,clevs,colors=sleethex,transform=transform)
   csfrzra_2 = ax2.contourf(lon_shift,lat_shift,fr2,clevs,colors=freezehex,transform=transform)
   ax2.text(.5,1.03,'RRFS composite reflectivity by ptype \n initialized: '+itime +' valid: '+ vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   caxrain=fig.add_axes([.09,.52,.1,.03])
@@ -3955,7 +3702,7 @@ def plot_set_3():
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
   normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N)
 
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,pbase_1,transform=transform,cmap=cm,vmin=50,norm=norm)
+  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,pbase_1,transform=transform,cmap=cm,norm=norm)
   cs_1.cmap.set_under('white',alpha=0.)
   cs_1.cmap.set_over('red')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,extend='max')
@@ -3964,14 +3711,14 @@ def plot_set_3():
   ax1.text(.5,1.03,'HRRR Pressure at Cloud Base ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,pbase_2,transform=transform,cmap=cm,vmin=50,norm=norm)
+  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,pbase_2,transform=transform,cmap=cm,norm=norm)
   cs_2.cmap.set_under('white',alpha=0.)
   cs_2.cmap.set_over('red')
   cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=1.0,extend='max')
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS Pressure at Cloud Base ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,pbase_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -3999,17 +3746,17 @@ def plot_set_3():
   rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
   rrfs_plot_utils.clear_plotables(ax3,keep_ax_lst_3,fig)
 
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,ptop_1,transform=transform,cmap=cm,vmin=50,norm=norm)
+  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,ptop_1,transform=transform,cmap=cm,norm=norm)
   cs_1.cmap.set_under('white',alpha=0.)
   cs_1.cmap.set_over('red')
   ax1.text(.5,1.03,'HRRR Pressure at Cloud Top ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,ptop_2,transform=transform,cmap=cm,vmin=50,norm=norm)
+  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,ptop_2,transform=transform,cmap=cm,norm=norm)
   cs_2.cmap.set_under('white',alpha=0.)
   cs_2.cmap.set_over('red')
   ax2.text(.5,1.03,'RRFS Pressure at Cloud Top ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,ptop_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -4069,7 +3816,7 @@ def plot_set_4():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS 0 m Soil Temperature ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_3 = ax3.pcolormesh(lon_shift,lat_shift,tsoil_0_dif,norm=normdif,transform=transform,cmap=cmdif)
@@ -4116,7 +3863,7 @@ def plot_set_4():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS 0.01 m Soil Temperature ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_3 = ax3.pcolormesh(lon_shift,lat_shift,tsoil_001_dif,norm=normdif,transform=transform,cmap=cmdif)
@@ -4163,7 +3910,7 @@ def plot_set_4():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS 0.04 m Soil Temperature ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_3 = ax3.pcolormesh(lon_shift,lat_shift,tsoil_004_dif,norm=normdif,transform=transform,cmap=cmdif)
@@ -4210,7 +3957,7 @@ def plot_set_4():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS 0.1 m Soil Temperature ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_3 = ax3.pcolormesh(lon_shift,lat_shift,tsoil_01_dif,norm=normdif,transform=transform,cmap=cmdif)
@@ -4257,7 +4004,7 @@ def plot_set_4():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS 0.3 m Soil Temperature ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_3 = ax3.pcolormesh(lon_shift,lat_shift,tsoil_03_dif,norm=normdif,transform=transform,cmap=cmdif)
@@ -4304,7 +4051,7 @@ def plot_set_4():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS 0.6 m Soil Temperature ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_3 = ax3.pcolormesh(lon_shift,lat_shift,tsoil_06_dif,norm=normdif,transform=transform,cmap=cmdif)
@@ -4351,7 +4098,7 @@ def plot_set_4():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS 1 m Soil Temperature ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_3 = ax3.pcolormesh(lon_shift,lat_shift,tsoil_1_dif,norm=normdif,transform=transform,cmap=cmdif)
@@ -4398,7 +4145,7 @@ def plot_set_4():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS 1.6 m Soil Temperature ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_3 = ax3.pcolormesh(lon_shift,lat_shift,tsoil_16_dif,norm=normdif,transform=transform,cmap=cmdif)
@@ -4445,7 +4192,7 @@ def plot_set_4():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS 3 m Soil Temperature ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_3 = ax3.pcolormesh(lon_shift,lat_shift,tsoil_3_dif,norm=normdif,transform=transform,cmap=cmdif)
@@ -4500,7 +4247,7 @@ def plot_set_4():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS 0 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_3 = ax3.pcolormesh(lon_shift,lat_shift,soilw_0_dif,norm=normdif,transform=transform,cmap=cmdif)
@@ -4547,7 +4294,7 @@ def plot_set_4():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS 0.01 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_3 = ax3.pcolormesh(lon_shift,lat_shift,soilw_001_dif,norm=normdif,transform=transform,cmap=cmdif)
@@ -4594,7 +4341,7 @@ def plot_set_4():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS 0.04 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_3 = ax3.pcolormesh(lon_shift,lat_shift,soilw_004_dif,norm=normdif,transform=transform,cmap=cmdif)
@@ -4641,7 +4388,7 @@ def plot_set_4():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS 0.1 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_3 = ax3.pcolormesh(lon_shift,lat_shift,soilw_01_dif,norm=normdif,transform=transform,cmap=cmdif)
@@ -4688,7 +4435,7 @@ def plot_set_4():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS 0.3 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_3 = ax3.pcolormesh(lon_shift,lat_shift,soilw_03_dif,norm=normdif,transform=transform,cmap=cmdif)
@@ -4735,7 +4482,7 @@ def plot_set_4():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS 0.6 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_3 = ax3.pcolormesh(lon_shift,lat_shift,soilw_06_dif,norm=normdif,transform=transform,cmap=cmdif)
@@ -4782,7 +4529,7 @@ def plot_set_4():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS 1 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_3 = ax3.pcolormesh(lon_shift,lat_shift,soilw_1_dif,norm=normdif,transform=transform,cmap=cmdif)
@@ -4829,7 +4576,7 @@ def plot_set_4():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS 1.6 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_3 = ax3.pcolormesh(lon_shift,lat_shift,soilw_16_dif,norm=normdif,transform=transform,cmap=cmdif)
@@ -4876,7 +4623,7 @@ def plot_set_4():
   cbar2.set_label(units,fontsize=6)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS 3 m Soil Moisture Content \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs_3 = ax3.pcolormesh(lon_shift,lat_shift,soilw_3_dif,norm=normdif,transform=transform,cmap=cmdif)
@@ -4916,7 +4663,7 @@ def plot_set_4():
     norm = matplotlib.colors.BoundaryNorm(clevs, cm.N) 
     normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N)
 
-    cs_1 = ax1.pcolormesh(lon_shift,lat_shift,frzr_1,transform=transform,cmap=cm,vmin=0.002,norm=norm)
+    cs_1 = ax1.pcolormesh(lon_shift,lat_shift,frzr_1,transform=transform,cmap=cm,norm=norm)
     cs_1.cmap.set_under('white',alpha=0.)
     cs_1.cmap.set_over('#e8beff')
     cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,extend='max')
@@ -4926,7 +4673,7 @@ def plot_set_4():
     ax1.text(.5,1.03,'HRRR Total Freezing Rain ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-    cs_2 = ax2.pcolormesh(lon_shift,lat_shift,frzr_2,transform=transform,cmap=cm,vmin=0.002,norm=norm)
+    cs_2 = ax2.pcolormesh(lon_shift,lat_shift,frzr_2,transform=transform,cmap=cm,norm=norm)
     cs_2.cmap.set_under('white',alpha=0.)
     cs_2.cmap.set_over('#e8beff')
     cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,extend='max')
@@ -4934,7 +4681,7 @@ def plot_set_4():
     cbar2.ax.set_xticklabels(clevs)
     cbar2.ax.tick_params(labelsize=6)
     ax2.text(.5,1.03,'RRFS Total Freezing Rain ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-    ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
     cs_3 = ax3.pcolormesh(lon_shift,lat_shift,frzr_dif,norm=normdif,transform=transform,cmap=cmdif)
@@ -4965,7 +4712,7 @@ def plot_set_4():
     rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
     rrfs_plot_utils.clear_plotables(ax3,keep_ax_lst_3,fig)
 
-    cs_1 = ax1.pcolormesh(lon_shift,lat_shift,frozr_1,transform=transform,cmap=cm,vmin=0.002,norm=norm)
+    cs_1 = ax1.pcolormesh(lon_shift,lat_shift,frozr_1,transform=transform,cmap=cm,norm=norm)
     cs_1.cmap.set_under('white',alpha=0.)
     cs_1.cmap.set_over('#e8beff')
     cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,extend='max')
@@ -4975,7 +4722,7 @@ def plot_set_4():
     ax1.text(.5,1.03,'HRRR Total Sleet ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-    cs_2 = ax2.pcolormesh(lon_shift,lat_shift,frozr_2,transform=transform,cmap=cm,vmin=0.002,norm=norm)
+    cs_2 = ax2.pcolormesh(lon_shift,lat_shift,frozr_2,transform=transform,cmap=cm,norm=norm)
     cs_2.cmap.set_under('white',alpha=0.)
     cs_2.cmap.set_over('#e8beff')
     cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,extend='max')
@@ -4983,7 +4730,7 @@ def plot_set_4():
     cbar2.ax.set_xticklabels(clevs)
     cbar2.ax.tick_params(labelsize=6)
     ax2.text(.5,1.03,'RRFS Total Sleet ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-    ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
     cs_3 = ax3.pcolormesh(lon_shift,lat_shift,frozr_dif,norm=normdif,transform=transform,cmap=cmdif)
@@ -5013,9 +4760,9 @@ def plot_set_4():
     rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
     rrfs_plot_utils.clear_plotables(ax3,keep_ax_lst_3,fig)
 
-    cs_2 = ax2.pcolormesh(lon_shift,lat_shift,tsnowp_2,transform=transform,cmap=cm,vmin=0.002,norm=norm)
+    cs_2 = ax2.pcolormesh(lon_shift,lat_shift,tsnowp_2,transform=transform,cmap=cm,norm=norm)
     ax2.text(.5,1.03,'RRFS Total Snow Precipitation ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-    ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+    ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
     ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
     rrfs_plot_utils.convert_and_save('comparetsnowp_'+dom+'_f'+fhour)

@@ -156,7 +156,8 @@ def clear_plotables(ax,keep_ax_lst,fig):
     for a in cur_ax_children:
       if a not in keep_ax_lst:
        # if the artist isn't part of the initial set up, remove it
-        a.remove()
+        if a.figure is not None:
+          a.remove()
 
 def convert_and_save(filename):
   #### - convert and save the image - ####
@@ -311,7 +312,7 @@ def cmap_q2m():
     green = []
     blue = []
     for i in range(len(xsize)):
-        xNorm=np.float(i)/(np.float(np.size(r))-1.0)
+        xNorm=float(i)/(float(np.size(r))-1.0)
         red.append([xNorm,r[i],r[i]])
         green.append([xNorm,g[i],g[i]])
         blue.append([xNorm,b[i],b[i]])
@@ -377,7 +378,7 @@ def ncl_perc_11Lev():
     blue = []
     green = []
     for i in range(len(xsize)):
-        xNorm=np.float(i)/(np.float(np.size(r))-1.0)
+        xNorm=float(i)/(float(np.size(r))-1.0)
         red.append([xNorm,r[i],r[i]])
         green.append([xNorm,g[i],g[i]])
         blue.append([xNorm,b[i],b[i]])
@@ -401,7 +402,7 @@ def ncl_grnd_hflux():
     blue = []
     green = []
     for i in range(len(xsize)):
-        xNorm=np.float(i)/(np.float(np.size(r))-1.0)
+        xNorm=float(i)/(float(np.size(r))-1.0)
         red.append([xNorm,r[i],r[i]])
         green.append([xNorm,g[i],g[i]])
         blue.append([xNorm,b[i],b[i]])
@@ -646,6 +647,7 @@ def domain_latlons_proj(dom):
     yextent=-173241
     offset=0.25
 
+
 # Projection settings
   if dom == 'namerica':
     extent = [-176.,0.,0.5,45.]
@@ -657,12 +659,10 @@ def domain_latlons_proj(dom):
   elif dom == 'conus':
     extent = [llcrnrlon-1, urcrnrlon-6, llcrnrlat, urcrnrlat+1]
     myproj=ccrs.LambertConformal(central_longitude=cen_lon, central_latitude=cen_lat,
-         false_easting=0.0, false_northing=0.0, secant_latitudes=None,
-         standard_parallels=None, globe=None)
+         false_easting=0.0, false_northing=0.0, globe=None)
   else:
     extent = [llcrnrlon, urcrnrlon, llcrnrlat, urcrnrlat]
     myproj=ccrs.LambertConformal(central_longitude=cen_lon, central_latitude=cen_lat,
-         false_easting=0.0, false_northing=0.0, secant_latitudes=None,
-         standard_parallels=None, globe=None)
+         false_easting=0.0, false_northing=0.0, globe=None)
 
   return xextent, yextent, offset, extent, myproj

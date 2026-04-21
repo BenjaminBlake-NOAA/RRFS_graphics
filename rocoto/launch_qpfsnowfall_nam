@@ -11,20 +11,15 @@ date
 #dom='puerto_rico'
 
 echo "into launch_qpfsnowfall_nam"
-module load python/3.8.6
-module use /lfs/h1/mdl/nbm/save/apps/modulefiles
-module load python-modules/3.8.6
-module load proj/7.1.0
-module load geos/3.8.1
-module load libjpeg-turbo/2.1.0
-export PYTHONPATH="${PYTHONPATH}:/lfs/h2/emc/lam/noscrub/Benjamin.Blake/python:/lfs/h2/emc/lam/noscrub/Benjamin.Blake/rrfs_graphics/modulefiles"
+source /u/benjamin.blake/.bashrc
+export PYTHONPATH="${PYTHONPATH}:${HOMEDIR}/modulefiles"
 module load imagemagick/7.0.8-7
 
 mkdir -p /lfs/h2/emc/stmp/${USER}
 mkdir -p /lfs/h2/emc/stmp/${USER}/3panel_nam/${PDY}/${cyc}
 cd /lfs/h2/emc/stmp/${USER}/3panel_nam/${PDY}/${cyc}
 
-python /lfs/h2/emc/lam/noscrub/${USER}/rrfs_graphics/scripts/plot_qpfsnowfall_nam.py $CDATE $dom
+python ${HOMEDIR}/scripts/plot_qpfsnowfall_nam.py $CDATE $dom
 
 date
 

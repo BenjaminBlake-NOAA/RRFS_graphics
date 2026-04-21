@@ -5,13 +5,8 @@ set -x
 date
 
 echo "into launch_qpfsnowfall_firewx"
-module load python/3.8.6
-module use /lfs/h1/mdl/nbm/save/apps/modulefiles
-module load python-modules/3.8.6
-module load proj/7.1.0
-module load geos/3.8.1
-module load libjpeg-turbo/2.1.0
-export PYTHONPATH="${PYTHONPATH}:/lfs/h2/emc/lam/noscrub/Benjamin.Blake/python:/lfs/h2/emc/lam/noscrub/Benjamin.Blake/rrfs_graphics/modulefiles"
+source /u/benjamin.blake/.bashrc
+export PYTHONPATH="${PYTHONPATH}:${HOMEDIR}/modulefiles"
 module load imagemagick/7.0.8-7
 
 mkdir -p /lfs/h2/emc/stmp/${USER}
@@ -22,7 +17,7 @@ latlon=/lfs/h1/ops/prod/com/nam/v4.2/input/nam_firewx_loc
 cen_lat=`grep ${cyc}z $latlon | awk '{print $2}'`
 cen_lon=`grep ${cyc}z $latlon | awk '{print $3}'`
 
-python /lfs/h2/emc/lam/noscrub/${USER}/rrfs_graphics/scripts/plot_qpfsnowfall_firewx.py $CDATE $cen_lat $cen_lon
+python ${HOMEDIR}/scripts/plot_qpfsnowfall_firewx.py $CDATE $cen_lat $cen_lon
 
 date
 

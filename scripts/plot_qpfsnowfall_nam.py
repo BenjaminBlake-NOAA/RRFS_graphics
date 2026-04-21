@@ -43,7 +43,7 @@ date_list = [dtime + datetime.timedelta(hours=x) for x in fhours]
 # Define the directory paths to the output files
 NAM_DIR = '/lfs/h1/ops/prod/com/nam/v4.2/nam.'+ymd
 #RRFS_DIR = '/lfs/h2/emc/ptmp/emc.lam/rrfs/na/prod/rrfs.'+ymd+'/'+cyc
-RRFS_DIR = '/lfs/h2/emc/ptmp/Benjamin.Blake/rrfs/na/prod/rrfs.'+ymd+'/'+cyc
+RRFS_DIR = '/lfs/h1/ops/para/com/rrfs/v1.0/rrfs.'+ymd+'/'+cyc
 
 # Paths to image files
 im = image.imread('/lfs/h2/emc/lam/noscrub/Benjamin.Blake/rrfs_graphics/noaa.png')
@@ -146,19 +146,19 @@ for j in range(len(date_list)):
   if dom == 'alaska':
     data1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.alaskanest.hiresf'+fhour+'.tm00.grib2')
     data1_m1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.alaskanest.hiresf'+fhour1+'.tm00.grib2')
-    data2 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.3km.f0'+fhour+'.ak.grib2')
+    data2 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.2dfld.3km.f0'+fhour+'.ak.grib2')
   elif dom == 'hawaii':
     data1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.hawaiinest.hiresf'+fhour+'.tm00.grib2')
     data1_m1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.hawaiinest.hiresf'+fhour1+'.tm00.grib2')
-    data2 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.2p5km.f0'+fhour+'.hi.grib2')
+    data2 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.2dfld.2p5km.f0'+fhour+'.hi.grib2')
   elif dom == 'puerto_rico':
     data1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.priconest.hiresf'+fhour+'.tm00.grib2')
     data1_m1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.priconest.hiresf'+fhour1+'.tm00.grib2')
-    data2 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.2p5km.f0'+fhour+'.pr.grib2')
+    data2 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.2dfld.2p5km.f0'+fhour+'.pr.grib2')
   else:
     data1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.conusnest.hiresf'+fhour+'.tm00.grib2')
     data1_m1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.conusnest.hiresf'+fhour1+'.tm00.grib2')
-    data2 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.3km.f0'+fhour+'.conus.grib2')
+    data2 = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.2dfld.3km.f0'+fhour+'.conus.grib2')
 
   if (fhr <= 3):
     qpf = data1.select(shortName='APCP',timeRangeOfStatisticalProcess=fhr)[0].data * 0.0393701
@@ -225,7 +225,7 @@ for j in range(len(date_list)):
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
   normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N)
 
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,qpf_1,transform=transform,cmap=cm,vmin=0.01,norm=norm)
+  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,qpf_1,transform=transform,cmap=cm,norm=norm)
   cs_1.cmap.set_under('white',alpha=0.)
   cs_1.cmap.set_over('pink')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,ticks=[0.1,0.5,1,1.5,2,3,5,10,20],extend='max')
@@ -235,7 +235,7 @@ for j in range(len(date_list)):
   ax1.text(.5,1.03,'NAM Nest '+fhour+'-hr Accumulated Precipitation ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,qpf_2,transform=transform,cmap=cm,vmin=0.01,norm=norm)
+  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,qpf_2,transform=transform,cmap=cm,norm=norm)
   cs_2.cmap.set_under('white',alpha=0.)
   cs_2.cmap.set_over('pink')
   cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=1.0,ticks=[0.1,0.5,1,1.5,2,3,5,10,20],extend='max')
@@ -243,7 +243,7 @@ for j in range(len(date_list)):
   cbar2.ax.set_xticklabels([0.1,0.5,1,1.5,2,3,5,10,20])
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS '+fhour+'-hr Accumulated Precipitation ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,qpf_dif,transform=transform,cmap=cmdif,norm=normdif)
@@ -282,7 +282,7 @@ for j in range(len(date_list)):
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
   normdif = matplotlib.colors.BoundaryNorm(clevsdif, cmdif.N)
 
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,asnow_1,transform=transform,cmap=cm,vmin=0.5,norm=norm)
+  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,asnow_1,transform=transform,cmap=cm,norm=norm)
   cs_1.cmap.set_under('white',alpha=0.)
   cs_1.cmap.set_over('#CA7AF5')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='max')
@@ -292,7 +292,7 @@ for j in range(len(date_list)):
   ax1.text(.5,1.03,'NAM Nest Snowfall (10:1) ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,asnow_2,transform=transform,cmap=cm,vmin=0.5,norm=norm)
+  cs_2 = ax2.pcolormesh(lon_shift,lat_shift,asnow_2,transform=transform,cmap=cm,norm=norm)
   cs_2.cmap.set_under('white',alpha=0.)
   cs_2.cmap.set_over('#CA7AF5')
   cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='max')
@@ -300,7 +300,7 @@ for j in range(len(date_list)):
   cbar2.ax.set_xticklabels(clevs)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFS Snowfall (variable density) ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+')',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   cs = ax3.pcolormesh(lon_shift,lat_shift,asnow_dif,transform=transform,cmap=cmdif,norm=normdif)

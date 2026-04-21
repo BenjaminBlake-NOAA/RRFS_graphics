@@ -73,8 +73,7 @@ back_img='off'
 # set up the map background with cartopy
 extent = [llcrnrlon,urcrnrlon,llcrnrlat,urcrnrlat]
 myproj=ccrs.LambertConformal(central_longitude=cen_lon, central_latitude=cen_lat,
-                        false_easting=0.0, false_northing=0.0,
-                        secant_latitudes=None, standard_parallels=None,globe=None)
+                        false_easting=0.0, false_northing=0.0,globe=None)
 ax1 = fig.add_subplot(gs[0:4,0:4], projection=myproj)
 ax2 = fig.add_subplot(gs[0:4,4:], projection=myproj)
 ax1.set_extent(extent)
@@ -159,7 +158,7 @@ for j in range(len(date_list)):
 
 # Define the input files
   data1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.firewxnest.hiresf'+fhour+'.tm00.grib2')
-  data2 = grib2io.open(RRFSFW_DIR+'/rrfs.t'+cyc+'z.prslev.1p5km.f0'+fhour+'.firewx_lcc.grib2')
+  data2 = grib2io.open(RRFSFW_DIR+'/rrfs.t'+cyc+'z.2dfld.1p5km.f0'+fhour+'.firewx_lcc.grib2')
 
   qpf = data1.select(shortName='APCP',timeRangeOfStatisticalProcess=1)[0].data * 0.0393701
   asnow = data1.select(shortName='WEASD')[1].data / 2.54
@@ -179,7 +178,7 @@ for j in range(len(date_list)):
 # Get the lats and lons - only need to do this once
   if (fhr == 1):
     msg = data1.select(shortName='HGT', level='500 mb')[0]  # msg is a Grib2Message object
-    msg2 = data2.select(shortName='HGT', level='500 mb')[0]  # msg is a Grib2Message object
+    msg2 = data2.select(shortName='HGT', level='surface')[0]  # msg is a Grib2Message object
     lat,lon,lat_shift,lon_shift = rrfs_plot_utils.get_latlons_pcolormesh(msg)
     lat2,lon2,lat2_shift,lon2_shift = rrfs_plot_utils.get_latlons_pcolormesh(msg2)
 
@@ -204,7 +203,7 @@ for j in range(len(date_list)):
   cmdif = matplotlib.colors.ListedColormap(difcolors)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,qpf_1,transform=transform,cmap=cm,vmin=0.01,norm=norm)
+  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,qpf_1,transform=transform,cmap=cm,norm=norm)
   cs_1.cmap.set_under('white',alpha=0.)
   cs_1.cmap.set_over('pink')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,ticks=[0.1,0.5,1,1.5,2,3,5,10,20],extend='max')
@@ -214,7 +213,7 @@ for j in range(len(date_list)):
   ax1.text(.5,1.03,'NAMFW '+fhour+'-hr Accumulated Precipitation ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs_2 = ax2.pcolormesh(lon2_shift,lat2_shift,qpf_2,transform=transform,cmap=cm,vmin=0.01,norm=norm)
+  cs_2 = ax2.pcolormesh(lon2_shift,lat2_shift,qpf_2,transform=transform,cmap=cm,norm=norm)
   cs_2.cmap.set_under('white',alpha=0.)
   cs_2.cmap.set_over('pink')
   cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=1.0,ticks=[0.1,0.5,1,1.5,2,3,5,10,20],extend='max')
@@ -222,7 +221,7 @@ for j in range(len(date_list)):
   cbar2.ax.set_xticklabels([0.1,0.5,1,1.5,2,3,5,10,20])
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFSFW '+fhour+'-hr Accumulated Precipitation ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   rrfs_plot_utils.convert_and_save('compareqpf_'+domain+'_f'+fhour)
@@ -248,7 +247,7 @@ for j in range(len(date_list)):
   cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,asnow_1,transform=transform,cmap=cm,vmin=0.5,norm=norm)
+  cs_1 = ax1.pcolormesh(lon_shift,lat_shift,asnow_1,transform=transform,cmap=cm,norm=norm)
   cs_1.cmap.set_under('white',alpha=0.)
   cs_1.cmap.set_over('#CA7AF5')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='max')
@@ -258,7 +257,7 @@ for j in range(len(date_list)):
   ax1.text(.5,1.03,'NAMFW Snowfall (10:1) ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
-  cs_2 = ax2.pcolormesh(lon2_shift,lat2_shift,asnow_2,transform=transform,cmap=cm,vmin=0.5,norm=norm)
+  cs_2 = ax2.pcolormesh(lon2_shift,lat2_shift,asnow_2,transform=transform,cmap=cm,norm=norm)
   cs_2.cmap.set_under('white',alpha=0.)
   cs_2.cmap.set_over('#CA7AF5')
   cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='max')
@@ -266,7 +265,7 @@ for j in range(len(date_list)):
   cbar2.ax.set_xticklabels(clevs)
   cbar2.ax.tick_params(labelsize=6)
   ax2.text(.5,1.03,'RRFSFW Snowfall (variable density) ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',color='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   rrfs_plot_utils.convert_and_save('compareasnow_'+domain+'_f'+fhour)

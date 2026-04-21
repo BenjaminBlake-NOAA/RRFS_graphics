@@ -11,22 +11,9 @@ date
 #fhr=24
 
 echo "into launch_allvars_namerica"
-module load python/3.8.6
-module use /lfs/h1/mdl/nbm/save/apps/modulefiles
-module load python-modules/3.8.6
-module load proj/7.1.0
-module load geos/3.8.1
-module load libjpeg-turbo/2.1.0
-export PYTHONPATH="${PYTHONPATH}:/lfs/h2/emc/lam/noscrub/Benjamin.Blake/python:/lfs/h2/emc/lam/noscrub/Benjamin.Blake/rrfs_graphics/modulefiles"
+source /u/benjamin.blake/.bashrc
+export PYTHONPATH="${PYTHONPATH}:${HOMEDIR}/modulefiles"
 module load imagemagick/7.0.8-7
-
-module load wgrib2/2.0.8_wmo
-mkdir -p /lfs/h2/emc/ptmp/Benjamin.Blake/rrfs/na/prod/rrfs.${PDY}/${cyc}
-cd /lfs/h2/emc/ptmp/Benjamin.Blake/rrfs/na/prod/rrfs.${PDY}/${cyc}
-cp /lfs/h2/emc/ptmp/emc.lam/com/rrfs/v1.0/rrfs.${PDY}/${cyc}/rrfs.t${cyc}z.prslev.3km.f0${fhr}.na.grib2 rrfs.t${cyc}z.prslev.3km.f0${fhr}.na.bad.grib2
-wgrib2 rrfs.t${cyc}z.prslev.3km.f0${fhr}.na.bad.grib2 -match ave -not MASSDEN -grib rrfs_piece1_f0${fhr}.grib2
-wgrib2 rrfs.t${cyc}z.prslev.3km.f0${fhr}.na.bad.grib2 -not ave -grib rrfs_piece2_f0${fhr}.grib2
-cat rrfs_piece1_f0${fhr}.grib2 rrfs_piece2_f0${fhr}.grib2 > rrfs.t${cyc}z.prslev.3km.f0${fhr}.na.grib2
 
 mkdir -p /lfs/h2/emc/stmp/${USER}
 mkdir -p /lfs/h2/emc/stmp/${USER}/namerica/${PDY}/${cyc}

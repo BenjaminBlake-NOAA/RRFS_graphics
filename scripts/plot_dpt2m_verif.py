@@ -57,7 +57,7 @@ vtime_end = ymd
 HRRR_DIR = os.path.join(os.environ['COMhrrr'],'hrrr.'+ymd_model)
 NAM_DIR = os.path.join(os.environ['COMnam'],'nam.'+ymd_model)
 RRFS_DIR = os.path.join(
-    '/','lfs','h2','emc','ptmp',os.environ['USER'],'rrfs','na','prod',
+    '/','lfs','h1','ops','para','com','rrfs','v1.0',
     'rrfs.'+ymd_model, cyc_model
 )
 URMA_DIR = os.environ['COMurma']
@@ -155,7 +155,7 @@ def vars_figure(domain):
   fname1a = HRRR_DIR+f'/{dom1a_string2}/hrrr.t'+cyc_model+'z.wrfprsf'+fhour+f'.{dom1a_string}grib2'
   fname1b = NAM_DIR+'/nam.t'+cyc_model+f'z.{dom1b_string}'+fhour+'.tm00.grib2'
   fname2 = NAM_DIR+'/nam.t'+cyc_model+f'z.{dom2_string}nest.hiresf'+fhour+'.tm00.grib2'
-  fname3 = RRFS_DIR+'/rrfs.t'+cyc_model+f'z.prslev.{dom3_gridspacing}.f0'+fhour+f'.{dom3_string}.grib2'
+  fname3 = RRFS_DIR+'/rrfs.t'+cyc_model+f'z.2dfld.{dom3_gridspacing}.f0'+fhour+f'.{dom3_string}.grib2'
   if dom in ['puerto_rico']:
       fname4a = URMA_DIR+f'/prurma.{ymd}/{dom4a_string}.t{cyc}z.2dvaranl_ndfd.grb2_allflds'
       fname4b = RTMA_DIR+f'/prrtma.{ymd}/{dom4b_string}.t{cyc}z.2dvaranl_ndfd.grb2_allflds'
@@ -210,7 +210,7 @@ def vars_figure(domain):
       msg = data2.select(shortName='HGT', level='500 mb')[0]
       lat2,lon2,lat2_shift,lon2_shift = rrfs_plot_utils.get_latlons_pcolormesh(msg)
   if not plot_nodata_text[3]:
-      msg = data3.select(shortName='HGT', level='500 mb')[0]
+      msg = data3.select(shortName='HGT', level='surface')[0]
       lat3,lon3,lat3_shift,lon3_shift = rrfs_plot_utils.get_latlons_pcolormesh(msg)
   if not plot_nodata_text[4]:
       # URMA
