@@ -52,6 +52,15 @@ data1_fld2d = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.2dfld.3km.f0'+fhour+'.na.gr
 # Get the lats and lons
 msg = data1_prslev.select(shortName='HGT', level='500 mb')[0]	# msg is a Grib2Message object
 lat, lon = msg.grid(unrotate=False)
+lat1 = msg.latitudeFirstGridpoint   	# -37.0 for RRFS
+lon1 = msg.longitudeFirstGridpoint	# 299.0 for RRFS
+lon1 = lon1 - 360			# convert to -61.0
+nx = msg.nx
+ny = msg.ny
+dx = abs(msg.gridlengthXDirection)	# 0.025 for RRFS
+dy = msg.gridlengthYDirection		# 0.025 for RRFS
+x = lon1 + (np.arange(nx) * dx)
+y = lat1 + (np.arange(ny) * dy)
 
 # Specify plotting domains
 domains=['namerica','caribbean']
@@ -302,6 +311,7 @@ def create_figure(domain):
                     linewidth=fline_wd,alpha=falpha)
 
   # All lat lons are earth relative, so setup the associated projection correct for that data
+  # These latitude and longitude values are for the North Pole
   transform = ccrs.RotatedPole(pole_longitude=67.0, pole_latitude=35.0)
 
   # high-resolution background images
@@ -321,7 +331,7 @@ def create_figure(domain):
   keep_ax_lst_1 = ax1.get_children()[:]
 
   # Split plots into 13 sets with multiprocessing
-  sets = [1,2,3,4,5,6,7,8,9,11,12]
+  sets = [1,2,3,4,5]
   pool2 = MyPool(len(sets))
   pool2.map(plot_sets,sets)
 
@@ -344,28 +354,13 @@ def plot_sets(set):
     plot_set_4()
   elif set == 5:
     plot_set_5()
-  elif set == 6:
-    plot_set_6()
-  elif set == 7:
-    plot_set_7()
-  elif set == 8:
-    plot_set_8()
-  elif set == 9:
-    plot_set_9()
-#  elif set == 10:
-#    plot_set_10()
-  elif set == 11:
-    plot_set_11()
-  elif set == 12:
-    plot_set_12()
-#  elif set == 13:
-#    plot_set_13()
 
 ################################################################################
 
 def plot_set_1():
   global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
 
+  t1dom = time.perf_counter()
   xmin, xmax = ax1.get_xlim()
   ymin, ymax = ax1.get_ylim()
   xmax = int(round(xmax))
@@ -387,8 +382,8 @@ def plot_set_1():
   cm = rrfs_plot_utils.cmap_t2m()
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cs_1 = ax1.contourf(lon,lat,tmpsfc_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
-  cs_1.cmap.set_under('white')
+  cs_1 = ax1.pcolormesh(x,y,tmpsfc_1,cmap=cm,norm=norm,transform=transform)
+  cs_1.cmap.set_under('white',alpha=0.)
   cs_1.cmap.set_over('white')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,extend='both')
   cbar1.set_label(units,fontsize=6)
@@ -402,19 +397,6 @@ def plot_set_1():
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot tsfc for: '+dom) % t3)
 
-  plt.clf()
-
-################################################################################
-
-def plot_set_2():
-  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
-
-  xmin, xmax = ax1.get_xlim()
-  ymin, ymax = ax1.get_ylim()
-  xmax = int(round(xmax))
-  ymax = int(round(ymax))
-  x1 = xmin + ((xmax-xmin)*0.03)
-  y1 = ymin + ((ymax-ymin)*0.03)
 
 #################################
   # Plot PBL height
@@ -422,13 +404,17 @@ def plot_set_2():
   t1 = time.perf_counter()
   print(('Working on PBL height for '+dom))
 
+  # Clear off old plottables but keep all the map info
+  cbar1.remove()
+  rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
+
   units = 'm'
   clevs = [50,100,250,500,1000,1500,2000,2500,3000,3500,4000,4500,5000]
   colorlist= ['gray','blue','dodgerblue','cyan','mediumspringgreen','#FAFAD2','#EEEE00','#EEC900','darkorange','crimson','darkred','darkviolet']
   cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cs_1 = ax1.contourf(lon,lat,hpbl_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+  cs_1 = ax1.pcolormesh(x,y,hpbl_1,cmap=cm,norm=norm,transform=transform)
   cs_1.cmap.set_under('white')
   cs_1.cmap.set_over('black')
   cbar1 = fig.colorbar(cs_1,ax=ax1,ticks=clevs,orientation='horizontal',pad=0.01,shrink=1.0,extend='both')
@@ -443,26 +429,15 @@ def plot_set_2():
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot PBL height for: '+dom) % t3)
 
-  plt.clf()
-
-################################################################################
-
-def plot_set_3():
-  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
-
-  xmin, xmax = ax1.get_xlim()
-  ymin, ymax = ax1.get_ylim()
-  xmax = int(round(xmax))
-  ymax = int(round(ymax))
-  x1 = xmin + ((xmax-xmin)*0.03)
-  y1 = ymin + ((ymax-ymin)*0.03)
-
-
 #################################
   # Plot 10-m WSPD
 #################################
   t1 = time.perf_counter()
   print(('Working on 10mwspd for '+dom))
+
+  # Clear off old plottables but keep all the map info
+  cbar1.remove()
+  rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
 
   units = 'kts'
   if dom == 'namerica':
@@ -475,7 +450,7 @@ def plot_set_3():
   cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cs_1 = ax1.contourf(lon,lat,wspd10m_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+  cs_1 = ax1.pcolormesh(x,y,wspd10m_1,cmap=cm,norm=norm,transform=transform)
   cs_1.cmap.set_under('white',alpha=0.)
   cs_1.cmap.set_over('black')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,extend='max')
@@ -491,25 +466,15 @@ def plot_set_3():
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot 10mwspd for: '+dom) % t3)
 
-  plt.clf()
-
-################################################################################
-
-def plot_set_4():
-  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
-
-  xmin, xmax = ax1.get_xlim()
-  ymin, ymax = ax1.get_ylim()
-  xmax = int(round(xmax))
-  ymax = int(round(ymax))
-  x1 = xmin + ((xmax-xmin)*0.03)
-  y1 = ymin + ((ymax-ymin)*0.03)
-
 #################################
   # Plot surface wind gust
 #################################
   t1 = time.perf_counter()
   print(('Working on surface wind gust for '+dom))
+
+  # Clear off old plottables but keep all the map info
+  cbar1.remove()
+  rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
 
   units = 'kts'
   if dom == 'namerica':
@@ -522,7 +487,7 @@ def plot_set_4():
   cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cs_1 = ax1.contourf(lon,lat,gust_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+  cs_1 = ax1.pcolormesh(x,y,gust_1,cmap=cm,norm=norm,transform=transform)
   cs_1.cmap.set_under('white',alpha=0.)
   cs_1.cmap.set_over('black')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,extend='max')
@@ -537,26 +502,16 @@ def plot_set_4():
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot surface wind gust for: '+dom) % t3)
 
-  plt.clf()
-
-################################################################################
-
-def plot_set_5():
-  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
-
-  xmin, xmax = ax1.get_xlim()
-  ymin, ymax = ax1.get_ylim()
-  xmax = int(round(xmax))
-  ymax = int(round(ymax))
-  x1 = xmin + ((xmax-xmin)*0.03)
-  y1 = ymin + ((ymax-ymin)*0.03)
-
 #################################
   # Plot Max Hourly 10-m Winds
 #################################
   if (fhr > 0):
     t1 = time.perf_counter()
     print(('Working on Max Hourly 10-m Wind Speed for '+dom))
+
+    # Clear off old plottables but keep all the map info
+    cbar1.remove()
+    rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
 
     units = 'kts'
     if dom == 'namerica':
@@ -570,7 +525,7 @@ def plot_set_5():
     cm = matplotlib.colors.ListedColormap(colorlist)
     norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-    cs_1 = ax1.contourf(lon,lat,maxwind_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+    cs_1 = ax1.pcolormesh(x,y,maxwind_1,cmap=cm,norm=norm,transform=transform)
     cs_1.cmap.set_under('white',alpha=0.)
     cs_1.cmap.set_over('black')
     cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,extend='max')
@@ -585,25 +540,15 @@ def plot_set_5():
     t3 = round(t2-t1, 3)
     print(('%.3f seconds to plot Max Hourly 10-m Wind Speed for: '+dom) % t3)
 
-  plt.clf()
-
-################################################################################
-
-def plot_set_6():
-  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
-
-  xmin, xmax = ax1.get_xlim()
-  ymin, ymax = ax1.get_ylim()
-  xmax = int(round(xmax))
-  ymax = int(round(ymax))
-  x1 = xmin + ((xmax-xmin)*0.03)
-  y1 = ymin + ((ymax-ymin)*0.03)
-
 #################################
   # Plot Surface Visibility
 #################################
   t1 = time.perf_counter()
   print(('Working on Surface Visibility for '+dom))
+
+  # Clear off old plottables but keep all the map info
+  cbar1.remove()
+  rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
 
   units = 'miles'
   clevs = [0.25,0.5,1,2,3,4,5,10]
@@ -611,7 +556,7 @@ def plot_set_6():
   cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cs_1 = ax1.contourf(lon,lat,vis_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+  cs_1 = ax1.pcolormesh(x,y,vis_1,cmap=cm,norm=norm,transform=transform)
   cs_1.cmap.set_under('firebrick')
   cs_1.cmap.set_over('white',alpha=0.)
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,ticks=clevs,extend='min')
@@ -627,11 +572,15 @@ def plot_set_6():
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot Surface Visibility for: '+dom) % t3)
 
+################################################################################
+
+  t3dom = round(t2-t1dom, 3)
+  print(("%.3f seconds to plot all set 1 variables for: "+dom) % t3dom)
   plt.clf()
 
 ################################################################################
 
-def plot_set_7():
+def plot_set_2():
   global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
 
   t1dom = time.perf_counter()
@@ -658,7 +607,7 @@ def plot_set_7():
   cm = plt.cm.Spectral_r
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cs1_a = ax1.contourf(lon,lat,slp_1,levels=clevs,cmap=cm,norm=norm,transform=transform)  
+  cs1_a = ax1.pcolormesh(x,y,slp_1,cmap=cm,norm=norm,transform=transform)  
   cbar1 = fig.colorbar(cs1_a,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,extend='both')
   cbar1.set_label(units,fontsize=6)
   cbar1.ax.tick_params(labelsize=5)
@@ -694,8 +643,8 @@ def plot_set_7():
   cm = rrfs_plot_utils.cmap_t2m()
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cs_1 = ax1.contourf(lon,lat,tmp2m_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
-  cs_1.cmap.set_under('white')
+  cs_1 = ax1.pcolormesh(x,y,tmp2m_1,cmap=cm,norm=norm,transform=transform)
+  cs_1.cmap.set_under('white',alpha=0.)
   cs_1.cmap.set_over('white')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,extend='both')
   cbar1.set_label(units,fontsize=6)
@@ -727,7 +676,8 @@ def plot_set_7():
   cm = rrfs_plot_utils.cmap_q2m()
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cs_1 = ax1.contourf(lon,lat,dew2m_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+  cs_1 = ax1.pcolormesh(x,y,dew2m_1,cmap=cm,norm=norm,transform=transform)
+  cs_1.cmap.set_under('white',alpha=0.)
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,extend='both')
   cbar1.set_label(units,fontsize=6)
   cbar1.ax.tick_params(labelsize=6)
@@ -756,7 +706,7 @@ def plot_set_7():
   cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cs_1 = ax1.contourf(lon,lat,mucape_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+  cs_1 = ax1.pcolormesh(x,y,mucape_1,cmap=cm,norm=norm,transform=transform)
   cs_1.cmap.set_under('white',alpha=0.)
   cs_1.cmap.set_over('black')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='max')
@@ -791,7 +741,7 @@ def plot_set_7():
   cm = rrfs_plot_utils.cmap_t850()
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cs_1 = ax1.contourf(lon,lat,thetae_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+  cs_1 = ax1.pcolormesh(x,y,thetae_1,cmap=cm,norm=norm,transform=transform)
   cs_1.cmap.set_under('white')
   cs_1.cmap.set_over('white')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,extend='both')
@@ -826,7 +776,7 @@ def plot_set_7():
   cmw = matplotlib.colors.ListedColormap(colors)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cs1_a = ax1.contourf(lon,lat,rh700_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+  cs1_a = ax1.pcolormesh(x,y,rh700_1,cmap=cm,norm=norm,transform=transform)
   cs1_a.cmap.set_under('white',alpha=0.)
   cbar1 = fig.colorbar(cs1_a,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs)
   cbar1.set_label(units,fontsize=6) 
@@ -858,7 +808,7 @@ def plot_set_7():
   cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(vortlevs, cm.N)
 
-  cs1_a = ax1.contourf(lon,lat,vort500_1,levels=vortlevs,cmap=cm,norm=norm,transform=transform)
+  cs1_a = ax1.pcolormesh(x,y,vort500_1,cmap=cm,norm=norm,transform=transform)
   cs1_a.cmap.set_under('white')
   cs1_a.cmap.set_over('darkred')
   cbar1 = fig.colorbar(cs1_a,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=vortlevs,extend='both')
@@ -892,7 +842,7 @@ def plot_set_7():
   cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cs_1 = ax1.contourf(lon,lat,wspd250_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+  cs_1 = ax1.pcolormesh(x,y,wspd250_1,cmap=cm,norm=norm,transform=transform)
   cs_1.cmap.set_under('white',alpha=0.)
   cs_1.cmap.set_over('red')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,extend='max')
@@ -911,12 +861,12 @@ def plot_set_7():
 ######################################################
 
   t3dom = round(t2-t1dom, 3)
-  print(("%.3f seconds to plot all set 8 variables for: "+dom) % t3dom)
+  print(("%.3f seconds to plot all set 2 variables for: "+dom) % t3dom)
   plt.clf()
 
 ######################################################
 
-def plot_set_8():
+def plot_set_3():
   global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
 
   t1dom = time.perf_counter()
@@ -939,7 +889,7 @@ def plot_set_8():
   cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cs_1 = ax1.contourf(lon,lat,pw_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+  cs_1 = ax1.pcolormesh(x,y,pw_1,cmap=cm,norm=norm,transform=transform)
   cs_1.cmap.set_under('white')
   cs_1.cmap.set_over('hotpink')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,ticks=clevs,extend='both')
@@ -970,7 +920,7 @@ def plot_set_8():
   cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cs_1 = ax1.contourf(lon,lat,pofp_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+  cs_1 = ax1.pcolormesh(x,y,pofp_1,cmap=cm,norm=norm,transform=transform)
   cs_1.cmap.set_under('white',alpha=0.)
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,ticks=clevs)
   cbar1.set_label(units,fontsize=6)
@@ -1001,7 +951,7 @@ def plot_set_8():
     cm = matplotlib.colors.ListedColormap(colorlist)
     norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-    cs_1 = ax1.contourf(lon,lat,qpf_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+    cs_1 = ax1.pcolormesh(x,y,qpf_1,cmap=cm,norm=norm,transform=transform)
     cs_1.cmap.set_under('white',alpha=0.)
     cs_1.cmap.set_over('pink')
     cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,ticks=[0.1,0.5,1,1.5,2,3,5,10,20],extend='max')
@@ -1033,7 +983,7 @@ def plot_set_8():
   cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
  
-  cs_1 = ax1.contourf(lon,lat,snow_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+  cs_1 = ax1.pcolormesh(x,y,snow_1,cmap=cm,norm=norm,transform=transform)
   cs_1.cmap.set_under('white')
   cs_1.cmap.set_over('#CA7AF5')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,ticks=clevs,extend='both')
@@ -1066,7 +1016,7 @@ def plot_set_8():
     cm = matplotlib.colors.ListedColormap(colorlist)
     norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
  
-    cs_1 = ax1.contourf(lon,lat,asnow_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+    cs_1 = ax1.pcolormesh(x,y,asnow_1,cmap=cm,norm=norm,transform=transform)
     cs_1.cmap.set_under('white')
     cs_1.cmap.set_over('#CA7AF5')
     cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,ticks=clevs,extend='both')
@@ -1098,8 +1048,8 @@ def plot_set_8():
   cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cs_1 = ax1.contourf(lon,lat,hel3km_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
-  cs_1.cmap.set_under('white')
+  cs_1 = ax1.pcolormesh(x,y,hel3km_1,cmap=cm,norm=norm,transform=transform)
+  cs_1.cmap.set_under('white',alpha=0.)
   cs_1.cmap.set_over('black')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,extend='both')
   cbar1.set_label(units,fontsize=6)
@@ -1123,7 +1073,7 @@ def plot_set_8():
   cbar1.remove()
   rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
 
-  cs_1 = ax1.contourf(lon,lat,hel1km_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+  cs_1 = ax1.pcolormesh(x,y,hel1km_1,cmap=cm,norm=norm,transform=transform)
   cs_1.cmap.set_under('white')
   cs_1.cmap.set_over('black')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,extend='both')
@@ -1154,7 +1104,7 @@ def plot_set_8():
   cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
   
-  cs_1 = ax1.contourf(lon,lat,ref1km_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+  cs_1 = ax1.pcolormesh(x,y,ref1km_1,cmap=cm,norm=norm,transform=transform)
   cs_1.cmap.set_under('white',alpha=0.)
   cs_1.cmap.set_over('black')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,ticks=clevs,extend='max')
@@ -1185,7 +1135,7 @@ def plot_set_8():
   cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
   
-  cs_1 = ax1.contourf(lon,lat,refc_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+  cs_1 = ax1.pcolormesh(x,y,refc_1,cmap=cm,norm=norm,transform=transform)
   cs_1.cmap.set_under('white',alpha=0.)
   cs_1.cmap.set_over('black')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,ticks=clevs,extend='max')
@@ -1203,12 +1153,12 @@ def plot_set_8():
 ######################################################
 
   t3dom = round(t2-t1dom, 3)
-  print(("%.3f seconds to plot all set 9 variables for: "+dom) % t3dom)
+  print(("%.3f seconds to plot all set 3 variables for: "+dom) % t3dom)
   plt.clf()
 
 ######################################################
 
-def plot_set_9():
+def plot_set_4():
   global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
 
   t1dom = time.perf_counter()
@@ -1232,7 +1182,7 @@ def plot_set_9():
     cm = matplotlib.colors.ListedColormap(colorlist)
     norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-    cs_1 = ax1.contourf(lon,lat,uh25_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+    cs_1 = ax1.pcolormesh(x,y,uh25_1,cmap=cm,norm=norm,transform=transform)
     cs_1.cmap.set_under('darkblue')
     cs_1.cmap.set_over('black')
     cbar1 = fig.colorbar(cs_1,ax=ax1,ticks=clevs,orientation='horizontal',pad=0.01,shrink=1.0,extend='both')
@@ -1263,7 +1213,7 @@ def plot_set_9():
     cm = matplotlib.colors.ListedColormap(colorlist)
     norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-    cs_1 = ax1.contourf(lon,lat,maxuvv_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+    cs_1 = ax1.pcolormesh(x,y,maxuvv_1,cmap=cm,norm=norm,transform=transform)
     cs_1.cmap.set_under('white')
     cs_1.cmap.set_over('black')
     cbar1 = fig.colorbar(cs_1,ax=ax1,ticks=clevs,orientation='horizontal',pad=0.01,shrink=1.0,extend='both')
@@ -1289,7 +1239,7 @@ def plot_set_9():
     cbar1.remove()
     rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
 
-    cs_1 = ax1.contourf(lon,lat,maxdvv_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+    cs_1 = ax1.pcolormesh(x,y,maxdvv_1,cmap=cm,norm=norm,transform=transform)
     cs_1.cmap.set_under('white')
     cs_1.cmap.set_over('black')
     cbar1 = fig.colorbar(cs_1,ax=ax1,ticks=clevs,orientation='horizontal',pad=0.01,shrink=1.0,extend='both')
@@ -1321,7 +1271,7 @@ def plot_set_9():
     cm = matplotlib.colors.ListedColormap(colorlist)
     norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-    cs_1 = ax1.contourf(lon,lat,maxref1km_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+    cs_1 = ax1.pcolormesh(x,y,maxref1km_1,cmap=cm,norm=norm,transform=transform)
     cs_1.cmap.set_under('white',alpha=0.)
     cs_1.cmap.set_over('black')
     cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,extend='max')
@@ -1381,7 +1331,7 @@ def plot_set_9():
   cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cs_1 = ax1.contourf(lon,lat,retop_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+  cs_1 = ax1.pcolormesh(x,y,retop_1,cmap=cm,norm=norm,transform=transform)
   cs_1.cmap.set_under('white',alpha=0.)
   cs_1.cmap.set_over('darkgreen')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,extend='max')
@@ -1412,7 +1362,7 @@ def plot_set_9():
   cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cs_1 = ax1.contourf(lon,lat,prate_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+  cs_1 = ax1.pcolormesh(x,y,prate_1,cmap=cm,norm=norm,transform=transform)
   cs_1.cmap.set_under('white',alpha=0.)
   cs_1.cmap.set_over('yellow')
   cbar1 = fig.colorbar(cs_1,ax=ax1,ticks=clevs,orientation='horizontal',pad=0.01,shrink=1.0,extend='max')
@@ -1427,25 +1377,6 @@ def plot_set_9():
   t2 = time.perf_counter()
   t3 = round(t2-t1, 3)
   print(('%.3f seconds to plot Precipitation Rate for: '+dom) % t3)
-
-######################################################
-
-  t3dom = round(t2-t1dom, 3)
-  print(("%.3f seconds to plot all set 9 variables for: "+dom) % t3dom)
-  plt.clf()
-
-######################################################
-
-def plot_set_10():
-  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
-
-  t1dom = time.perf_counter()
-  xmin, xmax = ax1.get_xlim()
-  ymin, ymax = ax1.get_ylim()
-  xmax = int(round(xmax))
-  ymax = int(round(ymax))
-  x1 = xmin + ((xmax-xmin)*0.03)
-  y1 = ymin + ((ymax-ymin)*0.03)
 
 #################################
   # Plot Cloud Base Height
@@ -1476,30 +1407,15 @@ def plot_set_10():
 #  t3 = round(t2-t1, 3)
 #  print(('%.3f seconds to plot Cloud Base Height for: '+dom) % t3)
 
-######################################################
-
-  t3dom = round(t2-t1dom, 3)
-  print(("%.3f seconds to plot all set 10 variables for: "+dom) % t3dom)
-  plt.clf()
-
-######################################################
-
-def plot_set_11():
-  global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
-
-  t1dom = time.perf_counter()
-  xmin, xmax = ax1.get_xlim()
-  ymin, ymax = ax1.get_ylim()
-  xmax = int(round(xmax))
-  ymax = int(round(ymax))
-  x1 = xmin + ((xmax-xmin)*0.03)
-  y1 = ymin + ((ymax-ymin)*0.03)
-
 #################################
   # Plot Cloud Ceiling Height
 #################################
   t1 = time.perf_counter()
   print(('Working on Cloud Ceiling Height for '+dom))
+
+  # Clear off old plottables but keep all the map info
+  cbar1.remove()
+  rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
 
   units = 'kft'
   clevs = [0,0.1,0.5,1,5,10,15,20,25,30,35,40]
@@ -1508,7 +1424,7 @@ def plot_set_11():
   cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cs_1 = ax1.contourf(lon,lat,zceil_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+  cs_1 = ax1.pcolormesh(x,y,zceil_1,cmap=cm,norm=norm,transform=transform)
   cs_1.cmap.set_over('white')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,ticks=clevs,extend='max')
   cbar1.set_label(units,fontsize=6)
@@ -1540,7 +1456,7 @@ def plot_set_11():
   cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cs_1 = ax1.contourf(lon,lat,ztop_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+  cs_1 = ax1.pcolormesh(x,y,ztop_1,cmap=cm,norm=norm,transform=transform)
   cs_1.cmap.set_under('white',alpha=0.)
   cs_1.cmap.set_over('darkgreen')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=1.0,ticks=clevs,extend='max')
@@ -1558,12 +1474,12 @@ def plot_set_11():
 ######################################################
 
   t3dom = round(t2-t1dom, 3)
-  print(("%.3f seconds to plot all set 12 variables for: "+dom) % t3dom)
+  print(("%.3f seconds to plot all set 4 variables for: "+dom) % t3dom)
   plt.clf()
 
 ######################################################
 
-def plot_set_12():
+def plot_set_5():
   global fig,axes,ax1,keep_ax_lst_1,xextent,yextent,offset,transform
 
   t1dom = time.perf_counter()
@@ -1586,7 +1502,7 @@ def plot_set_12():
   cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N) 
 
-  cs_1 = ax1.contourf(lon,lat,smoke_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+  cs_1 = ax1.pcolormesh(x,y,smoke_1,cmap=cm,norm=norm,transform=transform)
   cs_1.cmap.set_under('white')
   cs_1.cmap.set_over('black')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='both')
@@ -1617,7 +1533,7 @@ def plot_set_12():
   cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cs_1 = ax1.contourf(lon,lat,colsmoke_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+  cs_1 = ax1.pcolormesh(x,y,colsmoke_1,cmap=cm,norm=norm,transform=transform)
   cs_1.cmap.set_under('white')
   cs_1.cmap.set_over('black')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='both')
@@ -1644,7 +1560,11 @@ def plot_set_12():
   cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N) 
 
-  cs_1 = ax1.contourf(lon,lat,dust_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+  # Clear off old plottables but keep all the map info
+  cbar1.remove()
+  rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
+
+  cs_1 = ax1.pcolormesh(x,y,dust_1,cmap=cm,norm=norm,transform=transform)
   cs_1.cmap.set_under('white')
   cs_1.cmap.set_over('black')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='both')
@@ -1675,7 +1595,7 @@ def plot_set_12():
   cm = matplotlib.colors.ListedColormap(colorlist)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
-  cs_1 = ax1.contourf(lon,lat,coldust_1,levels=clevs,cmap=cm,norm=norm,transform=transform)
+  cs_1 = ax1.pcolormesh(x,y,coldust_1,cmap=cm,norm=norm,transform=transform)
   cs_1.cmap.set_under('white')
   cs_1.cmap.set_over('black')
   cbar1 = fig.colorbar(cs_1,ax=ax1,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='both')
@@ -1693,7 +1613,7 @@ def plot_set_12():
 #################################
 
   t3dom = round(t2-t1dom, 3)
-  print(("%.3f seconds to plot all set 13 variables for: "+dom) % t3dom)
+  print(("%.3f seconds to plot all set 5 variables for: "+dom) % t3dom)
   plt.clf()
  
 #################################
