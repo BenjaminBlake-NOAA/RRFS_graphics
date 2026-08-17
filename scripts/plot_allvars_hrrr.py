@@ -46,7 +46,7 @@ vtime = rrfs_plot_utils.ndate(itime,int(fhr))
 user = str(sys.argv[3])
 HRRR_DIR = '/lfs/h1/ops/prod/com/hrrr/v4.1/hrrr.'+ymd+'/conus'
 HRRR_AK_DIR = '/lfs/h2/emc/ptmp/Benjamin.Blake/hrrr/hrrr.'+ymd+'/'+cyc+'/alaska'
-RRFS_DIR = '/lfs/h1/ops/para/com/rrfs/v1.0/rrfs.'+ymd+'/'+cyc
+RRFS_DIR = '/lfs/h1/ops/prod/com/rrfs/v1.0/rrfs.'+ymd+'/'+cyc
 
 # Specify plotting domains
 domset = str(sys.argv[4])

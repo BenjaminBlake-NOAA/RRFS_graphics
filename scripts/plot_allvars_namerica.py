@@ -43,7 +43,7 @@ itime = ymdh
 vtime = rrfs_plot_utils.ndate(itime,int(fhr))
 
 # Define the directory paths to the input files
-RRFS_DIR = '/lfs/h1/ops/para/com/rrfs/v1.0/rrfs.'+ymd+'/'+cyc
+RRFS_DIR = '/lfs/h1/ops/prod/com/rrfs/v1.0/rrfs.'+ymd+'/'+cyc
 
 # Define the input files
 data1_prslev = grib2io.open(RRFS_DIR+'/rrfs.t'+cyc+'z.prslev.3km.f0'+fhour+'.na.grib2')

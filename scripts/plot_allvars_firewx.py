@@ -47,7 +47,7 @@ vtime = rrfs_plot_utils.ndate(itime,int(fhr))
 
 # Define the directory paths to the input files
 NAM_DIR = '/lfs/h1/ops/prod/com/nam/v4.2/nam.'+ymd
-RRFSFW_DIR = '/lfs/h1/ops/para/com/rrfs/v1.0/firewx.'+ymd+'/'+cyc
+RRFSFW_DIR = '/lfs/h1/ops/prod/com/rrfs/v1.0/firewx.'+ymd+'/'+cyc
 
 # Define the input files
 data1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.firewxnest.hiresf'+fhour+'.tm00.grib2')

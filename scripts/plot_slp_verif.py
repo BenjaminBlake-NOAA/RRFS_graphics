@@ -57,7 +57,7 @@ vtime_end = ymd
 HRRR_DIR = os.path.join(os.environ['COMhrrr'],'hrrr.'+ymd_model)
 NAM_DIR = os.path.join(os.environ['COMnam'],'nam.'+ymd_model)
 RRFS_DIR = os.path.join(
-    '/','lfs','h1','ops','para','com','rrfs','v1.0',
+    '/','lfs','h1','ops','prod','com','rrfs','v1.0',
     'rrfs.'+ymd_model, cyc_model
 )
 RAP_DIR = os.path.join(os.environ['COMrap'],'rap.'+ymd)

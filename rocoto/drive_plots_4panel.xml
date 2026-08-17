@@ -8,7 +8,7 @@
  <!ENTITY LOG_DIR "/lfs/h2/emc/ptmp/&USER;/logs_4panel_graphics">
  <!ENTITY COMnam "/lfs/h1/ops/prod/com/nam/v4.2">
  <!ENTITY COMhrrr "/lfs/h1/ops/prod/com/hrrr/v4.1"> 
- <!ENTITY COMrrfs "/lfs/h1/ops/para/com/rrfs/v1.0">
+ <!ENTITY COMrrfs "/lfs/h1/ops/prod/com/rrfs/v1.0">
  <!ENTITY COMrap "/lfs/h1/ops/prod/com/rap/v5.1"> 
  <!ENTITY COMrtma "/lfs/h1/ops/prod/com/rtma/v2.10"> 
  <!ENTITY COMurma "/lfs/h1/ops/prod/com/urma/v2.10"> 
@@ -29,7 +29,7 @@
 
 <workflow realtime="T" scheduler="pbspro" cyclelifespan="00:12:00:00" cyclethrottle="2" taskthrottle="50">
 
-  <cycledef group="verif" activation_offset="04:00:00:00">202604161800 202607311800 06:00:00</cycledef>
+  <cycledef group="verif" activation_offset="04:00:00:00">202608101200 202610311800 06:00:00</cycledef>
  
   <log verbosity="10"><cyclestr>&LOG_DIR;/workflow_@Y@m@d@H.log</cyclestr></log> 
 

@@ -61,7 +61,7 @@ DCOMmrms = os.environ['DCOMmrms']
 HRRR_DIR = os.path.join(os.environ['COMhrrr'],'hrrr.'+ymd_model)
 NAM_DIR = os.path.join(os.environ['COMnam'],'nam.'+ymd_model)
 RRFS_DIR = os.path.join(
-    '/','lfs','h1','ops','para','com','rrfs','v1.0',
+    '/','lfs','h1','ops','prod','com','rrfs','v1.0',
     'rrfs.'+ymd_model, cyc_model
 )
 MRMS_DIR = os.path.join(STAGE_DIR,'mrms.'+ymd)
