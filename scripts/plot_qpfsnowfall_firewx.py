@@ -40,7 +40,6 @@ dtime = datetime.datetime(year,month,day,hour,0)
 date_list = [dtime + datetime.timedelta(hours=x) for x in fhours]
 
 # Define the directory paths to the input files
-NAM_DIR = '/lfs/h1/ops/prod/com/nam/v4.2/nam.'+ymd
 RRFSFW_DIR = '/lfs/h1/ops/prod/com/rrfs/v1.0/firewx.'+ymd+'/'+cyc
 
 # Specify plotting domains
@@ -62,8 +61,8 @@ urcrnrlon = cen_lon + 3.5
 urcrnrlat = cen_lat + 2.5
 
 # Create the figure
-fig = plt.figure(figsize=(9,8))           
-gs = GridSpec(9,8,wspace=0.0,hspace=0.0)
+fig = plt.figure(figsize=(4,4))
+gs = GridSpec(4,4,wspace=0.0,hspace=0.0)
 
 # Define where Cartopy maps are located
 cartopy.config['data_dir'] = '/lfs/h2/emc/lam/noscrub/Benjamin.Blake/python/NaturalEarth'
@@ -75,10 +74,8 @@ extent = [llcrnrlon,urcrnrlon,llcrnrlat,urcrnrlat]
 myproj=ccrs.LambertConformal(central_longitude=cen_lon, central_latitude=cen_lat,
                         false_easting=0.0, false_northing=0.0,globe=None)
 ax1 = fig.add_subplot(gs[0:4,0:4], projection=myproj)
-ax2 = fig.add_subplot(gs[0:4,4:], projection=myproj)
 ax1.set_extent(extent)
-ax2.set_extent(extent)
-axes = [ax1, ax2]
+axes = [ax1]
 
 fline_wd = 0.5  # line width
 fline_wd_lakes = 0.25  # line width
@@ -110,7 +107,6 @@ transform = ccrs.PlateCarree()
 if back_img=='on':
   img = plt.imread('/lfs/h2/emc/lam/noscrub/Benjamin.Blake/python/NaturalEarth/raster_files/NE1_50M_SR_W.tif')
   ax1.imshow(img, origin='upper', transform=transform)
-  ax2.imshow(img, origin='upper', transform=transform)
 
 ax1.add_feature(cfeature.LAND, linewidth=0, facecolor='white')
 ax1.add_feature(cfeature.OCEAN, linewidth=0, facecolor='lightgray')
@@ -119,17 +115,9 @@ ax1.add_feature(cfeature.LAKES, edgecolor='black', linewidth=fline_wd_lakes, fac
 ax1.add_feature(lakes)
 ax1.add_feature(states)
 ax1.add_feature(coastline)
-ax2.add_feature(cfeature.LAND, linewidth=0, facecolor='white')
-ax2.add_feature(cfeature.OCEAN, linewidth=0, facecolor='lightgray')
-ax2.add_feature(COUNTIES, facecolor='none',edgecolor='gray')
-ax2.add_feature(cfeature.LAKES, edgecolor='black', linewidth=fline_wd_lakes, facecolor='lightgray',zorder=0)
-ax2.add_feature(lakes)
-ax2.add_feature(states)
-ax2.add_feature(coastline)
 
 # Map/figure has been set up here, save axes instances for use again later
 keep_ax_lst_1 = ax1.get_children()[:]
-keep_ax_lst_2 = ax2.get_children()[:]
 
 cenlat = str(cen_lat)
 cenlon = str(cen_lon)
@@ -157,30 +145,21 @@ for j in range(len(date_list)):
   vtime = rrfs_plot_utils.ndate(itime,int(fhr))
 
 # Define the input files
-  data1 = grib2io.open(NAM_DIR+'/nam.t'+cyc+'z.firewxnest.hiresf'+fhour+'.tm00.grib2')
-  data2 = grib2io.open(RRFSFW_DIR+'/rrfs.t'+cyc+'z.2dfld.1p5km.f0'+fhour+'.firewx_lcc.grib2')
+  data1 = grib2io.open(RRFSFW_DIR+'/rrfs.t'+cyc+'z.2dfld.1p5km.f0'+fhour+'.firewx_lcc.grib2')
 
-  qpf = data1.select(shortName='APCP',timeRangeOfStatisticalProcess=1)[0].data * 0.0393701
-  asnow = data1.select(shortName='WEASD')[1].data / 2.54
   if (fhr == 1):
-    qpf_1 = qpf
-    qpf_2 = data2.select(shortName='APCP')[0].data * 0.0393701
-    asnow_1 = asnow
+    qpf_1 = data1.select(shortName='APCP')[0].data * 0.0393701
   else:
-    qpf_1 += qpf  
-    qpf_2 = data2.select(shortName='APCP')[1].data * 0.0393701
-    asnow_1 += asnow
+    qpf_1 = data1.select(shortName='APCP')[1].data * 0.0393701
 
-  asnow_2 = data2.select(shortName='ASNOW')[0].data * 39.3701
+  asnow_1 = data1.select(shortName='ASNOW')[0].data * 39.3701
 
 ###################################################
 
 # Get the lats and lons - only need to do this once
   if (fhr == 1):
-    msg = data1.select(shortName='HGT', level='500 mb')[0]  # msg is a Grib2Message object
-    msg2 = data2.select(shortName='HGT', level='surface')[0]  # msg is a Grib2Message object
+    msg = data1.select(shortName='HGT', level='surface')[0]  # msg is a Grib2Message object
     lat,lon,lat_shift,lon_shift = rrfs_plot_utils.get_latlons_pcolormesh(msg)
-    lat2,lon2,lat2_shift,lon2_shift = rrfs_plot_utils.get_latlons_pcolormesh(msg2)
 
 #################################
   # Plot Total QPF
@@ -191,16 +170,12 @@ for j in range(len(date_list)):
   # Clear off old plottables but keep all the map info
   if (fhr > 1):
     cbar1.remove()
-    cbar2.remove()
     rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
-    rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
 
   units = 'in'
   clevs = [0.01,0.1,0.25,0.5,0.75,1,1.25,1.5,1.75,2,2.5,3,4,5,7,10,15,20]
   colorlist = ['chartreuse','limegreen','green','blue','dodgerblue','deepskyblue','cyan','mediumpurple','mediumorchid','darkmagenta','darkred','crimson','orangered','darkorange','goldenrod','gold','yellow']
-  difcolors = ['blue','#1874CD','dodgerblue','deepskyblue','turquoise','white','white','#EEEE00','#EEC900','darkorange','orangered','red']
   cm = matplotlib.colors.ListedColormap(colorlist)
-  cmdif = matplotlib.colors.ListedColormap(difcolors)
   norm = matplotlib.colors.BoundaryNorm(clevs, cm.N)
 
   cs_1 = ax1.pcolormesh(lon_shift,lat_shift,qpf_1,transform=transform,cmap=cm,norm=norm)
@@ -210,19 +185,8 @@ for j in range(len(date_list)):
   cbar1.set_label(units,fontsize=6)
   cbar1.ax.set_xticklabels([0.1,0.5,1,1.5,2,3,5,10,20])
   cbar1.ax.tick_params(labelsize=6)
-  ax1.text(.5,1.03,'NAMFW '+fhour+'-hr Accumulated Precipitation ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax1.text(.5,1.03,'RRFSFW '+fhour+'-hr Accumulated Precipitation ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
-
-  cs_2 = ax2.pcolormesh(lon2_shift,lat2_shift,qpf_2,transform=transform,cmap=cm,norm=norm)
-  cs_2.cmap.set_under('white',alpha=0.)
-  cs_2.cmap.set_over('pink')
-  cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=1.0,ticks=[0.1,0.5,1,1.5,2,3,5,10,20],extend='max')
-  cbar2.set_label(units,fontsize=6)
-  cbar2.ax.set_xticklabels([0.1,0.5,1,1.5,2,3,5,10,20])
-  cbar2.ax.tick_params(labelsize=6)
-  ax2.text(.5,1.03,'RRFSFW '+fhour+'-hr Accumulated Precipitation ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   rrfs_plot_utils.convert_and_save('compareqpf_'+domain+'_f'+fhour)
   t2 = time.perf_counter()
@@ -237,9 +201,7 @@ for j in range(len(date_list)):
 
   # Clear off old plottables but keep all the map info
   cbar1.remove()
-  cbar2.remove()
   rrfs_plot_utils.clear_plotables(ax1,keep_ax_lst_1,fig)
-  rrfs_plot_utils.clear_plotables(ax2,keep_ax_lst_2,fig)
 
   units = 'in'
   clevs = [0.5,1,2,3,4,6,8,12,18,24,30,36]
@@ -254,19 +216,8 @@ for j in range(len(date_list)):
   cbar1.set_label(units,fontsize=6)
   cbar1.ax.set_xticklabels(clevs)
   cbar1.ax.tick_params(labelsize=6)
-  ax1.text(.5,1.03,'NAMFW Snowfall (10:1) ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
+  ax1.text(.5,1.03,'RRFSFW Snowfall (variable density) ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax1.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
   ax1.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
-
-  cs_2 = ax2.pcolormesh(lon2_shift,lat2_shift,asnow_2,transform=transform,cmap=cm,norm=norm)
-  cs_2.cmap.set_under('white',alpha=0.)
-  cs_2.cmap.set_over('#CA7AF5')
-  cbar2 = fig.colorbar(cs_2,ax=ax2,orientation='horizontal',pad=0.01,shrink=0.8,ticks=clevs,extend='max')
-  cbar2.set_label(units,fontsize=6)
-  cbar2.ax.set_xticklabels(clevs)
-  cbar2.ax.tick_params(labelsize=6)
-  ax2.text(.5,1.03,'RRFSFW Snowfall (variable density) ('+units+') \n initialized: '+itime+' valid: '+vtime + ' (f'+fhour+') \n Lat/Lon of Center: '+cenlat+'\xb0'', '+cenlon+'\xb0',horizontalalignment='center',fontsize=6,transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.text(.5,0.03,'Experimental Product - Not Official Guidance',horizontalalignment='center',fontsize=6,color='red',transform=ax2.transAxes,bbox=dict(facecolor='white',alpha=0.85,boxstyle='square,pad=0.2'))
-  ax2.imshow(im,aspect='equal',alpha=0.5,origin='upper',extent=(xmin,xextent,ymin,yextent),zorder=4)
 
   rrfs_plot_utils.convert_and_save('compareasnow_'+domain+'_f'+fhour)
   t2 = time.perf_counter()
